@@ -224,6 +224,9 @@
   .tiers { grid-template-columns: 1fr; }
   .vote { padding: 20px; }
   .foot__row { flex-direction: column; }
+  .h-yet { font-size: 44px; }
+  .proof { flex-direction: column; align-items: center; gap: 8px; }
+  .proof__dot { display: none; }
 }
 @keyframes flowy { to { transform: translateY(14px); } }
 @media (prefers-reduced-motion: reduce) {

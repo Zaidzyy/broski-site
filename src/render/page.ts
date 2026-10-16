@@ -21,7 +21,7 @@ function hero() {
   <header class="hero__head fade">
     <span class="hero__brand">Broski</span>
     <span class="hero__vol">Vol. 01 — A life, operated</span>
-    <span class="hero__status" data-status aria-live="polite">Two voices · one at a time</span>
+    <span class="hero__status" data-status>Two voices · one at a time</span>
     <span class="hero__links"><a class="pill pill--bone" ${filmAttrs}><span aria-hidden="true">▶</span> Watch the film</a><a class="pill pill--line" href="${GITHUB_URL}" ${ext}>GitHub <span aria-hidden="true">↗</span></a></span>
   </header>
   <p class="word word--solid" aria-hidden="true">${letters}</p>
@@ -49,7 +49,7 @@ function rest() {
   const tabs = GROUPS.map((g, i) => {
     const on = i === DEFAULT_GROUP;
     const id = g.g.toLowerCase();
-    return `<button type="button" role="tab" id="tab-${id}" class="tab" aria-selected="${on}" aria-controls="panel-${id}" tabindex="${on ? 0 : -1}"><span class="tab__g">${g.g}</span><span class="tab__n">06</span></button>`;
+    return `<button type="button" role="tab" id="tab-${id}" class="tab" aria-selected="${on}" aria-controls="panel-${id}" tabindex="${on ? 0 : -1}"><span class="tab__g">${g.g}</span><span class="tab__n" aria-hidden="true">06</span></button>`;
   }).join('');
   const panels = GROUPS.map((g, i) => {
     const id = g.g.toLowerCase();

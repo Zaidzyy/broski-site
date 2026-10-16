@@ -16,7 +16,7 @@ test('Bro / Zara recolours the hero and the day accent, and a second click goes 
   await expect(page.locator('[data-question]')).toHaveText('Discipline it is.');
   await expect.poll(() => style(page, '.word--solid', 'color'), { timeout: 3000 }).toBe(STEEL);
   await expect.poll(() => style(page, '.day__prog span', 'backgroundColor')).toBe(STEEL);
-  await expect(page.locator('#day-h [data-who]')).toHaveText('Bro');
+  await expect(page.locator('#day-h [data-name]')).toHaveText('Bro');
 
   await page.locator('.hero [data-pick="zara"]').click();
   await expect(hero).toHaveAttribute('data-who', 'zara');

@@ -19,8 +19,8 @@ export function setWho(next: Who) {
   document.body.dataset.persona = who;
   const p = speaker();
   const name = p === 'bro' ? 'Bro' : 'Zara';
-  for (const el of document.querySelectorAll<HTMLElement>('[data-who]')) {
-    el.textContent = el.dataset.who === 'upper' ? name.toUpperCase() : name;
+  for (const el of document.querySelectorAll<HTMLElement>('[data-name]')) {
+    el.textContent = el.dataset.name === 'upper' ? name.toUpperCase() : name;
   }
   for (const s of SCENES) {
     for (const el of document.querySelectorAll<HTMLElement>(`[data-line="${s.id}"]`)) {

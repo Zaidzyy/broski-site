@@ -292,7 +292,7 @@ export function initDay() {
   const setPlaying = (on: boolean) => {
     el.play.setAttribute('aria-pressed', String(on));
     el.play.querySelector('.playbtn__i')!.textContent = on ? '❚❚' : '▶';
-    el.play.querySelector('.playbtn__t')!.textContent = on ? 'Stop' : 'Play the day';
+    el.play.querySelector('.playbtn__t')!.textContent = on ? 'Stop' : isPhone() ? 'Play' : 'Play the day';
     day.classList.toggle('is-playing', on);
   };
   const stop = () => { playing?.kill(); playing = null; setPlaying(false); };
@@ -310,6 +310,7 @@ export function initDay() {
     });
     playing = tl;
   }
+  setPlaying(false);
   el.play.addEventListener('click', play);
   introBtn?.addEventListener('click', () => { if (playing) stop(); play(); el.play.focus({ preventScroll: true }); });
   el.chips.forEach((c, i) => c.addEventListener('click', () => {

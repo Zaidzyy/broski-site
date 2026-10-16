@@ -11,7 +11,7 @@ const Z = 'zara';
 /** A persona line. Zara is the default when nobody has been picked. */
 const say = (s: Scene, quoted = false) =>
   `<span data-line="${s.id}">${esc(quoted ? `“${s.line[Z]}”` : s.line[Z])}</span>`;
-const who = (upper = true) => `<span data-who="${upper ? 'upper' : 'name'}">${upper ? 'ZARA' : 'Zara'}</span>`;
+const who = (upper = true) => `<span data-name="${upper ? 'upper' : 'name'}">${upper ? 'ZARA' : 'Zara'}</span>`;
 
 /** Entry animation hooks: played once, the first time the scene is shown. */
 const a = (kind: string, d: number, extra = '') => `data-a="${kind}" data-d="${d}"${extra}`;
@@ -146,7 +146,7 @@ const W: Record<string, (s: Scene) => string> = {
         <span class="mail__prev">${INBOX.preview}</span>
       </div>
       <div class="week" ${a('pop', 0.5)}>${INBOX.week.map((d) => `
-        <div class="day${d.slot ? ' day--hl' : ''}"><span class="day__n">${d.d}</span>${d.slot ? `<span class="ev ev--slot" ${a('pop', 0.9)}>${d.slot[0]}<br>${d.slot[1]}</span>` : ''}${d.ev ? `<span class="ev">${d.ev[0]}<br>${d.ev[1]}</span>` : ''}</div>`).join('')}
+        <div class="wday${d.slot ? ' wday--hl' : ''}"><span class="wday__n">${d.d}</span>${d.slot ? `<span class="ev ev--slot" ${a('pop', 0.9)}>${d.slot[0]}<br>${d.slot[1]}</span>` : ''}${d.ev ? `<span class="ev">${d.ev[0]}<br>${d.ev[1]}</span>` : ''}</div>`).join('')}
       </div>
       <div class="draft" ${a('pop', 1.1)}><span class="micro micro--muted">DRAFT REPLY</span>${esc(INBOX.draft)}</div>
       <div class="btnrow" ${a('pop', 1.35)}><span class="btnlike btnlike--acc">${INBOX.actions[0]}</span><span class="btnlike">${INBOX.actions[1]}</span><span class="btnlike tone-muted">${INBOX.actions[2]}</span></div>
@@ -157,7 +157,7 @@ const W: Record<string, (s: Scene) => string> = {
     <div class="callout w600">
       <div class="editor" aria-hidden="true">
         <div class="editor__bar"><span></span><span></span><em>${CALLOUT.file}</em></div>
-        <div class="editor__lines">${[62, 88, 80, 92, 40, 76, 85, 55].map((w, i) => `<span style="width:${w}%;opacity:${[0.1, 0.07, 0.07, 0.07, 0.05, 0.07, 0.07, 0.05][i] * 10}"></span>`).join('')}</div>
+        <div class="editor__lines">${[62, 88, 80, 92, 40, 76, 85, 55].map((w, i) => `<span style="width:${w}%;opacity:${[0.1, 0.07, 0.07, 0.07, 0.05, 0.07, 0.07, 0.05][i]}"></span>`).join('')}</div>
       </div>
       <div class="bubble" ${a('pop', 0.35)}>
         <div class="bubble__head">${img('avatar', 'bubble__ava')}<span class="acc micro">${who()} · 16:40</span></div>
@@ -276,7 +276,7 @@ export function renderDay() {
   <div class="day__intro wrap grid12">
     <div class="day__intro-l">
       <span class="eyebrow">${INTRO.eyebrow}</span>
-      <h2 id="day-h" class="h-xl serif">One day with <em class="acc" data-who="name">Zara</em>.<br>04:00 to 23:00.</h2>
+      <h2 id="day-h" class="h-xl serif">One day with <em class="acc" data-name="name">Zara</em>.<br>04:00 to 23:00.</h2>
     </div>
     <div class="day__intro-r">
       <p class="lede">${INTRO.lede}</p>

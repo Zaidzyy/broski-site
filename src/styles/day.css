@@ -171,9 +171,9 @@
 .mail b { font-weight: 600; font-size: 15px; }
 .mail__prev { font-size: 13px; color: #A3ADB9; }
 .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
-.day { display: flex; flex-direction: column; padding: 6px; border-radius: 10px; min-height: 92px; }
-.day--hl { background: rgba(230, 236, 245, .06); }
-.day__n { font-family: var(--mono); font-size: 9px; letter-spacing: .14em; color: var(--chip-muted); }
+.wday { display: flex; flex-direction: column; padding: 6px; border-radius: 10px; min-height: 92px; }
+.wday--hl { background: rgba(230, 236, 245, .06); }
+.wday__n { font-family: var(--mono); font-size: 9px; letter-spacing: .14em; color: var(--chip-muted); }
 .ev { display: block; margin-top: 6px; padding: 6px; border-radius: 8px; background: rgba(201, 191, 174, .16); font-size: 10px; line-height: 1.25; }
 .ev--slot { background: none; border: 1.5px dashed var(--acc); color: var(--acc); }
 .ev--slot + .ev { margin-top: 4px; }
@@ -206,7 +206,7 @@ body[data-persona='bro'] .only-zara { display: none; }
 .words .micro { display: block; margin-bottom: 4px; }
 .words .serif { font-size: 19px; }
 .bubble .btnlike { padding: 9px 14px; font-size: 13px; }
-.callout__log { position: absolute; left: 0; bottom: 16px; font-size: 11px; letter-spacing: .16em; }
+.callout__log { position: absolute; left: 0; bottom: 6px; max-width: 170px; font-size: 11px; line-height: 1.6; letter-spacing: .16em; }
 
 /* 19:10 train */
 .set { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 0; border-top: 1px solid rgba(230, 236, 245, .08); }
@@ -298,6 +298,17 @@ body[data-persona='bro'] .only-zara { display: none; }
 .day__cue { position: absolute; z-index: 5; left: var(--dx); width: var(--D); top: calc(var(--dy) + var(--D) + 36px); display: flex; justify-content: center; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .24em; }
 .cue-p { display: none; }
 
+@media (max-width: 1240px) and (min-width: 701px) {
+  .day__brand { display: none; }
+  .day__bar { gap: 12px; padding: 14px 20px; }
+  .hchip { padding: 6px 7px; font-size: 10px; letter-spacing: .04em; }
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  .hchips { min-width: 0; overflow-x: auto; scrollbar-width: none; padding: 2px; }
+  .hchips::-webkit-scrollbar { display: none; }
+  .hchip { flex: none; }
+}
+
 /* the dial */
 .dial { position: absolute; z-index: 2; left: var(--dx); top: var(--dy); width: var(--D); height: var(--D); }
 .dial > div, .win > *, .ticks > .ring { position: absolute; }
@@ -373,7 +384,6 @@ body[data-persona='bro'] .only-zara { display: none; }
   .pswitch { margin-left: auto; gap: 3px; }
   .pswitch button { padding: 5px 10px; }
   .playbtn { padding: 7px 11px; }
-  .playbtn__t { font-size: 0; } .playbtn__t::after { content: 'Play'; font-size: 10px; }
   .lab__in { font-size: 8px; } .lab--big .lab__in { font-size: 9px; }
   .ctr__tag { font-size: 8px; letter-spacing: .18em; padding: 2px 6px; top: calc(50% + var(--digit) * .36); }
   .ctr__score .micro { font-size: 8px; } .ctr__note { display: none; }

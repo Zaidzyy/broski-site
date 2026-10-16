@@ -36,6 +36,62 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 - **B18. No framework.** The page is static HTML rendered at build time from the data files (`src/render/*`), then enhanced. A framework would add weight without adding anything here.
 - **B19. Header on phones.** As in G7, the phone hero header shows only "Broski" and the status; the film and GitHub links are in section 05.
 
+- **B20. Day hint copy.** The mockup's "SCROLL INSIDE ↓ OR PRESS PLAY" described its inner scroll box; the pinned page says "SCROLL ↓ OR PRESS PLAY".
+- **B21. Short windows get the still day.** Under 520 px of height (landscape phones, 200 %+ browser zoom) the day uses the reduced-motion layout instead of shrinking the pinned stage (WCAG 1.4.4 / 1.4.10). Zooming into that range reloads into the still layout; a phone keyboard opening does not (width unchanged).
+- **B22. Intro timing tightened by ~0.3 s** (faces wipe at 0.95 / 1.1 s instead of 1.2 / 1.35 s; header and captions fade at 1.9 s instead of 2.2 s). Same order: letters, slash, faces, header.
+- **B23. CSS inlined** into the HTML at build (`vite.config.ts`, `broski-inline-css`) so first paint doesn't wait for a stylesheet request (mobile Lighthouse FCP 2.6 s → 2.4 s).
+- **B24. Bounce arrows** run 6 cycles (~10 s) instead of forever. The section 04 flows and the day's waveforms only run while on screen.
+- **B25. Phone hero hint** ("TAP TO CHOOSE" / "NOW SCROLL…") is hidden on phones, as in G7.
+- **B26. No-JS fallbacks.** All six feature groups render visible and JS turns them into tabs; the film links point to the README's film slot when JS is off.
+
 ## RAM waits
 
-Browser runs (Playwright, Lighthouse) wait for 4 GB of free RAM: `scripts/ramcheck.mjs`, re-checking every 2 minutes for up to 30 minutes. Every wait is in `docs/ram-waits.log`.
+Browser runs (Playwright, Lighthouse) wait for 4 GB of free RAM: `scripts/ramcheck.mjs`, re-checking every 2 minutes for up to 30 minutes. Every wait is in `docs/ram-waits.log`. The first check waited twice (2.67 GB, 2.84 GB free); after that Zaid lifted the rule, and runs continued one browser at a time, each closed when done.
+
+## Reviews
+
+Two review passes ran after the first full build (separate reviewers).
+
+**Fidelity (11 findings, all fixed):**
+1. The section 03 `.ring` class also hit the dial's tick rings, so they were the wrong size and off-centre. Renamed to `.fring`; covered by a test.
+2. A late `.micro { color: inherit }` turned the accent and muted micro labels bone. Removed; covered by a test.
+3. Sections 02–05 were 48 px narrower on each side (border-box `.wrap`). Now 1440 px.
+4. Cards, the receipt and the bubble were narrower than the content-box mockup (604 / 408 / 442 px). Fixed.
+5. The caption of the face that wasn't picked didn't dim (`.fade` forwards held opacity 1). The dim now sits on the children; covered by a test.
+6. The desktop dial was 585 px instead of 620 and shifted left. Fixed.
+7. "Better than last Monday" was missing on the phone ending. Restored.
+8. The ending's ring showed two tones. The thin track now fades out.
+9. The phone hero sheet had an extra hint row. Hidden (B25).
+10. Day bar copy: the hint was logged as B20, and the phone brand now reads "BROSKI".
+11. Hero header and pill line height. Fixed.
+
+**Public content, privacy, accessibility (15 findings):**
+- **Fixed:**
+  - 08:30 command chips on the sky were 3.77:1; now 5.25:1, and `contrast.mjs` covers on-sky greys.
+  - Zoom and short windows (B21), with a test.
+  - Email field border contrast.
+  - The email error is tied to the field (`aria-invalid` + `aria-describedby`), with a test.
+  - The hour-chip focus ring was clipped.
+  - Bounce loops are capped (B24).
+  - The film link without JS (B26).
+  - Feature panels without JS (B26), with a test.
+  - Hero controls visible while focused during the intro, with a test.
+  - README privacy wording names the vote POST.
+  - A quoted chat line in `docs/ram-waits.log` was reworded.
+- **Left for Zaid (needs his call):**
+  - **Commit author email.** The commits use the git email configured on this machine, which becomes public on push. Switch to the GitHub noreply address and rewrite the local commits before the first push if wanted.
+  - **The vote with an empty endpoint** shows "Counted" while sending nothing. The prompt specifies exactly this; set `VOTE_ENDPOINT` before sharing the page.
+  - **"Measured, not claimed".** The facts come from Zaid's run reports via the prompt, not from this build; confirm them before publishing.
+  - **Test hooks** `window.__day` / `window.__voteEndpoint` stay in the build because the suite runs against the production build (B17).
+
+## Tests and Lighthouse
+
+- **Playwright:** 31 tests, all passing (Chromium build 1243, 1440×900 and 390×844).
+- **Lighthouse** (`npm run lighthouse`, local preview build):
+
+| | Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|---|
+| Desktop | 100 | 100 | 100 | 100 |
+| Mobile (slow 4G, 4× CPU) | 92 | 100 | 100 | 100 |
+
+Mobile LCP is the hero image at 2.9 s on simulated slow 4G. The faces are revealed by the designed intro wipe, and the AVIF loads at high priority. FCP is 2.4 s.

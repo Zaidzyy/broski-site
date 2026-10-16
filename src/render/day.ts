@@ -254,7 +254,7 @@ function dial() {
       ${dots}
     </div>
     <div class="arc" data-arc>
-      <span class="arc__track"></span>
+      <span class="arc__track" data-arc-track></span>
       <span class="arc__half arc__half--r"><span class="arc__fill" data-arc-r></span></span>
       <span class="arc__half arc__half--l"><span class="arc__fill" data-arc-l></span></span>
       <span class="arc__thick" data-arc-thick></span>
@@ -293,7 +293,7 @@ export function renderDay() {
         <span class="day__dim" data-dim></span>
       </div>
       <div class="day__bar">
-        <span class="day__brand">Broski · one day</span>
+        <span class="day__brand">Broski<span class="day__brand-x"> · one day</span></span>
         <nav class="hchips" aria-label="Jump to a moment">${chips}</nav>
         <div class="pswitch" role="group" aria-label="Who walks you through the day">
           <button type="button" data-persona-btn="bro" aria-pressed="false">Bro</button><button type="button" data-persona-btn="zara" aria-pressed="true">Zara</button>

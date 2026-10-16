@@ -24,7 +24,7 @@
   position: absolute; inset: 0 0 auto; z-index: 7;
   display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center;
   padding: 18px var(--gutter); border-bottom: 1px solid var(--line);
-  font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #9A9284;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #9A9284; line-height: 1.2;
 }
 .hero__brand { grid-column: 1 / span 3; color: var(--bone); }
 .hero__vol { grid-column: 4 / span 3; }
@@ -46,8 +46,8 @@
 
 /* The two faces. .face wipes in once; .pane follows the slash; .slide moves the picture. */
 .face { position: absolute; inset: 0; pointer-events: none; }
-.face--bro { clip-path: inset(0 100% 0 0); animation: wipeL 1.3s 1.2s cubic-bezier(.7, 0, .2, 1) forwards; }
-.face--zara { clip-path: inset(0 0 0 100%); animation: wipeR 1.3s 1.35s cubic-bezier(.7, 0, .2, 1) forwards; }
+.face--bro { clip-path: inset(0 100% 0 0); animation: wipeL 1.2s .95s cubic-bezier(.7, 0, .2, 1) forwards; }
+.face--zara { clip-path: inset(0 0 0 100%); animation: wipeR 1.2s 1.1s cubic-bezier(.7, 0, .2, 1) forwards; }
 @keyframes wipeL { to { clip-path: inset(0); } }
 @keyframes wipeR { to { clip-path: inset(0); } }
 .pane { position: absolute; inset: 0; transition: clip-path 1s cubic-bezier(.77, 0, .18, 1); }
@@ -68,18 +68,19 @@
 
 .slash { position: absolute; inset: 0; z-index: 3; pointer-events: none; transform: translateX(var(--s)); transition: transform 1s cubic-bezier(.77, 0, .18, 1); }
 .slash__line { position: absolute; left: -1px; top: -5%; width: 2px; height: 110%; transform: rotate(var(--tilt)); }
-.slash__line > span { display: block; width: 100%; height: 100%; background: var(--slash); transform: scaleY(0); transform-origin: 50% 0; animation: grow 1.2s .9s cubic-bezier(.6, 0, .2, 1) forwards; }
+.slash__line > span { display: block; width: 100%; height: 100%; background: var(--slash); transform: scaleY(0); transform-origin: 50% 0; animation: grow 1.1s .75s cubic-bezier(.6, 0, .2, 1) forwards; }
 @keyframes grow { to { transform: none; } }
 
-.fig { position: absolute; bottom: 48px; z-index: 5; max-width: 300px; display: flex; flex-direction: column; gap: 10px; transition: opacity .8s ease; }
+.fig { position: absolute; bottom: 48px; z-index: 5; max-width: 300px; display: flex; flex-direction: column; gap: 10px; }
+.fig > * { transition: opacity .8s ease; }
 .fig--bro { left: var(--gutter); }
 .fig--zara { right: var(--gutter); align-items: flex-end; text-align: right; }
 .fig__k { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; }
 .fig--bro .fig__k { color: var(--steel); }
 .fig--zara .fig__k { color: var(--rose); }
 .fig__t { font-size: 24px; line-height: 1.12; text-shadow: 0 1px 18px rgba(0, 0, 0, .85); }
-.hero[data-who='zara'] .fig--bro, .hero[data-peek='zara'] .fig--bro,
-.hero[data-who='bro'] .fig--zara, .hero[data-peek='bro'] .fig--zara { opacity: .25; }
+.hero[data-who='zara'] .fig--bro > *, .hero[data-peek='zara'] .fig--bro > *,
+.hero[data-who='bro'] .fig--zara > *, .hero[data-peek='bro'] .fig--zara > * { opacity: .25; }
 
 .chooser {
   position: absolute; left: 0; right: 0; bottom: 40px; z-index: 6;
@@ -108,10 +109,11 @@
 .chooser__arrow { display: inline-block; opacity: 0; }
 .hero[data-who='bro'] .chooser__hint { color: var(--steel); }
 .hero[data-who='zara'] .chooser__hint { color: var(--rose); }
-.hero:not([data-who='both']) .chooser__arrow { opacity: 1; animation: bounce 1.6s ease-in-out infinite; }
+.hero:not([data-who='both']) .chooser__arrow { opacity: 1; animation: bounce 1.6s ease-in-out 6; }
 
-.fade { opacity: 0; animation: fadein 1s 2.2s ease forwards; }
+.fade { opacity: 0; animation: fadein .9s 1.9s ease forwards; }
 @keyframes fadein { to { opacity: 1; } }
+.fade:focus-within { opacity: 1; }
 
 /* ---- G7: the phone ---- */
 @media (max-width: 700px) {
@@ -135,7 +137,7 @@
   .chooser__pill { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 5px; background: rgba(237, 228, 211, .05); }
   .chooser__slash { display: none; }
   .pick { padding: 15px 0; }
-  .chooser__hint { justify-content: center; font-size: 10px; letter-spacing: .18em; }
+  .chooser__hint { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -143,6 +145,6 @@
   .ltr, .slash__line > span { transform: none; }
   .face--bro, .face--zara { clip-path: none; }
   .fade { opacity: 1; }
-  .hero, .pane, .slide, .slash, .pic__dim, .fig, .word--solid, .hero__status, .chooser__hint, .pick { transition: none; }
+  .hero, .pane, .slide, .slash, .pic__dim, .fig > *, .word--solid, .hero__status, .chooser__hint, .pick { transition: none; }
   .hero:not([data-who='both']) .chooser__arrow { animation: none; }
 }

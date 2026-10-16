@@ -35,9 +35,31 @@ function page(): Plugin {
   };
 }
 
+/** Inlines the one stylesheet into the HTML, so first paint doesn't wait for a CSS request. */
+function inlineCss(): Plugin {
+  return {
+    name: 'broski-inline-css',
+    apply: 'build',
+    enforce: 'post',
+    generateBundle(_, bundle) {
+      const html = Object.values(bundle).find((f) => f.fileName === 'index.html');
+      if (!html || html.type !== 'asset') return;
+      let out = String(html.source);
+      for (const f of Object.values(bundle)) {
+        if (f.type !== 'asset' || !f.fileName.endsWith('.css')) continue;
+        const tag = new RegExp(`<link rel="stylesheet"[^>]*href="[^"]*${f.fileName.replace(/[.]/g, '\\.')}"[^>]*>`);
+        if (!tag.test(out)) continue;
+        out = out.replace(tag, () => `<style>${String(f.source)}</style>`);
+        delete bundle[f.fileName];
+      }
+      html.source = out;
+    },
+  };
+}
+
 export default defineConfig({
   base,
-  plugins: [page()],
+  plugins: [page(), inlineCss()],
   build: { target: 'es2020', assetsInlineLimit: 0, cssCodeSplit: false },
   preview: { port: 4173 },
 });

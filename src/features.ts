@@ -6,7 +6,7 @@ export function initFeatures() {
   if (!list) return;
   const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
   const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')!)!);
-  const marks = [...document.querySelectorAll<HTMLElement>('.ring .mark')];
+  const marks = [...document.querySelectorAll<HTMLElement>('.fring .mark')];
   const ringI = document.querySelector<HTMLElement>('[data-ring-i]')!;
   const ringG = document.querySelector<HTMLElement>('[data-ring-g]')!;
 

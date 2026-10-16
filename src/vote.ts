@@ -20,7 +20,12 @@ export function initVote() {
   const picked = done.querySelector<HTMLElement>('[data-vote-picked]')!;
   const redo = done.querySelector<HTMLButtonElement>('[data-vote-redo]')!;
   const choice = () => form.querySelector<HTMLInputElement>('input[name="choice"]:checked');
-  const fail = (msg: string) => { err.textContent = msg; err.hidden = false; };
+  const emailIn = form.elements.namedItem('email') as HTMLInputElement;
+  const fail = (msg: string, field = false) => {
+    err.textContent = msg;
+    err.hidden = false;
+    if (field) { emailIn.setAttribute('aria-invalid', 'true'); emailIn.focus(); }
+  };
 
   form.addEventListener('change', () => { send.disabled = !choice(); });
   send.disabled = !choice();
@@ -29,12 +34,13 @@ export function initVote() {
     e.preventDefault();
     const c = choice();
     if (!c) return;
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const email = emailIn.value;
     if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      fail('That email looks off. Fix it, or leave it empty.');
+      fail('That email looks off. Fix it, or leave it empty.', true);
       return;
     }
     err.hidden = true;
+    emailIn.removeAttribute('aria-invalid');
     const url = endpoint();
     if (url) {
       send.disabled = true;

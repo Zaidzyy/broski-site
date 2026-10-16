@@ -7,7 +7,7 @@ import { renderDay } from './day';
 import { esc, picture } from './util';
 
 const letters = 'BROSKI'.split('').map((c, i) => `<span class="mask"><span class="ltr" style="--d:${(0.08 * i).toFixed(2)}s">${c}</span></span>`).join('');
-const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : 'href="#film" data-soon aria-describedby="film-soon"';
+const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : `href="${GITHUB_URL}#-film" data-soon aria-describedby="film-soon"`;
 const ext = 'target="_blank" rel="noopener"';
 
 function hero() {
@@ -53,7 +53,7 @@ function rest() {
   }).join('');
   const panels = GROUPS.map((g, i) => {
     const id = g.g.toLowerCase();
-    return `<div role="tabpanel" id="panel-${id}" class="bento" aria-labelledby="tab-${id}" tabindex="0"${i === DEFAULT_GROUP ? '' : ' hidden'}>
+    return `<div role="tabpanel" id="panel-${id}" class="bento" aria-labelledby="tab-${id}" tabindex="0">
       <h3 class="sr-only">${g.g}: six features</h3>
       <ul class="bento__grid">${g.items.map((it, k) => `
         <li class="tile${k === 0 ? ' tile--acc' : ''}"><span class="tile__top"><span class="tile__glyph" aria-hidden="true">${g.glyph}</span><span class="tile__n" aria-hidden="true">0${k + 1}</span></span><b class="tile__t">${esc(it.t)}</b><span class="tile__d">${esc(it.d)}</span></li>`).join('')}
@@ -69,8 +69,8 @@ function rest() {
     </div>
     <div class="tabs" role="tablist" aria-label="Feature groups">${tabs}</div>
     <div class="rest__body">
-      <div class="ring" aria-hidden="true">${marks}
-        <div class="ring__c"><span class="ring__i micro" data-ring-i>0${DEFAULT_GROUP + 1} / 06</span><span class="ring__g" data-ring-g>${GROUPS[DEFAULT_GROUP].g}</span><span class="micro acc">6 THINGS</span></div>
+      <div class="fring" aria-hidden="true">${marks}
+        <div class="fring__c"><span class="fring__i micro" data-ring-i>0${DEFAULT_GROUP + 1} / 06</span><span class="fring__g" data-ring-g>${GROUPS[DEFAULT_GROUP].g}</span><span class="micro acc">6 THINGS</span></div>
       </div>
       <div class="panels">${panels}</div>
     </div>
@@ -176,9 +176,9 @@ function yours() {
           ${VOTES.map((v) => `
           <label class="opt"><input type="radio" name="choice" value="${v.id}"><span class="opt__dot" aria-hidden="true"></span><b>${v.t}</b><span class="opt__d">${v.d}</span></label>`).join('')}
         </fieldset>
-        <label class="vote__email"><span class="eyebrow">Email · optional</span><input type="email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email"></label>
+        <label class="vote__email"><span class="eyebrow">Email · optional</span><input type="email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email" aria-describedby="vote-err"></label>
         <button type="submit" class="vote__send" disabled>Count me in</button>
-        <p class="vote__err" data-vote-err role="alert" hidden></p>
+        <p class="vote__err" id="vote-err" data-vote-err role="alert" hidden></p>
         <p class="vote__fine">One vote, no account. The email is only used to tell you if this ships, and it's deleted if it doesn't.</p>
       </form>
       <div class="vote__done" data-vote-done hidden>

@@ -71,7 +71,9 @@ export function initDay() {
     b.addEventListener('click', () => setWho(b.dataset.personaBtn as 'bro' | 'zara'));
   }
 
-  if (reducedMotion()) {
+  // Too short for the pinned stage (landscape phones, high browser zoom): use the still version.
+  const tooShort = () => window.innerHeight < 520;
+  if (reducedMotion() || tooShort()) {
     // Twelve still sections, each in its final state. No pinning, no auto-scroll.
     day.classList.add('is-static-js');
     const fitStatic = () => scenes.forEach((s, i) => fitWidget(s, fits[i], s.querySelector<HTMLElement>('.scene__w')!.clientWidth, Infinity));
@@ -81,6 +83,10 @@ export function initDay() {
     return;
   }
 
+  // Crossing into "too short" (zooming in a lot) reloads into the still version, keeping the place.
+  // A keyboard opening only changes the height; zoom changes the width too.
+  const w0 = window.innerWidth;
+  window.addEventListener('resize', () => { if (tooShort() && window.innerWidth !== w0) window.location.reload(); });
   day.classList.add('is-live');
   day.style.setProperty('--units', String(UNITS));
   day.style.setProperty('--unit-h', `${UNIT_VH * 100}svh`);
@@ -95,6 +101,7 @@ export function initDay() {
     hand: stage.querySelector<HTMLElement>('[data-hand]')!,
     arcR: stage.querySelector<HTMLElement>('[data-arc-r]')!, arcL: stage.querySelector<HTMLElement>('[data-arc-l]')!,
     thick: stage.querySelector<HTMLElement>('[data-arc-thick]')!,
+    track: stage.querySelector<HTMLElement>('[data-arc-track]')!,
     inkL: q('[data-ink="l"]'), inkD: q('[data-ink="d"]'),
     ctr: SCENES.map((_, i) => q(`[data-ctr="${i}"], [data-tag="${i}"]`)),
     labs: SCENES.map((_, i) => stage.querySelector<HTMLElement>(`[data-lab="${i}"] .lab__in`)),
@@ -159,6 +166,7 @@ export function initDay() {
     op(el.arcR, sweep < 0.2 ? 0 : 1 - thick);
     op(el.arcL, sweep <= 180 ? 0 : 1 - thick);
     op(el.thick, thick);
+    op(el.track, 1 - thick);
     tf(el.thick, `scale(${lerp(0.96, 1, thick).toFixed(3)})`);
     const w = span(t, END.win);
     op(el.win, 1 - w);
@@ -233,9 +241,9 @@ export function initDay() {
       sx = 18; sw = vw - 36; sy = dy + D + 62; sh = vh - sy - 14;
     } else {
       const bar = 64;
-      D = Math.max(300, Math.min(620, vh - bar - 150, (vw - 140) * 0.45));
+      D = Math.max(300, Math.min(620, vh - bar - 150, (vw - 140) * 0.48));
       const leftCol = Math.max(D + 100, vw * 0.5);
-      dx = Math.max(56, (leftCol - D) / 2 - 10);
+      dx = Math.max(56, (leftCol - D) / 2 + 10);
       dy = bar + (vh - bar - D) / 2 + 4;
       sx = dx + D + Math.max(70, Math.min(110, vw * 0.065));
       sw = Math.min(620, vw - sx - 40); sy = bar + 48; sh = vh - sy - 56;

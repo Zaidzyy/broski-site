@@ -103,7 +103,7 @@ Only text goes to Claude. Audio is never sent. Telegram talks to one chat: mine.
 
 **Stack.** Electron, React, TypeScript, SQLite, Claude Agent SDK, Ollama, faster-whisper, Kokoro, Telegram Bot API, ActivityWatch, Google Calendar.
 
-**This site.** Vite + TypeScript, GSAP ScrollTrigger, self-hosted fonts, no analytics, no cookies, no third-party requests. Source in this repo.
+**This site.** Vite + TypeScript, GSAP ScrollTrigger, self-hosted fonts, no analytics, no cookies. The only request that leaves the page is the vote, and only when you press "Count me in". Source in this repo.
 
 ## Honest scope / what it is not
 

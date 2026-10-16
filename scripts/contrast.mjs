@@ -1,5 +1,6 @@
 // AA check for every sky phase of the day.
-// 1) Picks the page-sky dimming (the dark layer behind the scene text) per scene.
+// 1) Picks the page-sky dimming (the dark layer behind the scene text) per scene, so accent,
+//    bone at 72 % / 80 %, the hour chips and the grey labels (#B4AC9E) on the sky all pass 4.5:1.
 // 2) Checks the dial digits against the vivid sky inside the dial.
 // Run: node scripts/contrast.mjs   (the DIM row it prints is pasted into src/day.ts)
 const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
@@ -9,7 +10,7 @@ const ratio = (a, b) => { const [x, y] = [L(a), L(b)].sort((m, n) => n - m); ret
 const mix = (a, b, t) => a.map((v, i) => v * (1 - t) + b[i] * t); // t of b over a (sRGB, like the browser)
 
 const BONE = hex('#EDE4D3'), INK = hex('#0C0B0A'), DIMC = hex('#090808');
-const ROSE = hex('#D88A9C'), STEEL = hex('#8EA4BA'), CHIP = hex('#A39C90');
+const ROSE = hex('#D88A9C'), STEEL = hex('#8EA4BA'), CHIP = hex('#A39C90'), SKYGREY = hex('#B4AC9E');
 const DAWN = hex('#E7A06A');
 const DUSK = { zara: { glow: '#B9687D', sky: '#4A2430' }, bro: { glow: '#4F6377', sky: '#22303D' } };
 const scenes = [
@@ -30,7 +31,7 @@ for (const [t, sky, dawn, dusk, dark] of scenes) {
     const ok = (alpha) => cands.every((c) => {
       const bg = mix(c, DIMC, alpha);
       const tag = mix(bg, BONE, 0.72), body = mix(bg, BONE, 0.8), chipBg = mix(bg, INK, 0.35);
-      return ratio(ROSE, bg) >= 4.5 && ratio(STEEL, bg) >= 4.5 && ratio(tag, bg) >= 4.5 && ratio(body, bg) >= 4.5 && ratio(CHIP, chipBg) >= 4.5;
+      return ratio(ROSE, bg) >= 4.5 && ratio(STEEL, bg) >= 4.5 && ratio(SKYGREY, bg) >= 4.5 && ratio(tag, bg) >= 4.5 && ratio(body, bg) >= 4.5 && ratio(CHIP, chipBg) >= 4.5;
     });
     while (!ok(a) && a < 1) a = Math.round((a + 0.01) * 100) / 100;
     worstDim = Math.max(worstDim, a);

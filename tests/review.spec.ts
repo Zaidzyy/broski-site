@@ -67,3 +67,49 @@ test('hero controls are visible while focused during the intro', async ({ page }
   await page.locator('.hero [data-pick="zara"]').focus();
   expect(await page.locator('.chooser').evaluate((n) => getComputedStyle(n).opacity)).toBe('1');
 });
+
+// ---- follow-up fixes ----
+
+for (const width of [360, 390, 430]) {
+  test(`phone ${width}px: the top of Zara's picture fades out instead of ending on a hard edge`, async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+    const page = await ctx.newPage();
+    await page.goto('./');
+    const mask = await page.locator('.face--zara .pic').evaluate((n) => {
+      const cs = getComputedStyle(n);
+      return cs.maskImage || cs.webkitMaskImage;
+    });
+    // starts fully transparent at the top edge, then fades in
+    expect(mask).toMatch(/^linear-gradient\((rgba\(0, 0, 0, 0\)|transparent) 0(px|%)?,/);
+    await ctx.close();
+  });
+}
+
+test('03: every bento card has its own mark: one lit tick on a 36-tick ring', async ({ page }) => {
+  await page.goto('./');
+  const marks = await page.locator('.bento .tile__mark').evaluateAll((svgs) =>
+    svgs.map((s) => ({ lit: s.querySelector('.tk-on')!.getAttribute('d'), ticks: (s.querySelector('.tk')!.getAttribute('d')!.match(/M/g) || []).length })));
+  expect(marks).toHaveLength(36);
+  expect(new Set(marks.map((m) => m.lit)).size).toBe(36);
+  for (const m of marks) expect(m.ticks).toBe(35);
+  const lit = await page.locator('#panel-learn .tile').nth(1).locator('.tk-on').evaluate((n) => getComputedStyle(n).stroke);
+  expect(lit).toBe(ROSE);
+});
+
+test('phone day: the scene dots sit on the outer track, clear of the sky window', async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  await page.goto('./');
+  await gotoScene(page, 5);
+  const r = await page.evaluate(() => {
+    const win = document.querySelector('.win')!.getBoundingClientRect();
+    const cx = win.left + win.width / 2, cy = win.top + win.height / 2;
+    return [...document.querySelectorAll('.dot')].map((d) => {
+      const b = d.getBoundingClientRect();
+      return { inner: Math.hypot(b.left + b.width / 2 - cx, b.top + b.height / 2 - cy) - b.width / 2, win: win.width / 2 };
+    });
+  });
+  expect(r).toHaveLength(12);
+  for (const d of r) expect(d.inner).toBeGreaterThan(d.win);
+  await ctx.close();
+});

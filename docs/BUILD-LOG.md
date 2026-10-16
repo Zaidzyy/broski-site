@@ -44,6 +44,13 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 - **B25. Phone hero hint** ("TAP TO CHOOSE" / "NOW SCROLL…") is hidden on phones, as in G7.
 - **B26. No-JS fallbacks.** All six feature groups render visible and JS turns them into tabs; the film links point to the README's film slot when JS is off.
 
+## Follow-up fixes (after Claude's screenshot review)
+
+1. **Phone hero:** Zara's file is cropped flat through her hair, so on phones the top of her picture fades out with an eased mask (transparent to 6 %, opaque by 34 % of the image height), like Bro's hair thins out. Checked at 360, 390 and 430 px; tested at all three.
+2. **03 bento icons:** the shared group glyph is replaced by the feature's own mark. Each card has a 36-tick ring drawn in code (an inline SVG with two paths) with its tick lit in the persona colour, at the same angle as its mark on the big ring. No icon library, no emoji. Tested: 36 different marks.
+3. **Phone day:** the scene dots moved from the edge of the sky window onto the outer track (5 px, centred on the arc band). Tested: every dot clears the window.
+4. **README:** the film line appears once, with an `<a id="film">` anchor; "Watch the film" and the site's no-JS film links point to `#film`.
+
 ## RAM waits
 
 Browser runs (Playwright, Lighthouse) wait for 4 GB of free RAM: `scripts/ramcheck.mjs`, re-checking every 2 minutes for up to 30 minutes. Every wait is in `docs/ram-waits.log`. The first check waited twice (2.67 GB, 2.84 GB free); after that Zaid lifted the rule, and runs continued one browser at a time, each closed when done.
@@ -86,7 +93,7 @@ Two review passes ran after the first full build (separate reviewers).
 
 ## Tests and Lighthouse
 
-- **Playwright:** 31 tests, all passing (Chromium build 1243, 1440×900 and 390×844).
+- **Playwright:** 36 tests, all passing (Chromium build 1243, 1440×900 and 390×844).
 - **Lighthouse** (`npm run lighthouse`, local preview build):
 
 | | Performance | Accessibility | Best Practices | SEO |

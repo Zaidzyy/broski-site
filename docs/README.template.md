@@ -4,15 +4,13 @@
 
 **A personal AI life-OS with two voices that knows my day, calls me out, and asks before anything leaves the laptop.**
 
-[Live site](https://zaidzyy.github.io/broski-site/) · [Watch the film](#-film) · [How it's built](#how-its-built)
+[Live site](https://zaidzyy.github.io/broski-site/) · [Watch the film](#film) · [How it's built](#how-its-built)
 
 `Electron` · `React` · `TypeScript` · `SQLite` · `Claude Agent SDK` · `Ollama` · `faster-whisper` · `Kokoro` · `Telegram Bot API`
 
 </div>
 
-### 🎬 Film
-
-🎬 Film: made with HyperFrames × Claude Code (coming soon)
+<a id="film"></a>🎬 Film: made with HyperFrames × Claude Code (coming soon)
 
 ---
 

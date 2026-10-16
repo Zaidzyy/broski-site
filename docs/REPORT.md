@@ -36,6 +36,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Sections: [03](screens/desktop-03-rest.webp) · [04](screens/desktop-04-hood.webp) · [05](screens/desktop-05-yours.webp) · [footer](screens/desktop-06-footer.webp)
 - **Phone (390×844):** the same set with the `phone-` prefix in [screens/](screens/).
 - **Reduced motion:** [the still day](screens/reduced-motion-day.webp)
+- **Phone hero at the edge widths:** [360 px](screens/phone-360-01-hero.webp) · [430 px](screens/phone-430-01-hero.webp)
 
 ![Hero](screens/desktop-01-hero.webp)
 ![16:40](screens/desktop-day-09.webp)
@@ -47,7 +48,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 31 passing.
+- **Playwright:** 36 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.

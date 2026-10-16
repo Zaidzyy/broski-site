@@ -7,7 +7,7 @@ import { renderDay } from './day';
 import { esc, picture } from './util';
 
 const letters = 'BROSKI'.split('').map((c, i) => `<span class="mask"><span class="ltr" style="--d:${(0.08 * i).toFixed(2)}s">${c}</span></span>`).join('');
-const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : `href="${GITHUB_URL}#-film" data-soon aria-describedby="film-soon"`;
+const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : `href="${GITHUB_URL}#film" data-soon aria-describedby="film-soon"`;
 const ext = 'target="_blank" rel="noopener"';
 
 function hero() {
@@ -43,6 +43,20 @@ function hero() {
 </section>`;
 }
 
+/** The 36 marks' angles on the section 03 ring: six groups of six, 60deg apart. */
+const MARK_ANGLES = Array.from({ length: 36 }, (_, i) => 6 + Math.floor(i / 6) * 60 + (i % 6) * 9.6);
+
+/** A small copy of the ring with one tick lit: the feature's own mark on the dial. */
+function tickIcon(lit: number) {
+  const seg = (a: number, r1: number, r2: number) => {
+    const t = (a * Math.PI) / 180, s = Math.sin(t), c = Math.cos(t);
+    const f = (v: number) => v.toFixed(2);
+    return `M${f(17 + r1 * s)} ${f(17 - r1 * c)}L${f(17 + r2 * s)} ${f(17 - r2 * c)}`;
+  };
+  const rest = MARK_ANGLES.map((a, i) => (i === lit ? '' : seg(a, 12, 15.5))).join('');
+  return `<svg class="tile__mark" viewBox="0 0 34 34" width="34" height="34" aria-hidden="true"><path class="tk" d="${rest}"/><path class="tk-on" d="${seg(MARK_ANGLES[lit], 9, 16.5)}"/></svg>`;
+}
+
 function rest() {
   const marks = GROUPS.map((_, g) => Array.from({ length: 6 }, (_, k) =>
     `<span class="mark" data-g="${g}" style="--a:${(6 + g * 60 + k * 9.6).toFixed(1)}deg"></span>`).join('')).join('');
@@ -56,7 +70,7 @@ function rest() {
     return `<div role="tabpanel" id="panel-${id}" class="bento" aria-labelledby="tab-${id}" tabindex="0">
       <h3 class="sr-only">${g.g}: six features</h3>
       <ul class="bento__grid">${g.items.map((it, k) => `
-        <li class="tile${k === 0 ? ' tile--acc' : ''}"><span class="tile__top"><span class="tile__glyph" aria-hidden="true">${g.glyph}</span><span class="tile__n" aria-hidden="true">0${k + 1}</span></span><b class="tile__t">${esc(it.t)}</b><span class="tile__d">${esc(it.d)}</span></li>`).join('')}
+        <li class="tile${k === 0 ? ' tile--acc' : ''}"><span class="tile__top">${tickIcon(i * 6 + k)}<span class="tile__n" aria-hidden="true">0${k + 1}</span></span><b class="tile__t">${esc(it.t)}</b><span class="tile__d">${esc(it.d)}</span></li>`).join('')}
       </ul>
     </div>`;
   }).join('');

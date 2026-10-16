@@ -125,6 +125,11 @@
   .word { top: 74px; font-size: min(118px, 30vw); }
   .word--outline { -webkit-text-stroke-width: 1.5px; }
   .pic { bottom: 150px; }
+  /* Zara's file is cropped flat through her hair; fade it out at the top, the way Bro's hair thins out. */
+  .face--zara .pic {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 6%, rgba(0, 0, 0, .06) 11%, rgba(0, 0, 0, .2) 16%, rgba(0, 0, 0, .45) 21%, rgba(0, 0, 0, .74) 27%, #000 34%);
+    mask-image: linear-gradient(to bottom, transparent 0, transparent 6%, rgba(0, 0, 0, .06) 11%, rgba(0, 0, 0, .2) 16%, rgba(0, 0, 0, .45) 21%, rgba(0, 0, 0, .74) 27%, #000 34%);
+  }
   .fig { top: 200px; bottom: auto; max-width: none; }
   .fig--bro { left: 18px; } .fig--zara { right: 18px; }
   .fig__k { font-size: 10px; }

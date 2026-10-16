@@ -1,0 +1,9 @@
+node_modules/
+dist/
+design/
+assets-src/
+test-results/
+playwright-report/
+.lighthouse/
+*.log
+!docs/ram-waits.log

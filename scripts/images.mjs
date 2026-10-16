@@ -30,7 +30,7 @@ async function write(pipeline, name, q) {
 
 for (const [name, look] of Object.entries(looks)) {
   const dim = name.endsWith('-dim');
-  for (const w of dim ? [820] : [820, 1254]) {
+  for (const w of dim ? [520, 820] : [520, 820, 1254]) {
     const base = sharp(`${SRC}/${srcOf[name]}.png`).resize(w, w).ensureAlpha();
     const flat = await look(base).png().toBuffer();
     await write(sharp(flat), `${name}-${w}`, dim ? 38 : 52);

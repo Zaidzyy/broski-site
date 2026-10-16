@@ -186,7 +186,7 @@
 .editor { position: absolute; left: 0; top: 0; width: 520px; height: 330px; border-radius: 14px; background: #141517; border: 1px solid rgba(237, 228, 211, .1); overflow: hidden; }
 .editor__bar { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid rgba(237, 228, 211, .08); }
 .editor__bar span { width: 10px; height: 10px; border-radius: 50%; background: rgba(237, 228, 211, .16); }
-.editor__bar em { font-style: normal; font-family: var(--mono); font-size: 11px; color: #6E685E; margin-left: 10px; }
+.editor__bar em { font-style: normal; font-family: var(--mono); font-size: 11px; color: #A39C90; margin-left: 10px; }
 .editor__lines { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
 .editor__lines span { display: block; height: 10px; border-radius: 6px; background: var(--bone); }
 .bubble {

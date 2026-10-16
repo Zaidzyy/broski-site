@@ -13,8 +13,8 @@ const ext = 'target="_blank" rel="noopener"';
 function hero() {
   const face = (p: 'bro' | 'zara', alt: string) => `
     <div class="face face--${p}"><div class="pane"><div class="slide"><div class="pic">
-      ${picture(`${p}-hero`, 'pic__main', alt, { w: [820, 1254], size: 820, sizes: '(max-width: 700px) 430px, 820px', high: true })}
-      ${picture(`${p}-dim`, 'pic__dim', '', { w: [820], size: 820, sizes: '(max-width: 700px) 430px, 820px', lazy: true })}
+      ${picture(`${p}-hero`, 'pic__main', alt, { w: [520, 820, 1254], size: 820, sizes: '(max-width: 700px) 430px, 820px', high: true })}
+      ${picture(`${p}-dim`, 'pic__dim', '', { w: [520, 820], size: 820, sizes: '(max-width: 700px) 430px, 820px', lazy: true })}
     </div></div></div></div>`;
   return `
 <section class="hero" id="top" aria-labelledby="hero-h">

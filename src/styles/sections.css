@@ -11,7 +11,8 @@
 .tab[aria-selected='true'] { color: var(--acc); }
 .tab:focus-visible { outline: 2px solid var(--bone); outline-offset: 4px; }
 .tab__g { font-family: var(--display); font-size: clamp(34px, 4.45vw, 64px); line-height: 1; text-transform: uppercase; }
-.tab__n { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; }
+.tab__n { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; color: #A39C90; }
+.tab[aria-selected='true'] .tab__n { color: var(--acc); }
 .rest__body { display: flex; gap: 44px; align-items: center; margin-top: 36px; }
 .ring { position: relative; width: 440px; height: 440px; flex: none; }
 .mark {
@@ -51,7 +52,8 @@
   position: relative; padding: 22px; border-radius: 20px; background: color-mix(in srgb, var(--acc) var(--mix), #111010);
   border: 1px solid rgba(237, 228, 211, .1); display: flex; flex-direction: column; gap: 10px;
 }
-.tier .eyebrow { font-size: 10px; }
+.tier .eyebrow { font-size: 10px; color: #B4AC9E; }
+.tier .eyebrow.acc { color: var(--acc); }
 .tier__t { font-family: var(--display); font-size: 44px; line-height: 1; text-transform: uppercase; }
 .tier__d { font-size: 14px; line-height: 1.5; color: var(--lede); }
 .hood__grid { display: grid; grid-template-columns: minmax(0, 1fr) 640px; gap: 64px; margin-top: 40px; align-items: start; }

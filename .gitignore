@@ -7,3 +7,5 @@ playwright-report/
 .lighthouse/
 *.log
 !docs/ram-waits.log
+# clips for review, not published
+review/

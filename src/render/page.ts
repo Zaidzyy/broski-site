@@ -6,6 +6,7 @@ import { FILM_URL, GITHUB_URL, README_ARCH_URL, README_NUMBERS_URL } from '../co
 import { renderDay } from './day';
 import { esc, picture } from './util';
 import { LOCKUP } from './brand';
+import { LOG } from '../data/hood';
 
 const letters = 'BROSKI'.split('').map((c, i) => `<span class="mask"><span class="ltr" style="--d:${(0.08 * i).toFixed(2)}s">${c}</span></span>`).join('');
 const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : `href="${GITHUB_URL}#film" data-soon aria-describedby="film-soon"`;
@@ -13,10 +14,10 @@ const ext = 'target="_blank" rel="noopener"';
 
 function hero() {
   const face = (p: 'bro' | 'zara', alt: string) => `
-    <div class="face face--${p}"><div class="pane"><div class="slide"><div class="pic">
+    <div class="face face--${p}"><div class="pane"><div class="slide"><div class="pic"><div class="breath">
       ${picture(`${p}-hero`, 'pic__main', alt, { w: [520, 820, 1254], size: 820, sizes: '(max-width: 700px) 430px, 820px', high: true })}
       ${picture(`${p}-dim`, 'pic__dim', '', { w: [520, 820], size: 820, sizes: '(max-width: 700px) 430px, 820px', lazy: true })}
-    </div></div></div></div>`;
+    </div></div></div></div></div>`;
   return `
 <section class="hero" id="top" aria-labelledby="hero-h">
   <header class="hero__head fade">
@@ -142,7 +143,8 @@ function hood() {
         <div class="lap">
           <div class="lap__screen">
             <ul class="lap__chips">${local.map(([t, k]) => `<li><b>${t}</b><span>${k}</span></li>`).join('')}</ul>
-            <p class="lap__run"><span class="pulse" aria-hidden="true"></span>RUNNING LOCALLY · 0 FAIL</p>
+            <div class="lap__log" aria-hidden="true"><ol>${[4, 5, 6, 0].map((i) => `<li${LOG[i].good ? ' class="is-good"' : ''}>${esc(LOG[i].t)}</li>`).join('')}</ol></div>
+            <p class="sr-only">Running locally, 0 failures.</p>
           </div>
           <div class="lap__base" aria-hidden="true"></div>
           <svg class="lap__links" width="640" height="360" viewBox="0 0 640 360" aria-hidden="true">

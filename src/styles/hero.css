@@ -63,8 +63,27 @@
 .slide { position: absolute; inset: 0; transition: transform 1s cubic-bezier(.77, 0, .18, 1); }
 .face--bro .slide { transform: translateX(var(--bx)); }
 .face--zara .slide { transform: translateX(var(--zx)); }
-.pic { position: absolute; left: 0; bottom: 0; width: var(--img); aspect-ratio: 1; transform: translateX(-50%); }
+.pic { position: absolute; left: 0; bottom: -8px; width: var(--img); aspect-ratio: 1; transform: translateX(-50%); }
 .pic picture, .pic img { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* Alive, after the intro (src/hero-alive.ts). Each picture sits 8 px low, so breathing (3 px) and parallax (5 px)
+   never lift its bottom edge into view. */
+.breath { position: absolute; inset: 0; transform-origin: 50% 100%; }
+.face--bro .breath { --br: 5.5s; }
+.face--zara .breath { --br: 6.3s; }
+.hero.is-alive .breath { animation: breathe var(--br) cubic-bezier(.37, 0, .63, 1) var(--brd, 0s) infinite; will-change: transform; }
+@keyframes breathe { 50% { transform: translateY(-3px) scale(1.012); } }
+.hero.is-alive:not(.is-coarse) .pic, .hero.is-alive:not(.is-coarse) .word { will-change: translate; }
+/* touch: no cursor, so a very slow drift instead of parallax */
+.hero.is-alive.is-coarse .pic { animation: drift 12s cubic-bezier(.37, 0, .63, 1) infinite; will-change: translate; }
+.hero.is-alive.is-coarse .word { animation: drift-back 12s cubic-bezier(.37, 0, .63, 1) infinite; will-change: translate; }
+@keyframes drift { 0%, 100% { translate: -4px 0; } 50% { translate: 4px 0; } }
+@keyframes drift-back { 0%, 100% { translate: 2px 0; } 50% { translate: -2px 0; } }
+.hero.is-paused .breath, .hero.is-paused .pic, .hero.is-paused .word { animation-play-state: paused; }
+/* expressions: a blink swaps instantly, a glance cross-fades in 180 ms */
+.pic__x { opacity: 0; }
+.pic__x.is-on { opacity: 1; }
+.pic__x--glance { transition: opacity .18s ease; }
 .pic__dim { opacity: 0; transition: opacity .8s ease; }
 .hero:not(.dims-ready) .pic__dim { display: none; }
 .hero[data-who='zara'] .face--bro .pic__dim, .hero[data-peek='zara'] .face--bro .pic__dim,
@@ -132,7 +151,7 @@
   .lockup { height: 26px; }
   .word { top: 74px; font-size: min(118px, 30vw); }
   .word--outline { -webkit-text-stroke-width: 1.5px; }
-  .pic { bottom: 150px; }
+  .pic { bottom: 142px; }
   /* Zara's file is cropped flat through her hair; fade it out at the top, the way Bro's hair thins out. */
   .face--zara .pic {
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, transparent 6%, rgba(0, 0, 0, .06) 11%, rgba(0, 0, 0, .2) 16%, rgba(0, 0, 0, .45) 21%, rgba(0, 0, 0, .74) 27%, #000 34%);

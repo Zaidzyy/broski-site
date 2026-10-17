@@ -15,6 +15,8 @@ import './styles/sections.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initHero } from './hero';
+import { initHeroAlive } from './hero-alive';
+import { initHoodLog } from './hood';
 import { initDay } from './day';
 import { initFeatures } from './features';
 import { initGate } from './gate';
@@ -24,10 +26,12 @@ import { toast } from './lib/motion';
 document.documentElement.classList.add('js');
 
 initHero();
+initHeroAlive();
 initDay();
 initFeatures();
 initGate();
 initVote();
+initHoodLog();
 
 // Film: a "coming soon" state until FILM_URL is set in src/config.ts.
 for (const a of document.querySelectorAll<HTMLAnchorElement>('a[data-soon]')) {

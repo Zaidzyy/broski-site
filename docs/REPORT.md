@@ -10,6 +10,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Hover peek (pointer only, ~120 ms intent), click to pick, click again for both.
   - The accent recolours the page: steel for Bro, rose for Zara.
   - On a phone the chooser is a bottom sheet.
+  - After the intro it stays alive (B31): the faces breathe out of sync, drift with the cursor (a slow drift on touch), blink every few seconds, and now and then one glances (Bro thinking or laughing, Zara laughing or flirty). The dimmed face only breathes.
 - **02 The day (J1, 12 scenes).**
   - A pinned stage (~12 screens of scroll) with the 24-hour dial, the vivid sky inside it, the sun and moon, and a dimmed sky behind.
   - Each scene's widgets animate once on entry.
@@ -17,9 +18,10 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Top bar: hour chips, the Bro/Zara switch, ▶ Play (about 25 s, press again to stop) and a progress line.
   - Phone: a small pinned dial, with the scene below at full width.
   - Motion is always on, whatever the OS reduced-motion setting says (Zaid's call, B27). Twelve still sections only without JavaScript or in windows under 520 px tall.
-- **03 Everything else.** Six Anton word tabs (an ARIA tablist with arrow keys and Home/End), the 36-mark ring and the bento. Learn is open first. Like the hero: hover to peek (mouse only, ~120 ms intent), click to choose.
+- **03 Everything else.** Six Anton word tabs (an ARIA tablist with arrow keys and Home/End), the 36-mark ring and the bento. Learn is open first. Like the hero: hover to peek (mouse only, ~120 ms intent), click to choose. While nobody uses it, one lit tick wanders round the ring.
 - **04 Under the hood.**
   - Tier cards.
+  - The laptop's status line is a tiny live log, a new line every ~2.5 s with a blinking cursor.
   - The live gate: Yes / No / Try again.
   - The laptop drawing with its link-outs.
   - Stack chips.
@@ -52,7 +54,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 46 passing.
+- **Playwright:** 53 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.
@@ -63,8 +65,8 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Regression tests for the review findings.
 - **Lighthouse:**
   - Desktop: 99 / 100 / 100 / 100.
-  - Mobile: 88–91 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO), over three runs after the motion change. The previous commit scored 100 / 90 in the same session, so the spread is noise.
-  - Earlier full build: desktop 100, mobile 92.
+  - Mobile: 90 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO), two runs after the alive pass. LCP is 2.9 s (a hero letter), as before.
+  - Earlier: 88–91 on mobile after the motion change; 100 / 92 at the first build.
 
 ## What Zaid does next
 

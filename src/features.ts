@@ -3,10 +3,13 @@
 import { gsap } from 'gsap';
 import { GROUPS, DEFAULT_GROUP } from './data/features';
 import { finePointer } from './lib/motion';
+import { whileRunning, later } from './lib/alive';
 
 const INTENT_MS = 120;
 const CLICK_S = 0.3;
 const PEEK_S = 0.22;
+const WANDER_MS = 1200;
+const IDLE_MS = 4000;
 
 export function initFeatures() {
   const found = document.querySelector<HTMLElement>('.tabs[role="tablist"]');
@@ -87,4 +90,41 @@ export function initFeatures() {
   panels.forEach((p, k) => { p.hidden = k !== DEFAULT_GROUP; });
   shown = -1;
   show(DEFAULT_GROUP, 0);
+
+  // ---- alive: while nobody is using the section, one lit tick wanders round the ring ----
+  const section = list.closest('section')!;
+  let at = Math.floor(Math.random() * marks.length);
+  let step = 0;
+  let resume = 0;
+  let onScreen = false;
+  let hovering = false;
+  let idle = true;
+  const halt = () => {
+    window.clearTimeout(step);
+    step = 0;
+    marks[at].classList.remove('is-wander');
+  };
+  const walk = () => {
+    marks[at].classList.remove('is-wander');
+    do at = (at + 1) % marks.length; while (marks[at].classList.contains('is-on')); // past the chosen group's arc
+    marks[at].classList.add('is-wander');
+    step = later(WANDER_MS, walk);
+  };
+  const update = () => {
+    const go = onScreen && idle && !hovering;
+    if (go && !step) step = later(WANDER_MS / 2, walk);
+    if (!go && step) halt();
+  };
+  const touched = () => {
+    idle = false;
+    update();
+    window.clearTimeout(resume);
+    resume = later(IDLE_MS, () => { idle = true; update(); });
+  };
+  for (const zone of [list, section.querySelector('.rest__body')!]) {
+    zone.addEventListener('pointerenter', () => { hovering = true; update(); });
+    zone.addEventListener('pointerleave', () => { hovering = false; touched(); });
+  }
+  for (const ev of ['pointerdown', 'keydown', 'focusin']) section.addEventListener(ev, touched);
+  whileRunning(section, (run) => { onScreen = run; update(); });
 }

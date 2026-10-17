@@ -37,6 +37,44 @@ for (const [name, look] of Object.entries(looks)) {
   }
 }
 
+// Expressions (blinks and glances), from assets-src/expressions/: same 1254 px framing as the hero files.
+// The frames were regenerated, so hair edges differ by a few pixels everywhere. Swapping whole frames would
+// make the hair shimmer, so each file keeps only the part that changes (a feathered ellipse: the eyes for a
+// blink, brows to chin for a glance) and is transparent elsewhere, laid over the hero image.
+// Same look and widths as the hero. No dim versions: the dimmed face only breathes, and the dim layer covers these.
+const REGION = {
+  bro: { eyes: [632, 428, 210, 80], face: [632, 560, 270, 270] },
+  zara: { eyes: [640, 438, 215, 85], face: [640, 545, 255, 245] },
+};
+const EXPRESSIONS = { bro: { blink: 'eyes', thinking: 'face', laugh: 'face' }, zara: { blink: 'eyes', flirty: 'face', laugh: 'face' } };
+const FULL = 1254;
+const FEATHER = 40;
+function ellipseMask(w, [cx, cy, rx, ry]) {
+  const k = w / FULL;
+  const m = Buffer.alloc(w * w);
+  const edge = FEATHER / Math.min(rx, ry); // the feather, as a share of the radius
+  for (let y = 0; y < w; y++) for (let x = 0; x < w; x++) {
+    const r = Math.hypot((x / k - cx) / rx, (y / k - cy) / ry);
+    const t = Math.min(1, Math.max(0, (1 - r) / edge));
+    m[y * w + x] = Math.round(255 * t * t * (3 - 2 * t));
+  }
+  return m;
+}
+for (const [who, list] of Object.entries(EXPRESSIONS)) {
+  for (const [ex, region] of Object.entries(list)) {
+    for (const w of [520, 820, 1254]) {
+      const base = sharp(`${SRC}/expressions/${who}-${ex}.png`).resize(w, w).ensureAlpha();
+      const { data } = await sharp(await looks[`${who}-hero`](base).png().toBuffer()).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+      const mask = ellipseMask(w, REGION[who][region]);
+      for (let i = 0; i < mask.length; i++) {
+        data[i * 4 + 3] = Math.round((data[i * 4 + 3] * mask[i]) / 255);
+        if (!data[i * 4 + 3]) data[i * 4] = data[i * 4 + 1] = data[i * 4 + 2] = 0; // nothing hidden for AVIF to encode
+      }
+      await write(sharp(data, { raw: { width: w, height: w, channels: 4 } }), `${who}-x-${ex}-${w}`, 52);
+    }
+  }
+}
+
 // Bubble avatars: a square around the face (the mockup's crop landed on the hairline).
 for (const who of ['bro', 'zara']) {
   const crop = { left: 376, top: 238, width: 502, height: 502 };

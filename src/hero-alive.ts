@@ -3,8 +3,9 @@
 // is on screen and the tab is visible (lib/alive.ts), so a pause and a resume never jump. Every motion
 // starts from rest and its amplitude eases in over 1.5 s, so the intro hands over without a jump.
 import type { Persona } from './data/day';
-import { introDone, markIntroDone, whileRunning, later, rand } from './lib/alive';
+import { markIntroDone, whileRunning, later, rand } from './lib/alive';
 import { finePointer } from './lib/motion';
+import { introStarted, heroDecoded } from './intro';
 
 const SIZES = '(max-width: 700px) 430px, 820px';
 const WIDTHS = [520, 820, 1254];
@@ -27,10 +28,10 @@ export function initHeroAlive() {
   const words = [...hero.querySelectorAll<HTMLElement>('.word')];
   const breath = (p: Persona) => hero.querySelector<HTMLElement>(`.face--${p} .breath`)!;
 
-  // the intro ends when the header has faded in (1.9 s + 0.9 s); a timer covers a missed event
+  // the intro ends when the header has faded in (1.9 s + 0.9 s after it starts); a timer covers a missed event
   const done = () => markIntroDone();
   head?.addEventListener('animationend', (e) => { if ((e as AnimationEvent).animationName === 'fadein') done(); });
-  window.setTimeout(done, 3200);
+  introStarted.then(() => window.setTimeout(done, 3200));
 
   // ---- breathing, and parallax (fine pointers) or a slow drift (touch) ----
   const fine = finePointer();
@@ -84,28 +85,38 @@ export function initHeroAlive() {
   }
 
   // ---- blinks and glances ----
+  // The six expression files (~15 KB each) start loading, at low priority, as soon as the hero pictures have
+  // decoded, so the first glance never waits. If one still isn't ready when its moment comes, that blink or
+  // glance waits for it instead of being skipped.
   type Layers = { blink: HTMLElement; glance: Record<string, HTMLElement> };
   const layers: Partial<Record<Persona, Layers>> = {};
+  const loaded = new WeakMap<HTMLElement, Promise<boolean>>();
   const makeLayer = (who: Persona, ex: string, kind: 'blink' | 'glance') => {
     const pic = document.createElement('picture');
     pic.className = `pic__x pic__x--${kind}`;
     pic.dataset.x = ex;
     const set = (fmt: string) => WIDTHS.map((w) => `${url(who, ex, w, fmt)} ${w}w`).join(', ');
-    pic.innerHTML = `<source type="image/avif" srcset="${set('avif')}" sizes="${SIZES}"><source type="image/webp" srcset="${set('webp')}" sizes="${SIZES}"><img src="${url(who, ex, 520, 'webp')}" alt="" width="820" height="820" decoding="async">`;
+    pic.innerHTML = `<source type="image/avif" srcset="${set('avif')}" sizes="${SIZES}"><source type="image/webp" srcset="${set('webp')}" sizes="${SIZES}"><img src="${url(who, ex, 520, 'webp')}" alt="" width="820" height="820" decoding="async" fetchpriority="low">`;
     breath(who).insertBefore(pic, breath(who).querySelector('.pic__dim'));
+    loaded.set(pic, pic.querySelector('img')!.decode().then(() => true, () => false));
     return pic;
   };
-  const loadLayers = () => {
+  let layersMade: () => void = () => {};
+  const made = new Promise<void>((r) => { layersMade = r; });
+  heroDecoded.then(() => {
     for (const who of ['bro', 'zara'] as const) {
       const glance: Record<string, HTMLElement> = {};
       for (const ex of GLANCES[who]) glance[ex] = makeLayer(who, ex, 'glance');
       layers[who] = { blink: makeLayer(who, 'blink', 'blink'), glance };
     }
-  };
-  introDone.then(() => {
-    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(loadLayers, { timeout: 1500 });
-    else window.setTimeout(loadLayers, 300);
+    layersMade();
   });
+  /** Resolves with the layer once its picture can be shown (false if it failed to load). */
+  const whenReady = async (who: Persona, pick: (l: Layers) => HTMLElement) => {
+    await made;
+    const el = pick(layers[who]!);
+    return (await loaded.get(el)) ? el : null;
+  };
 
   const other = (p: Persona): Persona => (p === 'bro' ? 'zara' : 'bro');
   /** Not dimmed: nobody picked and nobody peeked, or this one is the pick or the peek. */
@@ -114,6 +125,7 @@ export function initHeroAlive() {
     return who === p || (who === 'both' && (!peek || peek === p));
   };
   const timers = new Set<number>();
+  let gen = 0; // bumped on every pause, so a wait that ends after it does nothing
   const after = (ms: number, fn: () => void) => { const id = later(ms, () => { timers.delete(id); fn(); }); timers.add(id); return id; };
   const blinkAt: Record<Persona, number> = { bro: 0, zara: 0 };
   let glancing: Persona | '' = '';
@@ -129,36 +141,42 @@ export function initHeroAlive() {
     Object.values(l.glance).forEach((g) => g.classList.remove('is-on'));
     if (glancing === p) { glancing = ''; window.clearTimeout(glanceOff); }
   };
-  const flash = (p: Persona) => {
-    const l = layers[p]?.blink;
-    if (!l) return;
+  const flash = (l: HTMLElement) => {
     l.classList.add('is-on');
     after(BLINK_MS, () => l.classList.remove('is-on'));
   };
   function scheduleBlink(p: Persona, first = false) {
     const speedUp = (window as unknown as { __aliveSpeed?: number }).__aliveSpeed || 1;
-    let wait = first ? rand(1200, 3000) : rand(3500, 7000);
+    // the first blink comes 1–2 s after the intro (or a scroll back), so people who move on early still see one
+    let wait = first ? rand(1000, 2000) : rand(3500, 7000);
     // the two never blink together
     const at = performance.now() + wait / speedUp;
     if (Math.abs(at - blinkAt[other(p)]) < 700 / speedUp) wait += 900;
     blinkAt[p] = performance.now() + wait / speedUp;
-    after(wait, () => {
-      if (awake(p) && glancing !== p) {
-        flash(p);
-        if (Math.random() < 0.18) after(BLINK_MS + 160, () => { if (awake(p) && glancing !== p) flash(p); }); // a double blink
+    const g = gen;
+    after(wait, async () => {
+      const l = await whenReady(p, (x) => x.blink);
+      if (g !== gen) return;
+      if (l && awake(p) && glancing !== p) {
+        flash(l);
+        if (Math.random() < 0.18) after(BLINK_MS + 160, () => { if (awake(p) && glancing !== p) flash(l); }); // a double blink
       }
       scheduleBlink(p);
     });
   }
-  function glance() {
-    const can = (['bro', 'zara'] as const).filter((p) => awake(p) && layers[p]);
+  async function glance() {
+    const g = gen;
+    const can = (['bro', 'zara'] as const).filter(awake);
     if (!can.length) return after(rand(8000, 12000), glance);
     if (performance.now() < busyUntil) return after(1500, glance); // never during a peek/choose slide
     // the two take turns (the first one is random); a dimmed one is skipped
     const p = can.length === 1 ? can[0] : lastGlancer ? other(lastGlancer) : can[Math.floor(Math.random() * 2)];
     const options = GLANCES[p].filter((ex) => ex !== lastEx[p]);
     const ex = options[Math.floor(Math.random() * options.length)];
-    const layer = layers[p]!.glance[ex];
+    const layer = await whenReady(p, (x) => x.glance[ex]);
+    if (g !== gen) return;
+    if (!layer) return after(rand(8000, 12000), glance);
+    if (!awake(p) || performance.now() < busyUntil) return after(1500, glance); // things changed while it loaded
     glancing = p; lastGlancer = p; lastEx[p] = ex;
     layers[p]!.blink.classList.remove('is-on'); // a glance never starts on top of a blink
     layer.classList.add('is-on');
@@ -186,6 +204,7 @@ export function initHeroAlive() {
       scheduleBlink('zara', true);
       after(rand(2500, 4500), glance); // the first glance comes a little sooner
     } else {
+      gen++;
       timers.forEach((id) => window.clearTimeout(id));
       timers.clear();
       hideAll('bro');

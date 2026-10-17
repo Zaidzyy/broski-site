@@ -8,8 +8,8 @@ test.use({ reducedMotion: 'reduce' });
 test('reduced motion emulated: the hero intro still plays', async ({ page }) => {
   await page.goto('./');
   expect(await page.locator('.ltr').first().evaluate((n) => getComputedStyle(n).animationName)).toBe('rise');
-  expect(await page.locator('.hero__head').evaluate((n) => getComputedStyle(n).animationName)).toBe('fadein');
-  await expect.poll(() => page.locator('.hero__head').evaluate((n) => getComputedStyle(n).opacity), { timeout: 5000 }).toBe('1');
+  expect(await page.locator('.hero__status').evaluate((n) => getComputedStyle(n).animationName)).toBe('fadein');
+  await expect.poll(() => page.locator('.hero__status').evaluate((n) => getComputedStyle(n).opacity), { timeout: 5000 }).toBe('1');
 });
 
 test('reduced motion emulated: the day is pinned and its scenes play', async ({ page }) => {

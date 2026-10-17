@@ -6,7 +6,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 - **01 Hero (G6 / G7).**
   - The header carries the L2 lockup (Zaid's brand files): a link back to the top, whose two rose brows lift on hover. The favicon, touch icon, OG image and README use the same brand (B30).
-  - The intro runs in order: letters rise, the slash grows, the faces wipe in, the header fades.
+  - The intro runs in order: letters rise, the slash grows, the faces wipe in, the header fades. On a first visit it waits, showing only the background and the lockup, until its font and both pictures are ready, or 1.2 s at most, so it plays as smoothly as on a reload (B32).
   - Hover peek (pointer only, ~120 ms intent), click to pick, click again for both.
   - The accent recolours the page: steel for Bro, rose for Zara.
   - On a phone the chooser is a bottom sheet.
@@ -54,7 +54,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 58 passing.
+- **Playwright:** 64 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.
@@ -71,8 +71,13 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Regression tests for the review findings.
 - **Lighthouse:**
   - Desktop: 99 / 100 / 100 / 100.
-  - Mobile: 90 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO), two runs after the alive pass. LCP is 2.9 s (a hero letter), as before.
-  - Earlier: 88–91 on mobile after the motion change; 100 / 92 at the first build.
+  - Mobile: 92 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO), two runs after the intro gate. LCP is 2.9 s (a hero letter), as before; FCP 2.3 s.
+  - Earlier: 90 after the alive pass; 88–91 after the motion change; 100 / 92 at the first build.
+- **Cold first visit** (slow 4G, 4× CPU, empty cache; B32):
+  - Dropped frames during the intro: 50–53 before, 14–20 after.
+  - Long tasks during the intro: 1.24–1.45 s before, 0.50–0.62 s after.
+  - The letters no longer rise in a fallback font, and the faces no longer wipe in before their pictures exist.
+  - Clips: `review/first-load-before.mp4` and `review/first-load-after.mp4`.
 
 ## What Zaid does next
 

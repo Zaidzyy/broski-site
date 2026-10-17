@@ -1,6 +1,7 @@
 // 01 · Hero: hover peeks (pointer devices, ~120 ms intent), click picks, clicking again goes back to both.
 import { getWho, onWho, setWho, type Who } from './lib/persona';
 import { finePointer } from './lib/motion';
+import { introDone } from './lib/alive';
 
 const QUESTION: Record<string, string> = {
   both: 'Who do you want today?',
@@ -64,7 +65,6 @@ export function initHero() {
     if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(cb, { timeout: 2500 });
     else setTimeout(cb, 1200);
   };
-  if (document.readyState === 'complete') idle(ready);
-  else window.addEventListener('load', () => idle(ready), { once: true });
+  introDone.then(() => idle(ready)); // after the intro, so nothing heavy loads while it plays
   for (const b of picks) b.addEventListener('pointerenter', ready, { once: true });
 }

@@ -7,6 +7,7 @@ import { renderDay } from './day';
 import { esc, picture } from './util';
 import { LOCKUP } from './brand';
 import { LOG } from '../data/hood';
+import { INTRO_GATE } from './intro-gate';
 
 const letters = 'BROSKI'.split('').map((c, i) => `<span class="mask"><span class="ltr" style="--d:${(0.08 * i).toFixed(2)}s">${c}</span></span>`).join('');
 const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : `href="${GITHUB_URL}#film" data-soon aria-describedby="film-soon"`;
@@ -20,11 +21,11 @@ function hero() {
     </div></div></div></div></div>`;
   return `
 <section class="hero" id="top" aria-labelledby="hero-h">
-  <header class="hero__head fade">
+  <header class="hero__head">
     <a class="hero__brand" href="#top" aria-label="Broski, back to top">${LOCKUP}</a>
-    <span class="hero__vol">Vol. 01 — A life, operated</span>
-    <span class="hero__status" data-status>Two voices · one at a time</span>
-    <span class="hero__links"><a class="pill pill--bone" ${filmAttrs}><span aria-hidden="true">▶</span> Watch the film</a><a class="pill pill--line" href="${GITHUB_URL}" ${ext}>GitHub <span aria-hidden="true">↗</span></a></span>
+    <span class="hero__vol fade">Vol. 01 — A life, operated</span>
+    <span class="hero__status fade" data-status>Two voices · one at a time</span>
+    <span class="hero__links fade"><a class="pill pill--bone" ${filmAttrs}><span aria-hidden="true">▶</span> Watch the film</a><a class="pill pill--line" href="${GITHUB_URL}" ${ext}>GitHub <span aria-hidden="true">↗</span></a></span>
   </header>
   <p class="word word--solid" aria-hidden="true">${letters}</p>
   ${face('bro', 'Bro, drawn in grey: messy dark hair, headphones round his neck, a half smile.')}
@@ -224,6 +225,6 @@ function footer() {
 
 export function renderPage() {
   return `<a class="skip" href="#day">Skip to the day</a>
-<main id="main">${hero()}${renderDay()}${rest()}${hood()}${yours()}</main>${footer()}
+<main id="main">${hero()}<script>${INTRO_GATE}</script>${renderDay()}${rest()}${hood()}${yours()}</main>${footer()}
 <div class="toast" data-toast role="status" aria-live="polite"></div>`;
 }

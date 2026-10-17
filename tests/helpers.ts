@@ -10,8 +10,15 @@ const hook = (page: Page) => page.evaluate(() => {
   return { t: d.t(), active: d.active() };
 });
 
+/** The day is set up after the intro or at the first scroll (src/main.ts): scroll a pixel and wait for it. */
+export async function dayReady(page: Page) {
+  await page.evaluate(() => window.scrollTo(0, window.scrollY + 1));
+  await page.waitForFunction(() => (window as unknown as { __day?: DayHook }).__day !== undefined || document.querySelector('.day.is-static-js') !== null);
+}
+
 /** Jumps straight to scene i's hold and waits for the scrubbed clock to settle. */
 export async function gotoScene(page: Page, i: number) {
+  await dayReady(page);
   await page.evaluate((k) => {
     const d = (window as unknown as { __day: DayHook }).__day;
     window.scrollTo(0, d.yFor(d.sceneT(k)));

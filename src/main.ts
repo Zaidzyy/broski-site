@@ -21,13 +21,14 @@ import { initDay } from './day';
 import { initFeatures } from './features';
 import { initGate } from './gate';
 import { initVote } from './vote';
+import './intro'; // first: starts the intro if the inline gate never ran
 import { toast } from './lib/motion';
+import { introDone } from './lib/alive';
 
 document.documentElement.classList.add('js');
 
 initHero();
 initHeroAlive();
-initDay();
 initFeatures();
 initGate();
 initVote();
@@ -44,11 +45,19 @@ if (hood) {
   new IntersectionObserver(([e]) => hood.classList.toggle('in-view', e.isIntersecting), { rootMargin: '100px' }).observe(hood);
 }
 
-// Section 04 reveals, once.
-ScrollTrigger.batch('.rv', {
-  start: 'top 88%', once: true,
-  onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08 }),
-});
-
-// Fonts change line heights in the day; measure again once they are in.
-document.fonts?.ready.then(() => ScrollTrigger.refresh());
+// Below the fold: the day (its layout and scroll triggers are the heaviest setup on the page), the 04 reveals,
+// and measuring again once the fonts are in. It waits for the intro, so nothing competes with it, or for the
+// first scroll, whichever comes first.
+let below = false;
+function startBelow() {
+  if (below) return;
+  below = true;
+  initDay();
+  ScrollTrigger.batch('.rv', {
+    start: 'top 88%', once: true,
+    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08 }),
+  });
+  document.fonts?.ready.then(() => ScrollTrigger.refresh());
+}
+introDone.then(startBelow);
+window.addEventListener('scroll', startBelow, { once: true, passive: true });

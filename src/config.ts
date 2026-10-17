@@ -10,8 +10,9 @@ export const GITHUB_URL = 'https://github.com/Zaidzyy/broski-site';
 /** Zaid's public GitHub profile. */
 export const PROFILE_URL = 'https://github.com/Zaidzyy';
 
-/** The launch film. Empty = the film links show a "coming soon" state. */
-export const FILM_URL = '';
+/** The launch film. Empty = the film links show a "coming soon" state.
+ *  Relative, so it resolves under whatever base path the page is served from (public/film.mp4). */
+export const FILM_URL = 'film.mp4';
 
 /** Where the site is served from, used for absolute OG/canonical URLs. */
 export const SITE_URL = 'https://zaidzyy.github.io/broski-site/';

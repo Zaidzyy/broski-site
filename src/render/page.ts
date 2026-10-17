@@ -185,7 +185,7 @@ function yours() {
         <a class="pill pill--line pill--lg" href="${README_ARCH_URL}" ${ext}>How it's built</a>
         <a class="pill pill--line pill--lg" href="${GITHUB_URL}" ${ext}>GitHub <span aria-hidden="true">↗</span></a>
       </nav>
-      <p class="sr-only" id="film-soon">The film is coming soon.</p>
+      ${FILM_URL ? '' : '<p class="sr-only" id="film-soon">The film is coming soon.</p>'}
     </div>
     <div class="vote">
       <form class="vote__form" data-vote novalidate>

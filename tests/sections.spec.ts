@@ -56,12 +56,17 @@ test('04: the gate: Yes, Try again, No', async ({ page }) => {
   await expect(label).toHaveText('WAITING FOR YOUR YES');
 });
 
-test('film links show "coming soon" and go nowhere', async ({ page }) => {
+test('both film links open the film, served under the base path', async ({ page }) => {
   await page.goto('./');
-  const url = page.url();
-  await page.locator('.hero a[data-soon]').click();
-  await expect(page.locator('[data-toast]')).toHaveText('The film is coming soon');
-  expect(page.url()).toBe(url);
+  const links = page.locator('a', { hasText: 'Watch the film' });
+  await expect(links).toHaveCount(2);
+  await expect(page.locator('a[data-soon], #film-soon')).toHaveCount(0);
+  for (const href of await links.evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href))) {
+    expect(new URL(href).pathname).toBe(new URL('film.mp4', page.url()).pathname);
+    const res = await page.request.head(href);
+    expect(res.status()).toBe(200);
+    expect(res.headers()['content-type']).toContain('video/mp4');
+  }
 });
 
 test('keyboard: the skip link and the hero chooser work without a mouse', async ({ page }) => {

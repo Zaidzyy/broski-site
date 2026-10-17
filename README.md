@@ -16,10 +16,11 @@
 </div>
 
 
-<a id="film"></a> 🎬 Film: made with Opus 5.5 x Claude Code
-https://github.com/user-attachments/assets/75382deb-5279-40f4-b165-13c47d3a92ad
 
-<sub> 🎬 Film: made with Opus 5.5 x Claude Code  </sub>
+
+https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
+
+<div align="center"> <sub> <a id="film"></a> 🎬 Film: made with Opus 5.5 x Claude Code </sub> </div>
 
 
 

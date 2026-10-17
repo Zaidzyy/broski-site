@@ -44,7 +44,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## The facts
 
-`src/data/facts.json` holds exactly the values given in the prompt. Nothing was counted or looked up. Per the prompt, the source is Zaid's run reports and git history up to 16 Oct: 3,136 tests, 0.5 s on-device voice, 0 telemetry, 65 Doctor checks, 108 lessons, 2,549 glossary terms, 2026-10-01 → 2026-10-16, 16 days, 560 commits, 38 Claude Code runs.
+`src/data/facts.json` holds exactly the final values Zaid gave after the build. Nothing was counted or looked up: 3,207 tests, 0.5 s on-device voice, 0 telemetry, 66 Doctor checks, 109 lessons, 2,549 glossary terms, 2026-10-01 → 2026-10-17, 17 days, 575 commits, 41 Claude Code runs. Every number on the site and in the README is read from that file (the lesson and glossary counts in the day and the bento included), so they can't drift.
 
 ## Tests and Lighthouse
 
@@ -64,7 +64,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 ## What Zaid does next
 
 1. Create the public repo `broski-site` on GitHub.
-2. Optional, before the first push: the commits carry this machine's git email. To keep it private, set `git config user.email <id>+Zaidzyy@users.noreply.github.com` and re-author the local commits.
+2. ~~Optional, before the first push: switch the commit email to the GitHub noreply address.~~ **Done:** this repo uses `Zaidzyy <86546939+Zaidzyy@users.noreply.github.com>` (repo-local config) and every commit was re-authored to it.
 3. Push.
 4. Settings → Pages → Source: **GitHub Actions**.
 5. Create a free Formspree form (or Tally) with the fields `choice` + `email`. Paste its endpoint into `VOTE_ENDPOINT` in `src/config.ts` and push; the CSP picks up its origin automatically. Until then the vote card thanks people and sends nothing.

@@ -1,6 +1,8 @@
 // Section 02, "One day with Zara": every scene's copy and sample data, taken from the
 // mockups (Mix.dc.html / Day.dc.html). All of it is invented. Nothing here is real data.
 
+import facts from './facts.json' with { type: 'json' };
+
 export type Persona = 'bro' | 'zara';
 export type Line = Record<Persona, string>;
 
@@ -53,7 +55,7 @@ export const SCENES: Scene[] = [
     { bro: 'Ten minutes. One word. Say it.', zara: "Quick one before your next task. What's this word?" },
     '#A8BACB', true),
   scene('12:30', 'Trading', 'A trading coach that never trades.',
-    '108 lessons built from your own books, drills graded by rules, and paper trades until the numbers say you are ready. Exchange keys are read-only.',
+    `${facts.lessons} lessons built from your own books, drills graded by rules, and paper trades until the numbers say you are ready. Exchange keys are read-only.`,
     { bro: '64 of 100 paper trades. Not yet. Do the drill.', zara: 'Clean process on that one. 36 paper trades to go.' },
     '#CFDDE8', true),
   scene('14:03', 'Work', 'A job lands. It already read it.',

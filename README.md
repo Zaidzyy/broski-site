@@ -18,15 +18,15 @@
 
 | What | Number |
 |---|---|
-| Tests | 3,136 |
+| Tests | 3,207 |
 | On-device voice round trip | 0.5 s |
 | Telemetry | 0 |
-| Doctor checks | 65 |
-| Academy lessons | 108 |
+| Doctor checks | 66 |
+| Academy lessons | 109 |
 | Glossary terms | 2,549 |
-| Build days / commits / Claude Code runs | 16 / 560 / 38 |
+| Build days / commits / Claude Code runs | 17 / 575 / 41 |
 
-Built in 16 days · 560 commits · 38 Claude Code runs (2026-10-01 to 2026-10-16).
+Built in 17 days · 575 commits · 41 Claude Code runs (2026-10-01 to 2026-10-17).
 
 ## At a glance
 
@@ -35,7 +35,7 @@ Built in 16 days · 560 commits · 38 Claude Code runs (2026-10-01 to 2026-10-16
 - Every message takes the cheapest route that can handle it: plain code first, then a local model, then Claude.
 - Anything that sends, deletes, pays or runs a command waits for a yes.
 - Reaches me through a floating bubble on the laptop and a private Telegram chat on the phone.
-- A self-check (Doctor) runs 65 checks on its own health.
+- A self-check (Doctor) runs 66 checks on its own health.
 
 ## Why this exists
 
@@ -88,7 +88,7 @@ Sample data, the same day the site walks through.
 
 **Learn**
 - Arabic: Notes, flashcards, spaced repetition
-- Trading academy: 108 lessons, drills graded by rules
+- Trading academy: 109 lessons, drills graded by rules
 - Paper first: Graduation gates in code. It never trades
 - Book citations: Cites the page, or says it is not covered
 - Glossary: 2,549 terms, searchable
@@ -141,7 +141,7 @@ flowchart LR
 - Wake word: on-device
 - Data: SQLite + a notes vault
 - Secrets: Windows DPAPI
-- Doctor: 65 self-checks
+- Doctor: 66 self-checks
 
 Only text goes to Claude. Audio is never sent. Telegram talks to one chat: mine.
 

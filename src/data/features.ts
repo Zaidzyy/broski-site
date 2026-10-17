@@ -1,4 +1,5 @@
 // Section 03: the 36 features in six groups, exactly as in the mockup.
+import facts from './facts.json' with { type: 'json' };
 export interface FeatureGroup { g: string; items: { t: string; d: string }[] }
 
 export const GROUPS: FeatureGroup[] = [
@@ -28,10 +29,10 @@ export const GROUPS: FeatureGroup[] = [
   ] },
   { g: 'Learn', items: [
     { t: 'Arabic', d: 'Notes, flashcards, spaced repetition' },
-    { t: 'Trading academy', d: '108 lessons, drills graded by rules' },
+    { t: 'Trading academy', d: `${facts.lessons} lessons, drills graded by rules` },
     { t: 'Paper first', d: 'Graduation gates in code. It never trades' },
     { t: 'Book citations', d: 'Cites the page, or says it is not covered' },
-    { t: 'Glossary', d: '2,549 terms, searchable' },
+    { t: 'Glossary', d: `${facts.glossaryTerms.toLocaleString('en-US')} terms, searchable` },
     { t: 'Weekly homework', d: 'One focus rule from your weakest skill' },
   ] },
   { g: 'Brain', items: [

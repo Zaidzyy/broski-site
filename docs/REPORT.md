@@ -5,6 +5,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 ## What was built
 
 - **01 Hero (G6 / G7).**
+  - The header carries the L2 lockup (Zaid's brand files): a link back to the top, whose two rose brows lift on hover. The favicon, touch icon, OG image and README use the same brand (B30).
   - The intro runs in order: letters rise, the slash grows, the faces wipe in, the header fades.
   - Hover peek (pointer only, ~120 ms intent), click to pick, click again for both.
   - The accent recolours the page: steel for Bro, rose for Zara.
@@ -51,7 +52,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 42 passing.
+- **Playwright:** 46 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.

@@ -26,7 +26,14 @@
   padding: 18px var(--gutter); border-bottom: 1px solid var(--line);
   font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #9A9284; line-height: 1.2;
 }
-.hero__brand { grid-column: 1 / span 3; color: var(--bone); }
+.hero__brand { grid-column: 1 / span 3; justify-self: start; display: flex; align-items: center; border-radius: 8px; }
+.hero__brand:focus-visible { outline: 2px solid var(--bone); outline-offset: 4px; }
+/* the L2 lockup: fixed brand colours, no persona tint */
+.lockup { display: block; height: 30px; width: auto; }
+.lockup .brow { transform-box: fill-box; transform-origin: 0 100%; transition: transform .18s ease-out; }
+@media (hover: hover) and (pointer: fine) {
+  .hero__brand:hover .brow, .hero__brand:focus-visible .brow { transform: rotate(-8deg); }
+}
 .hero__vol { grid-column: 4 / span 3; }
 .hero__status { grid-column: 7 / span 3; transition: color .9s ease; }
 .hero[data-who='bro'] .hero__status { color: var(--steel); }
@@ -122,6 +129,7 @@
   .hero[data-who='zara'] { --s: 26%; --bx: 4%; --zx: 54%; }
   .hero__head { display: flex; justify-content: space-between; padding: 18px; font-size: 10px; }
   .hero__vol, .hero__links { display: none; }
+  .lockup { height: 26px; }
   .word { top: 74px; font-size: min(118px, 30vw); }
   .word--outline { -webkit-text-stroke-width: 1.5px; }
   .pic { bottom: 150px; }

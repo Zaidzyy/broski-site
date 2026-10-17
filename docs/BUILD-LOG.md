@@ -34,7 +34,7 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 - **B16. CSP** is a `<meta>` injected at build only (Vite's dev server needs inline scripts). `style-src` allows `'unsafe-inline'` for style attributes (CSS custom properties per element); scripts are `'self'` only.
 - **B17. Test hooks.** `window.__day` (scroll positions of each scene) and `window.__voteEndpoint` (point the form at a mocked same-origin URL) exist for the Playwright suite. Neither sends or stores anything.
 - **B18. No framework.** The page is static HTML rendered at build time from the data files (`src/render/*`), then enhanced. A framework would add weight without adding anything here.
-- **B19. Header on phones.** As in G7, the phone hero header shows only "Broski" and the status; the film and GitHub links are in section 05.
+- **B19. Header on phones.** As in G7, the phone hero header shows only the Broski lockup and the status; the film and GitHub links are in section 05.
 
 - **B20. Day hint copy.** The mockup's "SCROLL INSIDE ↓ OR PRESS PLAY" described its inner scroll box; the pinned page says "SCROLL ↓ OR PRESS PLAY".
 - **B21. Short windows get the still day.** Under 520 px of height (landscape phones, 200 %+ browser zoom) the day uses the still layout instead of shrinking the pinned stage (WCAG 1.4.4 / 1.4.10). Zooming into that range reloads into the still layout; a phone keyboard opening does not (width unchanged).
@@ -51,6 +51,13 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
   - Before this, a click swapped the cards with no transition, so a click now cross-fades in 0.3 s and a peek in 0.22 s. The panels are stacked in one grid cell (with JS only) so two groups can cross-fade.
   - Each change kills the running fades and continues from the current opacity, so a fast sweep doesn't stack animations. A pass shorter than the intent delay changes nothing.
   - A hint under the row, "HOVER TO PEEK · CLICK TO CHOOSE", in the hero hint's style, only on hover devices with JS. Touch stays tap-only.
+- **B30. The logo** (Zaid's brand files, put in `assets-src/brand/`; the Broski folder wasn't read).
+  - `scripts/icons.mjs` copies the L2 lockups (dark and light) and the icon tile into `src/assets/brand/`, so the repo doesn't depend on the git-ignored `assets-src/`.
+  - **Header:** the "BROSKI" text is replaced by the L2 lockup (dark), inlined at build time by `src/render/brand.ts`. It's 30 px tall on desktop and 26 px on phones, a link to `#top` named "Broski, back to top", and its colours are fixed (no persona tint).
+  - **Hover:** with a fine pointer, on hover or keyboard focus, both rose brows (the face's and the i-dot) rotate −8° about their left end in 180 ms ease-out, and back on leave.
+  - **Favicon and touch icon:** the favicon is the icon tile (the old "B/" mark is gone). The 180 px `apple-touch-icon.png` is rendered from it, flattened onto the tile colour `#15171B` because iOS fills transparent areas with black.
+  - **OG image:** the lockup sits in the top-left corner, where the header brand sits on the page, at 40 px, clear of the big word. The OG alt text says so.
+  - **README:** the lockup is at the top of the centred header block, 60 px tall, alt "Broski". It's a `<picture>`: the dark lockup by default, and the light one (dark wordmark) when GitHub is in light mode, because the dark lockup's light wordmark would vanish on a white page.
 
 ## Follow-up fixes (after Claude's screenshot review)
 
@@ -102,7 +109,7 @@ Two review passes ran after the first full build (separate reviewers).
 
 ## Tests and Lighthouse
 
-- **Playwright:** 42 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests. Four tests cover the 03 peek (B29): hover previews and leaving restores, a fast sweep doesn't stack or switch early, touch has no preview or hint, and the keyboard is unchanged.
+- **Playwright:** 46 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests. Four tests cover the 03 peek (B29): hover previews and leaving restores, a fast sweep doesn't stack or switch early, touch has no preview or hint, and the keyboard is unchanged. Four cover the logo (B30): the lockup link and its name, fixed colours, no console errors; the brow lift on hover; 26 px on phones; the favicon and the 180 px touch icon resolve to the new tile.
 - **Lighthouse** (`npm run lighthouse`, local preview build):
 
 | | Performance | Accessibility | Best Practices | SEO |

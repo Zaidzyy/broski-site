@@ -1,5 +1,10 @@
 <div align="center">
 
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="src/assets/brand/broski-lockup-L2-light.svg">
+  <img src="src/assets/brand/broski-lockup-L2-dark.svg" width="164" height="60" alt="Broski">
+</picture>
+
 # BROSKI
 
 **A personal AI life-OS with two voices that knows my day, calls me out, and asks before anything leaves the laptop.**

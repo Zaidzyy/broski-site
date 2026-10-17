@@ -5,6 +5,7 @@ import { GROUPS, DEFAULT_GROUP } from '../data/features';
 import { FILM_URL, GITHUB_URL, README_ARCH_URL, README_NUMBERS_URL } from '../config';
 import { renderDay } from './day';
 import { esc, picture } from './util';
+import { LOCKUP } from './brand';
 
 const letters = 'BROSKI'.split('').map((c, i) => `<span class="mask"><span class="ltr" style="--d:${(0.08 * i).toFixed(2)}s">${c}</span></span>`).join('');
 const filmAttrs = FILM_URL ? `href="${FILM_URL}"` : `href="${GITHUB_URL}#film" data-soon aria-describedby="film-soon"`;
@@ -19,7 +20,7 @@ function hero() {
   return `
 <section class="hero" id="top" aria-labelledby="hero-h">
   <header class="hero__head fade">
-    <span class="hero__brand">Broski</span>
+    <a class="hero__brand" href="#top" aria-label="Broski, back to top">${LOCKUP}</a>
     <span class="hero__vol">Vol. 01 — A life, operated</span>
     <span class="hero__status" data-status>Two voices · one at a time</span>
     <span class="hero__links"><a class="pill pill--bone" ${filmAttrs}><span aria-hidden="true">▶</span> Watch the film</a><a class="pill pill--line" href="${GITHUB_URL}" ${ext}>GitHub <span aria-hidden="true">↗</span></a></span>

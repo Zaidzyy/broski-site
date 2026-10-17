@@ -9,7 +9,7 @@ const INTENT_MS = 120;
 const CLICK_S = 0.3;
 const PEEK_S = 0.22;
 const WANDER_MS = 1200;
-const IDLE_MS = 4000;
+const RESUME_MS = 600;
 
 export function initFeatures() {
   const found = document.querySelector<HTMLElement>('.tabs[role="tablist"]');
@@ -91,19 +91,17 @@ export function initFeatures() {
   shown = -1;
   show(DEFAULT_GROUP, 0);
 
-  // ---- alive: while nobody is using the section, one lit tick wanders round the ring ----
+  // ---- alive: one lit tick wanders round the ring while 03 is on screen ----
+  // It pauses only while the pointer is over a tab word or a card, or keyboard focus is in the tabs or cards,
+  // and stays lit where it stopped; it walks on from there ~0.6 s after the pointer leaves.
   const section = list.closest('section')!;
+  const zones = '.tab, .tile';
+  const focusZone = (n: EventTarget | null) => n instanceof Element && !!n.closest('.tabs, .panels');
   let at = Math.floor(Math.random() * marks.length);
   let step = 0;
-  let resume = 0;
   let onScreen = false;
   let hovering = false;
-  let idle = true;
-  const halt = () => {
-    window.clearTimeout(step);
-    step = 0;
-    marks[at].classList.remove('is-wander');
-  };
+  let focused = false;
   const walk = () => {
     marks[at].classList.remove('is-wander');
     do at = (at + 1) % marks.length; while (marks[at].classList.contains('is-on')); // past the chosen group's arc
@@ -111,20 +109,19 @@ export function initFeatures() {
     step = later(WANDER_MS, walk);
   };
   const update = () => {
-    const go = onScreen && idle && !hovering;
-    if (go && !step) step = later(WANDER_MS / 2, walk);
-    if (!go && step) halt();
+    window.clearTimeout(step);
+    step = 0;
+    if (onScreen && !hovering && !focused) step = later(RESUME_MS, walk);
   };
-  const touched = () => {
-    idle = false;
-    update();
-    window.clearTimeout(resume);
-    resume = later(IDLE_MS, () => { idle = true; update(); });
-  };
-  for (const zone of [list, section.querySelector('.rest__body')!]) {
-    zone.addEventListener('pointerenter', () => { hovering = true; update(); });
-    zone.addEventListener('pointerleave', () => { hovering = false; touched(); });
-  }
-  for (const ev of ['pointerdown', 'keydown', 'focusin']) section.addEventListener(ev, touched);
+  section.addEventListener('pointerover', (e) => {
+    const over = (e.target as Element).closest(zones) !== null;
+    if (over !== hovering) { hovering = over; update(); }
+  });
+  section.addEventListener('pointerleave', () => { if (hovering) { hovering = false; update(); } });
+  section.addEventListener('focusin', (e) => { if (focusZone(e.target) && !focused) { focused = true; update(); } });
+  section.addEventListener('focusout', (e) => {
+    const still = focusZone((e as FocusEvent).relatedTarget);
+    if (focused && !still) { focused = false; update(); }
+  });
   whileRunning(section, (run) => { onScreen = run; update(); });
 }

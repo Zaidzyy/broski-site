@@ -62,8 +62,13 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 
 - **B31. The "alive" pass.** Small loops that make the page feel alive after the intro.
   - **Rules:** only transform and opacity. Nothing starts until the intro has played (the header's fade-in ends at about 2.8 s; a 3.2 s timer backs it up). Every loop pauses while its section is off screen (IntersectionObserver) or the tab is hidden (`src/lib/alive.ts`). No glows, particles, gradients or blobs. 05 and the footer stay still.
-  - **Hero, breathing:** each face scales to 1.012 and rises 3 px and back, sine-eased, 5.5 s for Bro and 6.3 s for Zara, each starting at a random point in its cycle. It runs in every state (both, peek, chosen).
-  - **Hero, parallax:** with a fine pointer, the faces drift toward the cursor (8 px across, 5 px up and down) and the BROSKI letters about 5 px the other way, lerped at 0.08 per frame. The rAF loop stops once it settles. Phones and touch get a slow ±4 px drift over 12 s instead (letters ±2 px the other way). Each picture now sits 8 px lower, so breathing plus parallax never lifts its bottom edge into view. It's hidden under the hero's edge on desktop and under the chooser sheet on phones.
+  - **Hero, breathing:** each face scales to 1.012 and rises 3 px and back, sine-eased, 5.5 s for Bro and 6.3 s for Zara. Each waits a random 0–2 s, then starts from rest (no random starting phase). It runs in every state (both, peek, chosen).
+  - **Hero, parallax:** with a fine pointer, the faces drift toward the cursor (8 px across, 5 px up and down) and the BROSKI letters about 5 px the other way, lerped at 0.08 per frame. It starts at 0 and only eases toward the cursor after it moves, so a pointer already on the page doesn't snap anything. Phones and touch get a slow ±4 px drift over 12 s instead (letters ±2 px the other way), starting from 0. Each picture sits 8 px lower, so breathing plus parallax never lifts its bottom edge into view. It's hidden under the hero's edge on desktop and under the chooser sheet on phones.
+  - **Hero, the handoff from the intro** (fixed after review). The faces used to jump right after the intro, by up to 11.8 px on desktop and 7.9 px on phones, measured by the handoff test on the old code. The cause: the CSS breathing started at a random phase, the touch drift's first keyframe was −4 px, and `will-change` was added at the handoff.
+    - Breathing, drift and parallax now run in one rAF loop on their own clock, which only advances while the hero is on screen and the tab is visible, so a pause and a resume don't jump either.
+    - Every motion starts from rest, and its amplitude eases in (ease-out) over 1.5 s.
+    - The 8 px lower position and the layer hints are in the base CSS from the first paint, so nothing about the faces changes at the handoff.
+    - The test samples every frame from 2.0 to 4.5 s after load, on desktop (with a pointer already resting on the page) and on a phone. The largest per-frame change must stay under 0.5 px and 0.002 in scale.
   - **Hero, expression files:** made from Zaid's frames in `assets-src/expressions/` by `scripts/images.mjs`, with the same 1254 px framing, the same colour looks and the same 520/820/1254 AVIF/WebP widths as the hero.
     - The frames were regenerated, so their hair edges differ from the hero by a few pixels everywhere. Swapping whole frames would make the hair shimmer on every blink.
     - So each file keeps only what changes, a feathered ellipse (the eyes for a blink, brows to chin for a glance), and is transparent elsewhere. It's laid over the hero image, so the hair never moves.
@@ -74,7 +79,9 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
     - Every 8–12 s (the first 2.5–4.5 s after the intro), one persona shows an expression for 1.4 s with a 180 ms cross-fade: Bro thinking or laughing, Zara laughing or flirty. The same one is never shown twice in a row.
     - The two take turns. A glance never runs during a peek or pick slide (it waits 1.5 s and tries again), never starts on top of a blink, and never runs on both at once.
     - When one persona is picked or peeked, the dimmed one only breathes.
-  - **03:** while nobody hovers or uses the section, one tick wanders round the big ring. It steps every 1.2 s with a 0.6 s fade, in the persona colour, skipping the chosen group's arc. Hover, a press, a key or focus stops it. It resumes 4 s after the last interaction.
+  - **03:** one tick wanders round the big ring while 03 is on screen. It steps every 1.2 s with a 0.6 s fade, in the persona colour, skipping the chosen group's arc.
+    - It pauses only while the pointer is over a tab word or a card, or keyboard focus is in the tabs or cards. It stays lit where it stopped and walks on from there 0.6 s after the pointer leaves.
+    - Mouse movement, clicks and keys elsewhere in the section don't pause it. Before review it paused on any interaction in the section and waited 4 s, so it rarely ran.
   - **04:** the laptop's status line is now a tiny live log. A new line comes every 2.5 s, newest at the bottom, three in view, with a blinking block cursor.
     - Sample lines; the Doctor count and voice time come from `facts.json`.
     - Four list items take turns: the list slides up one line, then the top item moves to the bottom with the next text.
@@ -131,12 +138,13 @@ Two review passes ran after the first full build (separate reviewers).
 
 ## Tests and Lighthouse
 
-- **Playwright:** 53 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests. Four tests cover the 03 peek (B29): hover previews and leaving restores, a fast sweep doesn't stack or switch early, touch has no preview or hint, and the keyboard is unchanged. Four cover the logo (B30): the lockup link and its name, fixed colours, no console errors; the brow lift on hover; 26 px on phones; the favicon and the 180 px touch icon resolve to the new tile. Seven cover the alive pass (B31):
-  - breathing starts after the intro and pauses off screen and in a hidden tab;
+- **Playwright:** 55 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests. Four tests cover the 03 peek (B29): hover previews and leaving restores, a fast sweep doesn't stack or switch early, touch has no preview or hint, and the keyboard is unchanged. Four cover the logo (B30): the lockup link and its name, fixed colours, no console errors; the brow lift on hover; 26 px on phones; the favicon and the 180 px touch icon resolve to the new tile. Nine cover the alive pass (B31):
+  - the intro → alive handoff, desktop and phone: every frame for 2.5 s, under 0.5 px / 0.002 scale per frame;
+  - breathing starts from rest after the intro and freezes off screen and in a hidden tab;
   - a blink frame (loaded) appears within ~8 s and goes after ~130 ms;
   - glances: one at a time, taking turns, never over a blink;
   - parallax only with a fine pointer, and the drift on touch;
-  - the 03 tick wanders and stops on hover;
+  - the 03 tick keeps wandering when the mouse moves elsewhere, and pauses over a card, over a tab word and with focus in the tabs, then walks on from the same tick;
   - the 04 log advances on screen and stops off screen;
   - no console errors.
 - **Lighthouse** (`npm run lighthouse`, local preview build):

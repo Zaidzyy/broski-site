@@ -18,7 +18,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Top bar: hour chips, the Bro/Zara switch, ▶ Play (about 25 s, press again to stop) and a progress line.
   - Phone: a small pinned dial, with the scene below at full width.
   - Motion is always on, whatever the OS reduced-motion setting says (Zaid's call, B27). Twelve still sections only without JavaScript or in windows under 520 px tall.
-- **03 Everything else.** Six Anton word tabs (an ARIA tablist with arrow keys and Home/End), the 36-mark ring and the bento. Learn is open first. Like the hero: hover to peek (mouse only, ~120 ms intent), click to choose. While nobody uses it, one lit tick wanders round the ring.
+- **03 Everything else.** Six Anton word tabs (an ARIA tablist with arrow keys and Home/End), the 36-mark ring and the bento. Learn is open first. Like the hero: hover to peek (mouse only, ~120 ms intent), click to choose. While it's on screen, one lit tick wanders round the ring; it pauses while the pointer is on a word or a card.
 - **04 Under the hood.**
   - Tier cards.
   - The laptop's status line is a tiny live log, a new line every ~2.5 s with a blinking cursor.
@@ -54,7 +54,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 53 passing.
+- **Playwright:** 55 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.

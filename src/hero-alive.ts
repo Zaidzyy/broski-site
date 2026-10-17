@@ -1,6 +1,7 @@
 // 01 · The hero after its intro: breathing, parallax (or a slow drift on touch), blinks and glances.
-// Breathing and drift are CSS loops; parallax is one rAF loop that stops when it settles. Everything pauses
-// when the hero is off screen or the tab is hidden (lib/alive.ts).
+// Breathing, drift and parallax run in one rAF loop on their own clock, which only advances while the hero
+// is on screen and the tab is visible (lib/alive.ts), so a pause and a resume never jump. Every motion
+// starts from rest and its amplitude eases in over 1.5 s, so the intro hands over without a jump.
 import type { Persona } from './data/day';
 import { introDone, markIntroDone, whileRunning, later, rand } from './lib/alive';
 import { finePointer } from './lib/motion';
@@ -11,6 +12,8 @@ const GLANCES: Record<Persona, string[]> = { bro: ['thinking', 'laugh'], zara: [
 const BLINK_MS = 130;
 const GLANCE_MS = 1400;
 const TRANSITION_MS = 1100; // the hero's peek/choose slide is 1 s
+const RAMP_S = 1.5;
+const easeOut = (x: number) => 1 - (1 - x) ** 3;
 
 // the expression overlays (scripts/images.mjs), as URLs only: nothing loads until the intro is over
 const URLS = import.meta.glob('./assets/img/*-x-*.{avif,webp}', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
@@ -29,31 +32,54 @@ export function initHeroAlive() {
   head?.addEventListener('animationend', (e) => { if ((e as AnimationEvent).animationName === 'fadein') done(); });
   window.setTimeout(done, 3200);
 
-  // breathing: out of sync, each from a random point in its cycle
-  for (const [p, s] of [['bro', 5.5], ['zara', 6.3]] as const) breath(p).style.setProperty('--brd', `${(-Math.random() * s).toFixed(2)}s`);
-
-  // ---- parallax (fine pointers) or the slow drift (touch, CSS) ----
+  // ---- breathing, and parallax (fine pointers) or a slow drift (touch) ----
   const fine = finePointer();
   hero.classList.toggle('is-coarse', !fine);
-  const target = { x: 0, y: 0 };
+  // breathing: out of sync through the periods and a random wait before each face's first breath,
+  // and every breath starts from rest (no random starting phase)
+  const breathers = (['bro', 'zara'] as const).map((p, i) => ({ el: breath(p), period: [5.5, 6.3][i], wait: rand(0, 2) }));
+  const target = { x: 0, y: 0 }; // where the cursor pulls; 0 until it moves, so nothing snaps
   const cur = { x: 0, y: 0 };
+  let clock = 0; // seconds of alive time
+  let last = 0;
   let raf = 0;
   let running = false;
-  const frame = () => {
-    cur.x += (target.x - cur.x) * 0.08;
-    cur.y += (target.y - cur.y) * 0.08;
-    // faces toward the cursor (up to 8 px across, 5 px up and down so the image's bottom edge never shows),
-    // the letters ~5 px the other way
-    for (const p of pics) p.style.translate = `${(cur.x * 8).toFixed(2)}px ${(cur.y * 5).toFixed(2)}px`;
-    for (const w of words) w.style.translate = `${(-cur.x * 5).toFixed(2)}px ${(-cur.y * 5).toFixed(2)}px`;
-    raf = Math.abs(target.x - cur.x) + Math.abs(target.y - cur.y) > 0.002 ? requestAnimationFrame(frame) : 0;
+  const written = new WeakMap<HTMLElement, string>();
+  const put = (el: HTMLElement, prop: 'transform' | 'translate', v: string) => {
+    if (written.get(el) === v) return;
+    written.set(el, v);
+    el.style[prop] = v;
+  };
+  const frame = (now: number) => {
+    clock += last ? Math.min(0.05, (now - last) / 1000) : 0;
+    last = now;
+    const amp = easeOut(Math.min(1, clock / RAMP_S));
+    for (const b of breathers) {
+      const u = clock - b.wait;
+      const k = u > 0 ? ((1 - Math.cos((2 * Math.PI * u) / b.period)) / 2) * amp : 0; // 0 → 1 → 0
+      put(b.el, 'transform', k ? `translate3d(0, ${(-3 * k).toFixed(3)}px, 0) scale(${(1 + 0.012 * k).toFixed(5)})` : '');
+    }
+    let fx: number, fy: number, wx: number, wy: number;
+    if (fine) {
+      // faces toward the cursor (8 px across, 5 px up and down, so the picture's bottom edge never shows),
+      // the letters ~5 px the other way
+      cur.x += (target.x - cur.x) * 0.08;
+      cur.y += (target.y - cur.y) * 0.08;
+      [fx, fy, wx, wy] = [cur.x * 8 * amp, cur.y * 5 * amp, -cur.x * 5 * amp, -cur.y * 5 * amp];
+    } else {
+      const d = Math.sin((2 * Math.PI * clock) / 12) * amp; // ±4 px over 12 s, from rest
+      [fx, fy, wx, wy] = [4 * d, 0, -2 * d, 0];
+    }
+    const px = (x: number, y: number) => (Math.abs(x) + Math.abs(y) < 0.005 ? '' : `${x.toFixed(2)}px ${y.toFixed(2)}px`);
+    for (const p of pics) put(p, 'translate', px(fx, fy));
+    for (const w of words) put(w, 'translate', px(wx, wy));
+    raf = requestAnimationFrame(frame);
   };
   if (fine) {
     window.addEventListener('pointermove', (e) => {
       if (!running || e.pointerType !== 'mouse') return;
       target.x = Math.max(-1, Math.min(1, (e.clientX / window.innerWidth - 0.5) * 2));
       target.y = Math.max(-1, Math.min(1, (e.clientY / window.innerHeight - 0.5) * 2));
-      if (!raf) raf = requestAnimationFrame(frame);
     }, { passive: true });
   }
 
@@ -154,6 +180,8 @@ export function initHeroAlive() {
     hero.classList.add('is-alive');
     hero.classList.toggle('is-paused', !run);
     if (run) {
+      last = 0; // the clock carries on from where it paused
+      if (!raf) raf = requestAnimationFrame(frame);
       scheduleBlink('bro', true);
       scheduleBlink('zara', true);
       after(rand(2500, 4500), glance); // the first glance comes a little sooner

@@ -66,20 +66,12 @@
 .pic { position: absolute; left: 0; bottom: -8px; width: var(--img); aspect-ratio: 1; transform: translateX(-50%); }
 .pic picture, .pic img { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-/* Alive, after the intro (src/hero-alive.ts). Each picture sits 8 px low, so breathing (3 px) and parallax (5 px)
-   never lift its bottom edge into view. */
-.breath { position: absolute; inset: 0; transform-origin: 50% 100%; }
-.face--bro .breath { --br: 5.5s; }
-.face--zara .breath { --br: 6.3s; }
-.hero.is-alive .breath { animation: breathe var(--br) cubic-bezier(.37, 0, .63, 1) var(--brd, 0s) infinite; will-change: transform; }
-@keyframes breathe { 50% { transform: translateY(-3px) scale(1.012); } }
-.hero.is-alive:not(.is-coarse) .pic, .hero.is-alive:not(.is-coarse) .word { will-change: translate; }
-/* touch: no cursor, so a very slow drift instead of parallax */
-.hero.is-alive.is-coarse .pic { animation: drift 12s cubic-bezier(.37, 0, .63, 1) infinite; will-change: translate; }
-.hero.is-alive.is-coarse .word { animation: drift-back 12s cubic-bezier(.37, 0, .63, 1) infinite; will-change: translate; }
-@keyframes drift { 0%, 100% { translate: -4px 0; } 50% { translate: 4px 0; } }
-@keyframes drift-back { 0%, 100% { translate: 2px 0; } 50% { translate: -2px 0; } }
-.hero.is-paused .breath, .hero.is-paused .pic, .hero.is-paused .word { animation-play-state: paused; }
+/* Alive, after the intro (src/hero-alive.ts writes these transforms; they start from rest).
+   The 8 px lower position above is the faces' base from the first paint, so breathing (3 px) and parallax (5 px)
+   never lift a picture's bottom edge into view. The layer hints are here from the start too, so nothing about
+   the faces changes when the alive layer takes over from the intro. */
+.breath { position: absolute; inset: 0; transform-origin: 50% 100%; will-change: transform; }
+.pic, .word { will-change: translate; }
 /* expressions: a blink swaps instantly, a glance cross-fades in 180 ms */
 .pic__x { opacity: 0; }
 .pic__x.is-on { opacity: 1; }

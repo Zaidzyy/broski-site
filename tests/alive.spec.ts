@@ -2,29 +2,69 @@
 import { test, expect, type Page } from '@playwright/test';
 
 const introOver = (page: Page) => expect(page.locator('.hero')).toHaveClass(/is-alive/, { timeout: 5000 });
-const playState = (page: Page) => page.locator('.face--bro .breath').evaluate((n) => getComputedStyle(n).animationPlayState);
 
-test('breathing starts after the intro and pauses off screen and in a hidden tab', async ({ page }) => {
+test('breathing starts from rest after the intro and freezes off screen and in a hidden tab', async ({ page }) => {
+  const breaths = () => page.locator('.breath').evaluateAll((ns) => ns.map((n) => (n as HTMLElement).style.transform));
   await page.goto('./');
   await expect(page.locator('.hero')).not.toHaveClass(/is-alive/); // nothing moves during the intro
+  expect(await breaths()).toEqual(['', '']);
   await introOver(page);
-  expect(await page.locator('.face--bro .breath').evaluate((n) => getComputedStyle(n).animationName)).toBe('breathe');
-  expect(await playState(page)).toBe('running');
-  // the two faces breathe out of sync
-  const durations = await page.locator('.breath').evaluateAll((ns) => ns.map((n) => getComputedStyle(n).animationDuration));
-  expect(durations).toEqual(['5.5s', '6.3s']);
+  // each face starts breathing after its own short wait, from rest
+  await expect.poll(async () => (await breaths()).every((t) => t !== ''), { timeout: 6000 }).toBe(true);
+  const [bro, zara] = await breaths();
+  expect(bro).not.toBe(zara); // out of sync
 
+  const frozen = async () => { const a = await breaths(); await page.waitForTimeout(800); return JSON.stringify(a) === JSON.stringify(await breaths()); };
   await page.locator('.foot').scrollIntoViewIfNeeded();
-  await expect.poll(() => playState(page)).toBe('paused');
+  await page.waitForTimeout(300);
+  expect(await frozen()).toBe(true);
   await page.evaluate(() => window.scrollTo(0, 0));
-  await expect.poll(() => playState(page)).toBe('running');
+  await page.waitForTimeout(300);
+  expect(await frozen()).toBe(false);
 
   await page.evaluate(() => {
     Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true });
     document.dispatchEvent(new Event('visibilitychange'));
   });
-  await expect.poll(() => playState(page)).toBe('paused');
+  await page.waitForTimeout(300);
+  expect(await frozen()).toBe(true);
 });
+
+for (const [name, opts] of [
+  ['desktop', { viewport: { width: 1440, height: 900 } }],
+  ['phone', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }],
+] as const) {
+  test(`${name}: the intro hands over to the alive layer without a jump`, async ({ browser }) => {
+    const ctx = await browser.newContext(opts);
+    const page = await ctx.newPage();
+    if (name === 'desktop') await page.mouse.move(1300, 120); // a pointer already on the page must not snap the faces
+    await page.goto('./');
+    // every frame from 2.0 s to 4.5 s after navigation (the intro ends at ~2.8 s): where each face and the letters are
+    const samples = await page.evaluate(() => new Promise<number[][]>((done) => {
+      const out: number[][] = [];
+      const els = [...document.querySelectorAll('.pic__main img'), document.querySelector('.word--solid')!];
+      const tick = (now: number) => {
+        if (now >= 2000) out.push(els.flatMap((e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }));
+        if (now < 4500) requestAnimationFrame(tick); else done(out);
+      };
+      requestAnimationFrame(tick);
+    }));
+    await expect(page.locator('.hero')).toHaveClass(/is-alive/); // the handoff happened inside the window
+    expect(samples.length).toBeGreaterThan(60);
+    let move = 0, scale = 0;
+    for (let f = 1; f < samples.length; f++) {
+      for (let e = 0; e < 3; e++) {
+        const [l0, t0, w0] = samples[f - 1].slice(e * 3, e * 3 + 3);
+        const [l1, t1, w1] = samples[f].slice(e * 3, e * 3 + 3);
+        move = Math.max(move, Math.abs(l1 - l0), Math.abs(t1 - t0));
+        if (e < 2) scale = Math.max(scale, Math.abs(w1 / w0 - 1));
+      }
+    }
+    expect(move).toBeLessThan(0.5);
+    expect(scale).toBeLessThan(0.002);
+    await ctx.close();
+  });
+}
 
 test('a blink frame appears within ~8 s of the intro and goes away again', async ({ page }) => {
   await page.goto('./');
@@ -91,6 +131,7 @@ test('glances: one persona at a time, taking turns, never over a blink', async (
 test('parallax follows a fine pointer; touch gets the slow drift instead', async ({ page, browser }) => {
   await page.goto('./');
   await introOver(page);
+  expect(await page.locator('.face--bro .pic').evaluate((n) => (n as HTMLElement).style.translate)).toBe(''); // no snap before a move
   await page.mouse.move(100, 100);
   await page.mouse.move(200, 150, { steps: 4 });
   await expect.poll(() => page.locator('.face--bro .pic').evaluate((n) => (n as HTMLElement).style.translate)).not.toBe('');
@@ -106,29 +147,61 @@ test('parallax follows a fine pointer; touch gets the slow drift instead', async
   await phone.goto('./');
   await introOver(phone);
   await phone.mouse.move(50, 50);
-  await phone.mouse.move(300, 400, { steps: 4 });
-  await phone.waitForTimeout(300);
-  expect(await phone.locator('.face--bro .pic').evaluate((n) => (n as HTMLElement).style.translate)).toBe('');
-  expect(await phone.locator('.face--bro .pic').evaluate((n) => getComputedStyle(n).animationName)).toBe('drift');
+  await phone.mouse.move(10, 10, { steps: 4 });
+  // the drift: sideways only, within ±4 px, whatever the pointer does
+  const drift = () => phone.locator('.face--bro .pic').evaluate((n) => (n as HTMLElement).style.translate);
+  await expect.poll(drift, { timeout: 4000 }).not.toBe('');
+  const [x, y] = (await drift()).split(' ').map(parseFloat);
+  expect(Math.abs(x)).toBeLessThanOrEqual(4);
+  expect(y || 0).toBe(0);
   await ctx.close();
 });
 
-test('03: a lit tick wanders round the ring until someone hovers', async ({ page }) => {
+test('03: the tick wanders while on screen and pauses only over the words, the cards or keyboard focus', async ({ page }) => {
   await page.goto('./');
   await introOver(page);
   await page.locator('#everything').scrollIntoViewIfNeeded();
-  await page.mouse.move(5, 5);
   const wandering = () => page.evaluate(() => [...document.querySelectorAll('.fring .mark')].findIndex((m) => m.classList.contains('is-wander')));
+  const keepsMoving = async () => { const a = await wandering(); await page.waitForTimeout(1500); return (await wandering()) !== a; };
   await expect.poll(wandering, { timeout: 3000 }).toBeGreaterThanOrEqual(0);
-  const first = await wandering();
-  await expect.poll(wandering, { timeout: 3000 }).not.toBe(first);
-  // never on the chosen group's arc
-  expect(await page.locator('.fring .mark.is-wander.is-on').count()).toBe(0);
 
+  // moving the mouse elsewhere in the section (the heading, the ring) doesn't pause it
+  await page.locator('#rest-h').hover();
+  await page.mouse.move(300, 300, { steps: 5 });
   await page.locator('.fring__c').hover();
-  await expect.poll(wandering).toBe(-1);
-  await page.waitForTimeout(1500);
-  expect(await wandering()).toBe(-1);
+  expect(await keepsMoving()).toBe(true);
+  expect(await page.locator('.fring .mark.is-wander.is-on').count()).toBe(0); // never on the chosen group's arc
+
+  // over a card: it stops where it is and stays lit
+  await page.locator('#panel-learn .tile').nth(1).hover();
+  await page.waitForTimeout(300);
+  const stopped = await wandering();
+  expect(stopped).toBeGreaterThanOrEqual(0);
+  expect(await keepsMoving()).toBe(false);
+  // leaving the cards: it walks on from the same tick ~0.6 s later
+  await page.locator('#rest-h').hover();
+  await expect.poll(wandering, { timeout: 1500 }).not.toBe(stopped);
+  const next = await page.evaluate((from) => {
+    const ms = [...document.querySelectorAll('.fring .mark')];
+    let k = from;
+    do k = (k + 1) % ms.length; while (ms[k].classList.contains('is-on'));
+    return k;
+  }, stopped);
+  expect(await wandering()).toBe(next);
+
+  // over a tab word: paused too
+  await page.getByRole('tab', { name: /^Brain/ }).hover();
+  await page.waitForTimeout(300);
+  expect(await keepsMoving()).toBe(false);
+  await page.locator('#rest-h').hover();
+  expect(await keepsMoving()).toBe(true);
+
+  // keyboard focus in the tabs: paused until focus leaves
+  await page.getByRole('tab', { name: /^Learn/ }).focus();
+  await page.waitForTimeout(300);
+  expect(await keepsMoving()).toBe(false);
+  await page.evaluate(() => (document.activeElement as HTMLElement).blur());
+  expect(await keepsMoving()).toBe(true);
 });
 
 test('04: the laptop log advances while on screen and stops off screen', async ({ page }) => {

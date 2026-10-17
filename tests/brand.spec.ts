@@ -47,23 +47,38 @@ test('phone: the lockup is about 26 px tall', async ({ browser }) => {
   await ctx.close();
 });
 
-test('the favicon and apple-touch-icon links resolve to the new tile', async ({ page, request }) => {
+test('the favicon (small-size icon, SVG + 32 px PNG) and the 180 px apple-touch-icon resolve', async ({ page, request }) => {
   await page.goto('./');
-  const links = await page.locator('link[rel="icon"], link[rel="apple-touch-icon"]').evaluateAll((ls) => ls.map((l) => [l.getAttribute('rel'), (l as HTMLLinkElement).href]));
-  expect(links.map(([rel]) => rel).sort()).toEqual(['apple-touch-icon', 'icon']);
-  for (const [rel, href] of links) {
-    const res = await request.get(href!);
-    expect(res.ok()).toBe(true);
-    if (rel === 'icon') {
-      expect(res.headers()['content-type']).toContain('image/svg+xml');
-      const svg = await res.text();
-      expect(svg).toContain('#C0667C'); // the rose brow
-      expect(svg).not.toContain('#C15F42'); // the old "B/" mark's slash
-    } else {
-      expect(res.headers()['content-type']).toContain('image/png');
-      const png = await res.body();
-      expect(png.readUInt32BE(16)).toBe(180); // width
-      expect(png.readUInt32BE(20)).toBe(180); // height
-    }
-  }
+  const links = await page.locator('link[rel="icon"], link[rel="apple-touch-icon"]').evaluateAll((ls) => ls.map((l) => ({
+    rel: l.getAttribute('rel'), href: (l as HTMLLinkElement).href, type: l.getAttribute('type'), sizes: l.getAttribute('sizes'),
+  })));
+  expect(links.map((l) => l.rel).sort()).toEqual(['apple-touch-icon', 'icon', 'icon']);
+  const pngSize = (b: Buffer) => [b.readUInt32BE(16), b.readUInt32BE(20)];
+
+  const svgLink = links.find((l) => l.type === 'image/svg+xml')!;
+  expect(svgLink.href).toMatch(/\/favicon-v2\.svg$/); // a new name, so cached copies of the old one are skipped
+  const svg = await request.get(svgLink.href);
+  expect(svg.ok()).toBe(true);
+  expect(svg.headers()['content-type']).toContain('image/svg+xml');
+  const svgText = await svg.text();
+  expect(svgText).toContain('#C0667C'); // the rose brow
+  expect(svgText).toContain('stroke-width="10"'); // the heavy-stroke icon made for 16–32 px
+  expect(svgText).not.toContain('#C15F42'); // the old "B/" mark's slash
+
+  const pngLink = links.find((l) => l.type === 'image/png')!;
+  expect(pngLink.href).toMatch(/\/favicon-32\.png$/);
+  expect(pngLink.sizes).toBe('32x32');
+  const png = await request.get(pngLink.href);
+  expect(png.ok()).toBe(true);
+  expect(png.headers()['content-type']).toContain('image/png');
+  expect(pngSize(await png.body())).toEqual([32, 32]);
+
+  const touch = await request.get(links.find((l) => l.rel === 'apple-touch-icon')!.href);
+  expect(touch.ok()).toBe(true);
+  expect(touch.headers()['content-type']).toContain('image/png');
+  expect(pngSize(await touch.body())).toEqual([180, 180]);
+
+  // the old favicon is gone (the preview server may answer with the page itself, but never with an SVG)
+  const old = await request.get(new URL('favicon.svg', page.url()).href);
+  expect(old.headers()['content-type'] ?? '').not.toContain('image/svg+xml');
 });

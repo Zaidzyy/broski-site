@@ -55,7 +55,8 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
   - `scripts/icons.mjs` copies the L2 lockups (dark and light) and the icon tile into `src/assets/brand/`, so the repo doesn't depend on the git-ignored `assets-src/`.
   - **Header:** the "BROSKI" text is replaced by the L2 lockup (dark), inlined at build time by `src/render/brand.ts`. It's 30 px tall on desktop and 26 px on phones, a link to `#top` named "Broski, back to top", and its colours are fixed (no persona tint).
   - **Hover:** with a fine pointer, on hover or keyboard focus, both rose brows (the face's and the i-dot) rotate −8° about their left end in 180 ms ease-out, and back on leave.
-  - **Favicon and touch icon:** the favicon is the icon tile (the old "B/" mark is gone). The 180 px `apple-touch-icon.png` is rendered from it, flattened onto the tile colour `#15171B` because iOS fills transparent areas with black.
+  - **Favicon:** the small-size icon (`broski-icon-tray-thick.svg`, heavier strokes made for 16–32 px), published as `favicon-v2.svg`. The new name means browsers that cached the old favicon fetch it fresh. A 32 px PNG fallback (`favicon-32.png`, `sizes="32x32"`) is rendered from it. The old `favicon.svg` (the "B/" mark) is removed.
+  - **Touch icon:** the 180 px `apple-touch-icon.png` is still rendered from the icon tile, because it's shown large. It's flattened onto the tile colour `#15171B` because iOS fills transparent areas with black.
   - **OG image:** the lockup sits in the top-left corner, where the header brand sits on the page, at 40 px, clear of the big word. The OG alt text says so.
   - **README:** the lockup is at the top of the centred header block, 60 px tall, alt "Broski". It's a `<picture>`: the dark lockup by default, and the light one (dark wordmark) when GitHub is in light mode, because the dark lockup's light wordmark would vanish on a white page.
 

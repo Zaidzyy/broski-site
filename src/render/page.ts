@@ -195,6 +195,7 @@ function yours() {
           <label class="opt"><input type="radio" name="choice" value="${v.id}"><span class="opt__dot" aria-hidden="true"></span><b>${v.t}</b><span class="opt__d">${v.d}</span></label>`).join('')}
         </fieldset>
         <label class="vote__email"><span class="eyebrow">Email · optional</span><input type="email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email" aria-describedby="vote-err"></label>
+        <div class="vote__hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_gotcha" value="" tabindex="-1" autocomplete="off" aria-hidden="true"></label></div>
         <button type="submit" class="vote__send" disabled>Count me in</button>
         <p class="vote__err" id="vote-err" data-vote-err role="alert" hidden></p>
         <p class="vote__fine">One vote, no account. The email is only used to tell you if this ships, and it's deleted if it doesn't.</p>

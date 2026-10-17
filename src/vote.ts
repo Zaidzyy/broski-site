@@ -1,14 +1,13 @@
-// 05 · The vote card. With VOTE_ENDPOINT empty it only shows the thank-you state and sends nothing.
-// With an endpoint, it POSTs exactly { choice, email? }. Never the persona, never anything else.
+// 05 · The vote card. On "Count me in" (and never before) it POSTs exactly { choice, email?, _gotcha } as JSON
+// to VOTE_ENDPOINT with our own fetch. Never the persona, never anything else. _gotcha is Formspree's honeypot:
+// a hidden field people never see, so it's empty unless a bot fills it in. Any 2xx counts; anything else shows
+// the failure line and keeps the pick for a retry. (With VOTE_ENDPOINT empty nothing is sent.)
 import { VOTE_ENDPOINT } from './config';
 
-export function buildPayload(choice: string, email: string): { choice: string; email?: string } {
+export function buildPayload(choice: string, email: string, gotcha: string): { choice: string; email?: string; _gotcha: string } {
   const e = email.trim();
-  return e ? { choice, email: e } : { choice };
+  return e ? { choice, email: e, _gotcha: gotcha } : { choice, _gotcha: gotcha };
 }
-
-/** Test hook: lets the Playwright suite point the form at a mocked endpoint. */
-const endpoint = () => (window as unknown as { __voteEndpoint?: string }).__voteEndpoint ?? VOTE_ENDPOINT;
 
 export function initVote() {
   const form = document.querySelector<HTMLFormElement>('[data-vote]');
@@ -21,6 +20,7 @@ export function initVote() {
   const redo = done.querySelector<HTMLButtonElement>('[data-vote-redo]')!;
   const choice = () => form.querySelector<HTMLInputElement>('input[name="choice"]:checked');
   const emailIn = form.elements.namedItem('email') as HTMLInputElement;
+  const gotcha = form.elements.namedItem('_gotcha') as HTMLInputElement;
   const fail = (msg: string, field = false) => {
     err.textContent = msg;
     err.hidden = false;
@@ -41,7 +41,7 @@ export function initVote() {
     }
     err.hidden = true;
     emailIn.removeAttribute('aria-invalid');
-    const url = endpoint();
+    const url = VOTE_ENDPOINT;
     if (url) {
       send.disabled = true;
       send.textContent = 'Counting…';
@@ -49,7 +49,7 @@ export function initVote() {
         const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(buildPayload(c.value, email)),
+          body: JSON.stringify(buildPayload(c.value, email, gotcha.value)),
           credentials: 'omit',
           referrerPolicy: 'no-referrer',
         });

@@ -190,6 +190,8 @@
 .vote__send:disabled { cursor: not-allowed; background: rgba(237, 228, 211, .08); color: #6E6860; }
 .vote__send:focus-visible { outline: 2px solid var(--bone); outline-offset: 3px; }
 .vote__err { font-size: 13px; color: var(--alert); }
+/* the honeypot (_gotcha): off screen, out of the tab order, hidden from screen readers */
+.vote__hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .vote__fine { font-size: 12px; line-height: 1.5; color: var(--muted); }
 .vote__thanks { font-size: 40px; line-height: 1.05; outline: none; }
 .vote__picked { font-size: 14px; color: var(--muted); }

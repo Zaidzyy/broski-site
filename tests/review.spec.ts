@@ -51,7 +51,7 @@ test('without JavaScript every scene and all six feature groups are readable', a
 });
 
 test('a bad email is flagged on the field itself', async ({ page }) => {
-  await page.addInitScript(() => { (window as unknown as { __voteEndpoint: string }).__voteEndpoint = '/__vote-mock'; });
+  await page.route('https://formspree.io/**', (route) => route.abort()); // never the real form
   await page.goto('./');
   await page.getByLabel('The whole thing').check({ force: true });
   const email = page.locator('[data-vote] input[type="email"]');

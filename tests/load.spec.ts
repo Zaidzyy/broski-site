@@ -23,6 +23,10 @@ test('loads with no console errors and no requests outside its own origin, at lo
 test('has the CSP, the meta, one h1 and the Arabic word marked up', async ({ page }) => {
   await page.goto('./');
   await expect(page.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveCount(1);
+  // the one origin besides this site's: the vote endpoint, for fetch only
+  const csp = (await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content'))!;
+  expect(csp).toContain("connect-src 'self' https://formspree.io;");
+  expect(csp.replace("connect-src 'self' https://formspree.io;", '')).not.toMatch(/https?:/);
   await expect(page.locator('meta[property="og:image"]')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');

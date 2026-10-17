@@ -1,7 +1,8 @@
 // Site settings. Zaid edits this file; nothing here is secret.
 
-/** Where the vote card POSTs `{ choice, email? }`. Empty = nothing is ever sent. */
-export const VOTE_ENDPOINT = '';
+/** Where the vote card POSTs `{ choice, email?, _gotcha }` (a Formspree form, called with our own fetch).
+ *  Empty = nothing is ever sent. Its origin is added to the CSP's connect-src at build time (vite.config.ts). */
+export const VOTE_ENDPOINT = 'https://formspree.io/f/mzedopnj';
 
 /** This repo on GitHub (the README is the GitHub button's target). */
 export const GITHUB_URL = 'https://github.com/Zaidzyy/broski-site';

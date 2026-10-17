@@ -54,14 +54,20 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 55 passing.
+- **Playwright:** 58 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.
   - Every scene and its dial digits; the ending's 72; hour chips; Play/stop; the intro pill.
   - Reduced motion emulated: the page still animates (hero intro, pinned day, widget entries, also on a phone); phone (no horizontal scroll, pinned dial, every scene reachable); short windows; no JS.
   - Tabs by keyboard; the gate; the film's "coming soon"; the skip link.
-  - Vote: disabled until a pick; an empty endpoint sends nothing; a mocked endpoint receives exactly `{choice}` / `{choice, email}`; a bad email is caught.
+  - Vote (vote endpoint set; the Formspree URL is intercepted, never reached):
+    - nothing is sent before "Count me in";
+    - one POST of exactly `{choice, _gotcha}` / `{choice, email, _gotcha}` with both JSON headers;
+    - the honeypot is present, empty, off screen and skipped by Tab;
+    - an error status or a network failure shows the failure line, never "Counted", and keeps the pick for a retry;
+    - a bad email is caught;
+    - the CSP adds only `https://formspree.io`, to connect-src.
   - Regression tests for the review findings.
 - **Lighthouse:**
   - Desktop: 99 / 100 / 100 / 100.
@@ -74,5 +80,5 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 2. ~~Optional, before the first push: switch the commit email to the GitHub noreply address.~~ **Done:** this repo uses `Zaidzyy <86546939+Zaidzyy@users.noreply.github.com>` (repo-local config) and every commit was re-authored to it.
 3. Push.
 4. Settings → Pages → Source: **GitHub Actions**.
-5. Create a free Formspree form (or Tally) with the fields `choice` + `email`. Paste its endpoint into `VOTE_ENDPOINT` in `src/config.ts` and push; the CSP picks up its origin automatically. Until then the vote card thanks people and sends nothing.
+5. ~~Create a Formspree form and set `VOTE_ENDPOINT`.~~ **Done:** the vote endpoint is set to `https://formspree.io/f/mzedopnj` (B10). After the first push, send one test vote from the live site and check it arrives in Formspree.
 6. Later, set `FILM_URL` in `src/config.ts` and replace the film line in `docs/README.template.md`, then run `npm run readme`.

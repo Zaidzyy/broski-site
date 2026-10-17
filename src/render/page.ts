@@ -82,6 +82,7 @@ function rest() {
       <p class="lede sect__lede">Thirty-six marks on the dial, one per feature. Pick a part of it.</p>
     </div>
     <div class="tabs" role="tablist" aria-label="Feature groups">${tabs}</div>
+    <p class="tabs__hint" aria-hidden="true">HOVER TO PEEK · CLICK TO CHOOSE</p>
     <div class="rest__body">
       <div class="fring" aria-hidden="true">${marks}
         <div class="fring__c"><span class="fring__i micro" data-ring-i>0${DEFAULT_GROUP + 1} / 06</span><span class="fring__g" data-ring-g>${GROUPS[DEFAULT_GROUP].g}</span><span class="micro acc">6 THINGS</span></div>

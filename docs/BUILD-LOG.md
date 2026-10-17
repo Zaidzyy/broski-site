@@ -45,6 +45,12 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 - **B26. No-JS fallbacks.** All six feature groups render visible and JS turns them into tabs; the film links point to the README's film slot when JS is off.
 - **B27. Motion is always on (Zaid's call).** The OS reduced-motion setting no longer changes the page: many Windows laptops report "reduce" only because Animation effects is off. Every `prefers-reduced-motion` rule is gone from the CSS and JS (there was no GSAP `matchMedia`), so every visitor with JavaScript gets the full animated page: the hero intro, the pinned day, widget entries, loops and reveals. The still layout stays for no JavaScript and for windows under 520 px tall (B21). There is no motion toggle.
 - **B28. README images.** The hero (linked to the live site), a GIF of the day and a 2×2 grid of existing screenshots. `scripts/daygif.mjs` records the GIF (desktop, 12 fps, 11 s, 960 px, ffmpeg palettegen/paletteuse, 2.9 MB). It drives the page clock by hand, so frames are evenly spaced however slow the screenshots are. The README's images add up to 3.2 MB; only the GIF is new.
+- **B29. Section 03: hover to peek, click to choose** (like the hero).
+  - With a real hover pointer (`(hover: hover) and (pointer: fine)`, mouse events only), resting on a word for ~120 ms previews its group: the word lifts 4 px to the persona tint, the chosen word steps back to grey, and the ring's lit arc, the centre label and the six cards switch to it.
+  - Leaving the tab row returns to the chosen group. A click (or the keyboard, unchanged) selects and locks it. A peek never changes `aria-selected`.
+  - Before this, a click swapped the cards with no transition, so a click now cross-fades in 0.3 s and a peek in 0.22 s. The panels are stacked in one grid cell (with JS only) so two groups can cross-fade.
+  - Each change kills the running fades and continues from the current opacity, so a fast sweep doesn't stack animations. A pass shorter than the intent delay changes nothing.
+  - A hint under the row, "HOVER TO PEEK · CLICK TO CHOOSE", in the hero hint's style, only on hover devices with JS. Touch stays tap-only.
 
 ## Follow-up fixes (after Claude's screenshot review)
 
@@ -96,7 +102,7 @@ Two review passes ran after the first full build (separate reviewers).
 
 ## Tests and Lighthouse
 
-- **Playwright:** 38 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests.
+- **Playwright:** 42 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests. Four tests cover the 03 peek (B29): hover previews and leaving restores, a fast sweep doesn't stack or switch early, touch has no preview or hint, and the keyboard is unchanged.
 - **Lighthouse** (`npm run lighthouse`, local preview build):
 
 | | Performance | Accessibility | Best Practices | SEO |

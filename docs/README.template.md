@@ -5,8 +5,6 @@
   <img src="src/assets/brand/broski-lockup-L2-dark.svg" width="164" height="60" alt="Broski">
 </picture>
 
-# BROSKI
-
 **A personal AI life-OS with two voices that knows my day, calls me out, and asks before anything leaves the laptop.**
 
 [Live site](https://zaidzyy.github.io/broski-site/) · [Watch the film](#film) · [How it's built](#how-its-built)
@@ -15,9 +13,14 @@
 
 </div>
 
-<a id="film"></a>🎬 Film: made with HyperFrames × Claude Code (coming soon)
 
-<a href="https://zaidzyy.github.io/broski-site/"><img src="docs/screens/desktop-01-hero.webp" width="100%" alt="The Broski site's hero: the word BROSKI in huge letters, with Bro drawn in grey on the left and Zara in warm colour on the right, split by a slanted line. Links to the live site."></a>
+
+
+https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
+
+<div align="center"> <sub> <a id="film"></a> 🎬 The film: made with /brag-slim × Claude Code </sub> </div>
+
+
 
 ---
 
@@ -137,7 +140,7 @@ The Broski code and anything personal stay private. Want a closer look? [Contact
 
 ## Roadmap
 
-- [ ] The launch film
+- [x] The launch film
 - [ ] A public version (vote on the site)
 - [ ] Phone app beyond Telegram
 

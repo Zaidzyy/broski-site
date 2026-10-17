@@ -18,7 +18,7 @@
 
 https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
 
-<div align="center"> <sub> <a id="film"></a> 🎬 Film: made with Opus 5.5 x Claude Code </sub> </div>
+<div align="center"> <sub> <a id="film"></a> 🎬 The film: made with /brag-slim × Claude Code </sub> </div>
 
 
 
@@ -186,7 +186,7 @@ The Broski code and anything personal stay private. Want a closer look? [Contact
 
 ## Roadmap
 
-- [ ] The launch film
+- [x] The launch film
 - [ ] A public version (vote on the site)
 - [ ] Phone app beyond Telegram
 

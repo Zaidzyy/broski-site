@@ -21,13 +21,6 @@ https://github.com/user-attachments/assets/75382deb-5279-40f4-b165-13c47d3a92ad
 
 
 
-
-
-
-
-
-<a href="https://zaidzyy.github.io/broski-site/"><img src="docs/screens/desktop-01-hero.webp" width="100%" alt="The Broski site's hero: the word BROSKI in huge letters, with Bro drawn in grey on the left and Zara in warm colour on the right, split by a slanted line. Links to the live site."></a>
-
 ---
 
 ## Measured, not claimed

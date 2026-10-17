@@ -1,5 +1,5 @@
 /* 02 · The day (J1 "the lens").
-   Default = static: twelve plain sections (no JS, reduced motion).
+   Default = static: twelve plain sections (no JS, windows under 520 px tall).
    .day.is-live = the pinned stage driven by src/day.ts. */
 
 .day__intro { padding-top: 120px; padding-bottom: 70px; align-items: end; }
@@ -400,9 +400,4 @@ body[data-persona='bro'] .only-zara { display: none; }
   .scene__h { font-size: 36px; }
   .day:not(.is-live) .scene { padding: 48px var(--gutter); }
   .day:not(.is-live) .scene__in { display: flex; flex-direction: column; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .wave > span { animation: none; transform: scaleY(.6); }
-  .hchip::before { transition: none; }
 }

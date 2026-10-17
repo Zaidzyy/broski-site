@@ -19,7 +19,7 @@ import { initDay } from './day';
 import { initFeatures } from './features';
 import { initGate } from './gate';
 import { initVote } from './vote';
-import { reducedMotion, toast } from './lib/motion';
+import { toast } from './lib/motion';
 
 document.documentElement.classList.add('js');
 
@@ -41,12 +41,10 @@ if (hood) {
 }
 
 // Section 04 reveals, once.
-if (!reducedMotion()) {
-  ScrollTrigger.batch('.rv', {
-    start: 'top 88%', once: true,
-    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08 }),
-  });
-}
+ScrollTrigger.batch('.rv', {
+  start: 'top 88%', once: true,
+  onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08 }),
+});
 
 // Fonts change line heights in the day; measure again once they are in.
 document.fonts?.ready.then(() => ScrollTrigger.refresh());

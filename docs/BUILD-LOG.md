@@ -24,7 +24,7 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
   - The scene tag under the digits sits on a dark pill (accent on a light sky failed at ~1.9:1).
   - Greys lifted: eyebrow labels `#7A746A` → `#8F887C` (4.2 → 5.5:1), footer `#5E594F` → `#8F887C`, inactive tabs `#3E3A34` → `#6E6860` (large text, 3.5:1), dial minor labels .35 → .62 opacity.
 - **B8. Phone widgets.** "Full width" on a phone: each widget is scaled to the full content width (and down further if the scene would overflow the screen), instead of the mockup's fixed 0.6. The body text is dropped on phones, as allowed.
-- **B9. Reduced motion (and no JS).** The same HTML renders as twelve still sections; the dial and top bar are hidden; every widget is in its final state; the flash card shows both faces side by side instead of flipped.
+- **B9. The still day (no JS, short windows).** The same HTML renders as twelve still sections; the dial and top bar are hidden; every widget is in its final state; the flash card shows both faces side by side instead of flipped.
 - **B10. Vote endpoint.** `VOTE_ENDPOINT = ''` in `src/config.ts`: the button shows the thank-you state locally and sends nothing (tested). When set, it POSTs JSON `{ choice, email? }` with `credentials: 'omit'` and no referrer; the CSP `connect-src` picks up the endpoint's origin at build time. Formspree accepts JSON directly; Tally's public forms don't take a JSON POST, so Formspree is the simpler pick.
 - **B11. Choice values** sent are stable ids: `whole-thing`, `trading-coach`, `voice-bubble`.
 - **B12. Film.** `FILM_URL = ''`: the film links show a "The film is coming soon" toast and go nowhere. Setting the URL makes them normal links.
@@ -37,12 +37,14 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 - **B19. Header on phones.** As in G7, the phone hero header shows only "Broski" and the status; the film and GitHub links are in section 05.
 
 - **B20. Day hint copy.** The mockup's "SCROLL INSIDE ↓ OR PRESS PLAY" described its inner scroll box; the pinned page says "SCROLL ↓ OR PRESS PLAY".
-- **B21. Short windows get the still day.** Under 520 px of height (landscape phones, 200 %+ browser zoom) the day uses the reduced-motion layout instead of shrinking the pinned stage (WCAG 1.4.4 / 1.4.10). Zooming into that range reloads into the still layout; a phone keyboard opening does not (width unchanged).
+- **B21. Short windows get the still day.** Under 520 px of height (landscape phones, 200 %+ browser zoom) the day uses the still layout instead of shrinking the pinned stage (WCAG 1.4.4 / 1.4.10). Zooming into that range reloads into the still layout; a phone keyboard opening does not (width unchanged).
 - **B22. Intro timing tightened by ~0.3 s** (faces wipe at 0.95 / 1.1 s instead of 1.2 / 1.35 s; header and captions fade at 1.9 s instead of 2.2 s). Same order: letters, slash, faces, header.
 - **B23. CSS inlined** into the HTML at build (`vite.config.ts`, `broski-inline-css`) so first paint doesn't wait for a stylesheet request (mobile Lighthouse FCP 2.6 s → 2.4 s).
 - **B24. Bounce arrows** run 6 cycles (~10 s) instead of forever. The section 04 flows and the day's waveforms only run while on screen.
 - **B25. Phone hero hint** ("TAP TO CHOOSE" / "NOW SCROLL…") is hidden on phones, as in G7.
 - **B26. No-JS fallbacks.** All six feature groups render visible and JS turns them into tabs; the film links point to the README's film slot when JS is off.
+- **B27. Motion is always on (Zaid's call).** The OS reduced-motion setting no longer changes the page: many Windows laptops report "reduce" only because Animation effects is off. Every `prefers-reduced-motion` rule is gone from the CSS and JS (there was no GSAP `matchMedia`), so every visitor with JavaScript gets the full animated page: the hero intro, the pinned day, widget entries, loops and reveals. The still layout stays for no JavaScript and for windows under 520 px tall (B21). There is no motion toggle.
+- **B28. README images.** The hero (linked to the live site), a GIF of the day and a 2×2 grid of existing screenshots. `scripts/daygif.mjs` records the GIF (desktop, 12 fps, 11 s, 960 px, ffmpeg palettegen/paletteuse, 2.9 MB). It drives the page clock by hand, so frames are evenly spaced however slow the screenshots are. The README's images add up to 3.2 MB; only the GIF is new.
 
 ## Follow-up fixes (after Claude's screenshot review)
 
@@ -94,12 +96,14 @@ Two review passes ran after the first full build (separate reviewers).
 
 ## Tests and Lighthouse
 
-- **Playwright:** 36 tests, all passing (Chromium build 1243, 1440×900 and 390×844).
+- **Playwright:** 38 tests, all passing (Chromium build 1243, 1440×900 and 390×844). The old reduced-motion test ("twelve still sections") was replaced by three tests that emulate reduced motion and check that the page still animates: the hero intro plays; the day is pinned and the 12:30 widgets animate in; on a phone the day is still pinned. The still layout is covered by the short-window and no-JS tests.
 - **Lighthouse** (`npm run lighthouse`, local preview build):
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Desktop | 100 | 100 | 100 | 100 |
-| Mobile (slow 4G, 4× CPU) | 92 | 100 | 100 | 100 |
+| Desktop | 99 | 100 | 100 | 100 |
+| Mobile (slow 4G, 4× CPU) | 88–91 | 100 | 100 | 100 |
+
+After the motion change (B27), three runs. Lighthouse doesn't emulate reduced motion, so its code path is unchanged. The previous commit, scored the same way in the same session, gave 100 / 90, so the differences in Performance are run-to-run noise on this machine. The first build scored 100 / 92.
 
 Mobile LCP is the hero image at 2.9 s on simulated slow 4G. The faces are revealed by the designed intro wipe, and the AVIF loads at high priority. FCP is 2.4 s.

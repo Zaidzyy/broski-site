@@ -12,6 +12,8 @@
 
 <a id="film"></a>🎬 Film: made with HyperFrames × Claude Code (coming soon)
 
+<a href="https://zaidzyy.github.io/broski-site/"><img src="docs/screens/desktop-01-hero.webp" width="100%" alt="The Broski site's hero: the word BROSKI in huge letters, with Bro drawn in grey on the left and Zara in warm colour on the right, split by a slanted line. Links to the live site."></a>
+
 ---
 
 ## Measured, not claimed
@@ -43,6 +45,8 @@ I wanted something that knows my actual day and holds me to it. Not another dash
 
 ## One day with Broski
 
+<img src="docs/media/day.gif" width="100%" alt="The site's day, scrolling from 04:00 to 23:00: a 24-hour dial turns, the sky inside it goes from night to dawn, noon, dusk and night, each hour's card appears beside it, and the day ends on a score of 72.">
+
 Sample data, the same day the site walks through.
 
 | Time | What happens |
@@ -59,6 +63,17 @@ Sample data, the same day the site walks through.
 | 19:10 | The workout syncs and reads itself: add a plate, a stall, a missed exercise, deload next week. |
 | 21:30 | "Hey Zara, set me up for work.": apps, links, a focus mix at volume 30, two quiet hours. |
 | 23:00 | The day gets an honest score (72), one line about tomorrow, and the habits grid with its scar. |
+
+<table>
+  <tr>
+    <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-day-06.webp" width="400" alt="12:30 on the site: the dial shows a bright midday sky, and a trading replay drill card shows a candle chart, process checks and 64 of 100 paper trades."><br><sub>12:30 · a trading coach that never trades</sub></td>
+    <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-03-rest.webp" width="400" alt="Section 03, everything else: six word tabs with Learn open, a ring of 36 tick marks, and cards for Arabic, the trading academy, paper first, book citations, the glossary and weekly homework."><br><sub>Everything else · 36 features in six groups</sub></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-04-hood.webp" width="400" alt="Section 04, under the hood: four tier cards (No AI, Local, Sonnet, Opus), the gate answering read requests on its own, and a drawing of what runs on the laptop."><br><sub>Under the hood · the tiers and the gate</sub></td>
+    <td width="50%" align="center" valign="top"><img src="docs/screens/phone-01-hero.webp" width="160" alt="The site on a phone: BROSKI across the top, Bro and Zara side by side, and a bottom sheet asking who you want today."><br><sub>On a phone</sub></td>
+  </tr>
+</table>
 
 ## Everything else
 

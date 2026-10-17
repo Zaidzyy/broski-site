@@ -144,12 +144,3 @@
   .pick { padding: 15px 0; }
   .chooser__hint { display: none; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .ltr, .face--bro, .face--zara, .slash__line > span, .fade { animation: none; }
-  .ltr, .slash__line > span { transform: none; }
-  .face--bro, .face--zara { clip-path: none; }
-  .fade { opacity: 1; }
-  .hero, .pane, .slide, .slash, .pic__dim, .fig > *, .word--solid, .hero__status, .chooser__hint, .pick { transition: none; }
-  .hero:not([data-who='both']) .chooser__arrow { animation: none; }
-}

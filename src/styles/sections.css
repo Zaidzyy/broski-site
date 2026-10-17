@@ -235,8 +235,3 @@
   .proof__dot { display: none; }
 }
 @keyframes flowy { to { transform: translateY(14px); } }
-@media (prefers-reduced-motion: reduce) {
-  .in-view .flow > span, .in-view .pulse, .in-view .dashflow { animation: none !important; }
-  .tab, .mark, .tile--acc, .req, .gate__bar, .opt, .vote__send { transition: none; }
-  .js .rv { opacity: 1; transform: none; }
-}

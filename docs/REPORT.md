@@ -15,7 +15,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - The ending: the window closes, the ticks fall away, the arc shrinks to 72 %, and the 72 appears.
   - Top bar: hour chips, the Bro/Zara switch, ▶ Play (about 25 s, press again to stop) and a progress line.
   - Phone: a small pinned dial, with the scene below at full width.
-  - Reduced motion (and no JS): twelve still sections.
+  - Motion is always on, whatever the OS reduced-motion setting says (Zaid's call, B27). Twelve still sections only without JavaScript or in windows under 520 px tall.
 - **03 Everything else.** Six Anton word tabs (an ARIA tablist with arrow keys and Home/End), the 36-mark ring and the bento. Learn is open first.
 - **04 Under the hood.**
   - Tier cards.
@@ -24,7 +24,10 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Stack chips.
 - **05 Yours?** The "Yet?" heading, the links, and the vote card (a radio group, optional email, "Count me in" disabled until a pick, and a thank-you state).
 - **Footer.** The proof line from `facts.json`.
-- **README.md.** Generated from `docs/README.template.md` + `src/data/facts.json` + `src/data/features.ts` (`npm run readme`).
+- **README.md.** Generated from `docs/README.template.md` + `src/data/facts.json` + `src/data/features.ts` (`npm run readme`). Images:
+  - the hero, linked to the live site;
+  - a looping GIF of the day ([docs/media/day.gif](media/day.gif), recorded by `scripts/daygif.mjs`);
+  - a 2×2 grid: 12:30, everything else, under the hood, the phone.
 - **Deploy.** `.github/workflows/deploy.yml` (written, not run). The base path comes from `src/config.ts` / `BASE_PATH`.
 
 ## Screenshots
@@ -35,7 +38,7 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
   - Day scenes 1–12: [01](screens/desktop-day-01.webp) [02](screens/desktop-day-02.webp) [03](screens/desktop-day-03.webp) [04](screens/desktop-day-04.webp) [05](screens/desktop-day-05.webp) [06](screens/desktop-day-06.webp) [07](screens/desktop-day-07.webp) [08](screens/desktop-day-08.webp) [09](screens/desktop-day-09.webp) [10](screens/desktop-day-10.webp) [11](screens/desktop-day-11.webp) [12](screens/desktop-day-12.webp) · [end (72)](screens/desktop-day-13-end.webp)
   - Sections: [03](screens/desktop-03-rest.webp) · [04](screens/desktop-04-hood.webp) · [05](screens/desktop-05-yours.webp) · [footer](screens/desktop-06-footer.webp)
 - **Phone (390×844):** the same set with the `phone-` prefix in [screens/](screens/).
-- **Reduced motion:** [the still day](screens/reduced-motion-day.webp)
+- **Without JavaScript:** [the still day](screens/no-js-day.webp)
 - **Phone hero at the edge widths:** [360 px](screens/phone-360-01-hero.webp) · [430 px](screens/phone-430-01-hero.webp)
 
 ![Hero](screens/desktop-01-hero.webp)
@@ -48,18 +51,19 @@ The Broski landing page (GitHub Pages) and the public README, built from the dec
 
 ## Tests and Lighthouse
 
-- **Playwright:** 36 passing.
+- **Playwright:** 38 passing.
   - Load with no console errors and no third-party requests.
   - CSP and meta present; no cookies or storage written.
   - Persona recolouring and hover peek.
   - Every scene and its dial digits; the ending's 72; hour chips; Play/stop; the intro pill.
-  - Reduced motion; phone (no horizontal scroll, pinned dial, every scene reachable); short windows; no JS.
+  - Reduced motion emulated: the page still animates (hero intro, pinned day, widget entries, also on a phone); phone (no horizontal scroll, pinned dial, every scene reachable); short windows; no JS.
   - Tabs by keyboard; the gate; the film's "coming soon"; the skip link.
   - Vote: disabled until a pick; an empty endpoint sends nothing; a mocked endpoint receives exactly `{choice}` / `{choice, email}`; a bad email is caught.
   - Regression tests for the review findings.
 - **Lighthouse:**
-  - Desktop: 100 / 100 / 100 / 100.
-  - Mobile: 92 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO).
+  - Desktop: 99 / 100 / 100 / 100.
+  - Mobile: 88–91 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO), over three runs after the motion change. The previous commit scored 100 / 90 in the same session, so the spread is noise.
+  - Earlier full build: desktop 100, mobile 92.
 
 ## What Zaid does next
 

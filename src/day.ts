@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { SCENES } from './data/day';
 import { setWho } from './lib/persona';
-import { reducedMotion, isPhone } from './lib/motion';
+import { isPhone } from './lib/motion';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -73,7 +73,7 @@ export function initDay() {
 
   // Too short for the pinned stage (landscape phones, high browser zoom): use the still version.
   const tooShort = () => window.innerHeight < 520;
-  if (reducedMotion() || tooShort()) {
+  if (tooShort()) {
     // Twelve still sections, each in its final state. No pinning, no auto-scroll.
     day.classList.add('is-static-js');
     const fitStatic = () => scenes.forEach((s, i) => fitWidget(s, fits[i], s.querySelector<HTMLElement>('.scene__w')!.clientWidth, Infinity));

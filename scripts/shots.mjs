@@ -52,13 +52,13 @@ try {
     await sections(page, prefix);
     await ctx.close();
   }
-  const rm = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
-  const p = await rm.newPage();
-  await p.goto(URL);
-  await p.evaluate(() => document.querySelector('#s1115').scrollIntoView());
+  // the still day: only without JavaScript (and in windows under 520 px tall)
+  const nojs = await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
+  const p = await nojs.newPage();
+  await p.goto(URL + '#s1115'); // page scripts are off, so the anchor does the scrolling
   await settle(p);
-  await p.screenshot({ path: `${OUT}/reduced-motion-day.png` });
-  await rm.close();
+  await p.screenshot({ path: `${OUT}/no-js-day.png` });
+  await nojs.close();
 } finally {
   await browser.close();
 }

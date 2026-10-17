@@ -120,7 +120,3 @@ fieldset { border: 0; min-width: 0; }
 @media (max-width: 480px) {
   :root { --gutter: 16px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .bounce { animation: none; }
-  .pill, .toast { transition: none; }
-}

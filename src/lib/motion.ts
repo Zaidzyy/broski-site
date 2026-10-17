@@ -1,4 +1,5 @@
-export const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Motion is always on: the OS reduced-motion setting does not switch the page to the still layout
+// (Zaid's call; many Windows laptops report "reduce" only because Animation effects is off).
 export const finePointer = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 export const isPhone = () => window.innerWidth <= 700;
 

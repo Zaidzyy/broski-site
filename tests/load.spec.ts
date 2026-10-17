@@ -22,6 +22,10 @@ test('loads with no console errors and no requests outside its own origin, at lo
 
 test('has the CSP, the meta, one h1 and the Arabic word marked up', async ({ page }) => {
   await page.goto('./');
+  // the blank moment before the first paint is dark: color-scheme and the page colour come first in the head
+  const head = await page.evaluate(() => [...document.head.children].slice(0, 3).map((n) => n.outerHTML.toLowerCase()));
+  expect(head).toEqual(['<meta charset="utf-8">', '<meta name="color-scheme" content="dark">', '<style>html{background:#0c0b0a}</style>']);
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor)).toBe('rgb(12, 11, 10)');
   await expect(page.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveCount(1);
   // the one origin besides this site's: the vote endpoint, for fetch only
   const csp = (await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content'))!;

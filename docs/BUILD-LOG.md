@@ -116,6 +116,7 @@ Assumptions are numbered B1, B2, … and the safer choice was taken each time.
 
   - **Clips:** `review/first-load-before.mp4` and `review/first-load-after.mp4` (git-ignored). The remaining long tasks are the main script being evaluated and the page relaying out as the other nine font files arrive. The intro's motion is transforms, opacity and clip-path, and the recording shows it unaffected.
   - **Trade-off: first paint.** Fetching Anton before the first render makes Chrome hold that render until about 1.1 s (with script-inserted preloads too). With no preloads, first paint was ~0.3–0.4 s and the intro smoother (0–5 dropped frames). But the intro started later (1.7–1.9 s), and Lighthouse mobile LCP worsened to 3.1 s (FCP 2.6 s). The preloads stay, as asked; dropping the font preload is a one-line change if a faster first paint matters more.
+  - **Dark from the first frame:** `<meta name="color-scheme" content="dark">` and `<style>html{background:#0C0B0A}</style>` sit right after `<meta charset>`, before the preloads. The CSP's `style-src` already allows inline styles, so no hash is needed. In the cold-load recording the moment before the first paint is still the browser's own white: Chrome shows nothing from the page until that paint (about 1.1 s with the font preload). From the first paint on, the page is dark, and browsers that paint the canvas earlier use these two lines.
 
 ## Follow-up fixes (after Claude's screenshot review)
 

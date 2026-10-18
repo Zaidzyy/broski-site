@@ -198,3 +198,16 @@ After the alive pass (B31), two runs, both 99 / 90. Mobile LCP is 2.9 s and its 
 Before that, after the motion change (B27): desktop 99, mobile 88–91 over three runs. Lighthouse doesn't emulate reduced motion, so its code path is unchanged. The previous commit, scored the same way in the same session, gave 100 / 90, so the differences in Performance are run-to-run noise on this machine. The first build scored 100 / 92.
 
 Mobile LCP is the hero image at 2.9 s on simulated slow 4G. The faces are revealed by the designed intro wipe, and the AVIF loads at high priority. FCP is 2.4 s.
+
+## Talk mode update (site Talk-mode prompt v1, 18 Oct 2026)
+
+**Version:** site Talk-mode prompt v1.
+
+Broski gained Talk mode, a full-screen one-on-one call with Bro or Zara. Zaid added its image to the README on GitHub (`ea48827`); this run makes the template, the site and the README match. `src/data/facts.json` is not touched here: the numbers refresh after Run AT, as a separate step.
+
+- **README template:** the cell Zaid added (row 2, right, where the "On a phone" screenshot used to be) is copied into `docs/README.template.md` at the same spot. Two changes: the caption is now "Talk mode · full screen, one on one", and the alt text is "Talk mode: Bro full screen, mid-reply, with an email card waiting for a yes". The table, the widths (`width="2880" height="1800"`) and the image URL stay as Zaid wrote them.
+- **B33. Feature line.** "Two voices" first got the description "Wake word, live mode you can interrupt, and full-screen Talk mode". At 390 px it was the only two-line card in Reach, and it broke at the hyphen ("full- / screen"). So it is shortened to the fallback, "Wake word, live mode, full-screen Talk mode": one line at 390 and 900 px. At 1440 px it takes two lines, like Telegram, Email and Quiet and focus beside it, and the card keeps its 168 px height. At 320 px it wraps to two lines like three other Reach cards. The 36-tick ring shows only group names, so it is unaffected. The hover peek shows the same cards. The count stays 36.
+- **README regenerated** (`npm run readme`). Compared with Zaid's GitHub version, only two lines change: the Talk cell (its caption and alt text) and the feature line. The other 45 changed lines differ only in line endings. The generator joins the 36-feature block with LF, and GitHub's web editor had saved those lines as CRLF; the regenerated file is back to what the generator has always written.
+- **Tests:** 64 passed before the change, and 64 passed after it (Chromium build 1243 through `PW_CHROMIUM`). No test was edited.
+- **RAM:** 7.2 GB free at the first check and 5.7 GB before the final run, so there was no wait. The one preview server this run started is closed; nothing else was stopped.
+- **Screenshots** of section 03 with Reach open (desktop 1440×900, phone 390×844) were taken for the report and kept out of the repo. `docs/screens/desktop-03-rest.webp` shows Learn, so it doesn't change.

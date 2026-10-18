@@ -81,7 +81,7 @@ Sample data, the same day the site walks through.
   </tr>
   <tr>
     <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-04-hood.webp" width="400" alt="Section 04, under the hood: four tier cards (No AI, Local, Sonnet, Opus), the gate answering read requests on its own, and a drawing of what runs on the laptop."><br><sub>Under the hood · the tiers and the gate</sub></td>
-    <td width="50%" align="center" valign="top"><img src="docs/screens/phone-01-hero.webp" width="160" alt="The site on a phone: BROSKI across the top, Bro and Zara side by side, and a bottom sheet asking who you want today."><br><sub>On a phone</sub></td>
+    <td width="50%" align="center" valign="top"><img width="2880" height="1800" alt="Talk mode: Bro full screen, mid-reply, with an email card waiting for a yes" src="https://github.com/user-attachments/assets/7c165593-d8bb-4622-a39b-c1c84db313e0" /><br><sub>Talk mode · full screen, one on one</sub></td>
   </tr>
 </table>
 

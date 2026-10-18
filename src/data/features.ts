@@ -46,7 +46,7 @@ export const GROUPS: FeatureGroup[] = [
   { g: 'Reach', items: [
     { t: 'The bubble', d: 'Over any app, never over fullscreen' },
     { t: 'Telegram', d: '/today, /jobs, /gym, quick buttons, voice notes' },
-    { t: 'Two voices', d: 'Wake word and live mode you can interrupt' },
+    { t: 'Two voices', d: 'Wake word, live mode, full-screen Talk mode' },
     { t: 'Laptop control', d: 'Apps, links, music, volume' },
     { t: 'Email', d: 'Reads and drafts. Sends only after a yes' },
     { t: 'Quiet and focus', d: 'Respects Do Not Disturb, laptop or phone' },

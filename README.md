@@ -81,7 +81,7 @@ Sample data, the same day the site walks through.
   </tr>
   <tr>
     <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-04-hood.webp" width="400" alt="Section 04, under the hood: four tier cards (No AI, Local, Sonnet, Opus), the gate answering read requests on its own, and a drawing of what runs on the laptop."><br><sub>Under the hood · the tiers and the gate</sub></td>
-    <td width="50%" align="center" valign="top"><img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7c165593-d8bb-4622-a39b-c1c84db313e0" /><br><sub>The Call</sub></td>
+    <td width="50%" align="center" valign="top"><img width="2880" height="1800" alt="Talk mode: Bro full screen, mid-reply, with an email card waiting for a yes" src="https://github.com/user-attachments/assets/7c165593-d8bb-4622-a39b-c1c84db313e0" /><br><sub>Talk mode · full screen, one on one</sub></td>
   </tr>
 </table>
 
@@ -130,7 +130,7 @@ Sample data, the same day the site walks through.
 **Reach**
 - The bubble: Over any app, never over fullscreen
 - Telegram: /today, /jobs, /gym, quick buttons, voice notes
-- Two voices: Wake word and live mode you can interrupt
+- Two voices: Wake word, live mode, full-screen Talk mode
 - Laptop control: Apps, links, music, volume
 - Email: Reads and drafts. Sends only after a yes
 - Quiet and focus: Respects Do Not Disturb, laptop or phone

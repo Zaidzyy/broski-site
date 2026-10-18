@@ -30,15 +30,15 @@ https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
 
 | What | Number |
 |---|---|
-| Tests | 3,207 |
+| Tests | 3,270 |
 | On-device voice round trip | 0.5 s |
 | Telemetry | 0 |
 | Doctor checks | 66 |
 | Academy lessons | 109 |
 | Glossary terms | 2,549 |
-| Build days / commits / Claude Code runs | 17 / 575 / 41 |
+| Build days / commits / Claude Code runs | 18 / 587 / 43 |
 
-Built in 17 days · 575 commits · 41 Claude Code runs (2026-10-01 to 2026-10-17).
+Built in 18 days · 587 commits · 43 Claude Code runs (2026-10-01 to 2026-10-18).
 
 ## At a glance
 

@@ -1,13 +1,13 @@
 {
-  "tests": 3207,
+  "tests": 3270,
   "voiceSeconds": 0.5,
   "telemetry": 0,
   "doctorChecks": 66,
   "lessons": 109,
   "glossaryTerms": 2549,
   "firstCommit": "2026-10-01",
-  "lastCommit": "2026-10-17",
-  "buildDays": 17,
-  "commits": 575,
-  "claudeRuns": 41
+  "lastCommit": "2026-10-18",
+  "buildDays": 18,
+  "commits": 587,
+  "claudeRuns": 43
 }

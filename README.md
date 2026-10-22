@@ -31,7 +31,7 @@ https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
 | What | Number |
 |---|---|
 | Tests | 3,270 |
-| On-device voice round trip | 0.5 s |
+| On-device speech round trip (self-test) | 0.7 s |
 | Telemetry | 0 |
 | Doctor checks | 66 |
 | Academy lessons | 109 |
@@ -112,7 +112,7 @@ Sample data, the same day the site walks through.
 - Notes canvas: Sticky notes from the app, voice or phone
 
 **Learn**
-- Arabic: Notes, flashcards, spaced repetition
+- Arabic: 59 lessons, levels you earn, flashcards
 - Trading academy: 109 lessons, drills graded by rules
 - Paper first: Graduation gates in code. It never trades
 - Book citations: Cites the page, or says it is not covered
@@ -124,7 +124,7 @@ Sample data, the same day the site walks through.
 - Secrets scrubbed: Before anything is read
 - Correct me: Shows what it knows. You approve each fact
 - Weekly review: Patterns and what needs attention
-- Your words: Quoted exactly, never rewritten
+- Your words: Quoted exactly, or marked when adapted
 - Shared memory: Other AI apps can ask it. Off by default
 
 **Reach**
@@ -169,6 +169,8 @@ flowchart LR
 - Doctor: 66 self-checks
 
 Only text goes to Claude. Audio is never sent. Telegram talks to one chat: mine.
+
+Every request from the app's screens is checked against where it came from; a page dropped onto the window gets no access.
 
 **Stack.** Electron, React, TypeScript, SQLite, Claude Agent SDK, Ollama, faster-whisper, Kokoro, Telegram Bot API, ActivityWatch, Google Calendar.
 

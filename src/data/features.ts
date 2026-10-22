@@ -28,7 +28,7 @@ export const GROUPS: FeatureGroup[] = [
     { t: 'Notes canvas', d: 'Sticky notes from the app, voice or phone' },
   ] },
   { g: 'Learn', items: [
-    { t: 'Arabic', d: 'Notes, flashcards, spaced repetition' },
+    { t: 'Arabic', d: '59 lessons, levels you earn, flashcards' },
     { t: 'Trading academy', d: `${facts.lessons} lessons, drills graded by rules` },
     { t: 'Paper first', d: 'Graduation gates in code. It never trades' },
     { t: 'Book citations', d: 'Cites the page, or says it is not covered' },
@@ -40,7 +40,7 @@ export const GROUPS: FeatureGroup[] = [
     { t: 'Secrets scrubbed', d: 'Before anything is read' },
     { t: 'Correct me', d: 'Shows what it knows. You approve each fact' },
     { t: 'Weekly review', d: 'Patterns and what needs attention' },
-    { t: 'Your words', d: 'Quoted exactly, never rewritten' },
+    { t: 'Your words', d: 'Quoted exactly, or marked when adapted' },
     { t: 'Shared memory', d: 'Other AI apps can ask it. Off by default' },
   ] },
   { g: 'Reach', items: [

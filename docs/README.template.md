@@ -31,7 +31,7 @@ https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
 | What | Number |
 |---|---|
 | Tests | {{tests}} |
-| On-device voice round trip | {{voiceSeconds}} s |
+| On-device speech round trip (self-test) | {{voiceSeconds}} s |
 | Telemetry | {{telemetry}} |
 | Doctor checks | {{doctorChecks}} |
 | Academy lessons | {{lessons}} |
@@ -123,6 +123,8 @@ flowchart LR
 - Doctor: {{doctorChecks}} self-checks
 
 Only text goes to Claude. Audio is never sent. Telegram talks to one chat: mine.
+
+Every request from the app's screens is checked against where it came from; a page dropped onto the window gets no access.
 
 **Stack.** Electron, React, TypeScript, SQLite, Claude Agent SDK, Ollama, faster-whisper, Kokoro, Telegram Bot API, ActivityWatch, Google Calendar.
 

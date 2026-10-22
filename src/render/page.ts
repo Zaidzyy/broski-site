@@ -217,7 +217,7 @@ function footer() {
   return `
 <footer class="foot">
   <div class="foot__in">
-    <p class="proof"><span><b class="acc">${n(facts.tests)}</b> tests</span><span class="proof__dot" aria-hidden="true">·</span><span><b class="acc">${facts.voiceSeconds} s</b> on-device voice</span><span class="proof__dot" aria-hidden="true">·</span><span><b class="acc">${facts.telemetry}</b> telemetry</span></p>
+    <p class="proof"><span><b class="acc">${n(facts.tests)}</b> tests</span><span class="proof__dot" aria-hidden="true">·</span><span><b class="acc">${facts.voiceSeconds} s</b> speech round trip, on device</span><span class="proof__dot" aria-hidden="true">·</span><span><b class="acc">${facts.telemetry}</b> telemetry</span></p>
     <div class="foot__row"><span>Broski — Vol. 01</span><span>Built by one, for one</span><a href="${README_NUMBERS_URL}" ${ext}>Full numbers in the README <span aria-hidden="true">↗</span></a></div>
   </div>
 </footer>`;

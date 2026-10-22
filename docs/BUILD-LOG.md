@@ -211,3 +211,22 @@ Broski gained Talk mode, a full-screen one-on-one call with Bro or Zara. Zaid ad
 - **Tests:** 64 passed before the change, and 64 passed after it (Chromium build 1243 through `PW_CHROMIUM`). No test was edited.
 - **RAM:** 7.2 GB free at the first check and 5.7 GB before the final run, so there was no wait. The one preview server this run started is closed; nothing else was stopped.
 - **Screenshots** of section 03 with Reach open (desktop 1440×900, phone 390×844) were taken for the report and kept out of the repo. `docs/screens/desktop-03-rest.webp` shows Learn, so it doesn't change.
+
+## Copy update (site copy-update prompt v1, 22 Oct 2026)
+
+**Version:** site copy-update prompt v1.
+
+Broski changed in Runs AU and AV, and three lines on the site and README were out of date. This run fixes them and adds one README line. Of the numbers in `src/data/facts.json`, only `voiceSeconds` changes here; the rest refresh in a follow-up after Run AV-2.
+
+- **Your words** (Brain): "Quoted exactly, never rewritten" → "Quoted exactly, or marked when adapted". Broski now picks one of his lines for the moment and may adapt it, labelled "based on your words".
+- **Voice number:** `voiceSeconds` 0.5 → 0.7, the latest measured on-device round trip (the Doctor's text → speech → text self-test, 21 Oct).
+- **B34. Proof line label.** "0.5 s on-device voice" could be read as how fast Broski answers, so it now reads "0.7 s speech round trip, on device". The preferred wording is kept: at 1440 and 390 px each proof item is one line (on phones the items already stack in a column). At 320 px this one item wraps to two lines, centred; that is narrower than the phone width the prompt checks, so the shorter fallback ("s on-device speech") isn't used.
+- **README table:** "On-device voice round trip" → "On-device speech round trip (self-test)". The 04 log line ("voice round trip … s") keeps its wording and reads the new number.
+- **B35. Arabic line** (Learn): "Notes, flashcards, spaced repetition" → "59 lessons, levels you earn, flashcards", the preferred wording. It is one line at 1440, 390 and 320 px, so the fallback isn't needed. The hover peek shows the same cards, and the 36-tick ring shows only group names. The count stays 36. "Your words" takes two lines at 1440 px, like "Remembers you" and "Correct me" beside it, and the card keeps its 168 px height. It is one line at 390 px, and two at 320 px like those same two cards.
+- **README line** under "How it's built", after "Only text goes to Claude…": "Every request from the app's screens is checked against where it came from; a page dropped onto the window gets no access."
+- **The one test edit (allowed by the prompt):** `tests/alive.spec.ts`, the 04 log test. It hardcoded `'doctor 66/66 ✓'` and `'voice round trip 0.5 s'`; both strings are now built from `src/data/facts.json` (`doctorChecks`, `voiceSeconds`), so the numbers can move without editing the test again. It checks the same three lines as before.
+- **Left as history:** `design/STORYBOARD.md` and `docs/REPORT.md` still quote "0.5 s on-device voice". They record the first build, not the live site.
+- **README regenerated** (`npm run readme`): 5 lines added, 3 removed, and they are exactly the lines above (the table row, the two feature lines, the new line and its blank line). There are no line-ending-only differences.
+- **Tests:** 64 passed before the change, and 64 passed after it (Chromium build 1243 through `PW_CHROMIUM`). The only test edit is the one above.
+- **RAM:** 3.4 GB free at the first check. Zaid waived the 4 GB wait for this run, so the build and tests ran without waiting (5.4 GB free at the end). The one preview server this run started for screenshots is closed; nothing else was stopped.
+- **Screenshots** (desktop 1440×900, phone 390×844) of the footer proof line, section 03 on Learn and on Brain (plus a desktop peek of Brain from Learn) and the 04 log were taken for the report and kept out of the repo. `docs/screens/desktop-03-rest.webp` shows Learn with the old Arabic line; it is left for the screens refresh.

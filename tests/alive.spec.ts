@@ -1,5 +1,6 @@
 // The "alive" pass: hero breathing, parallax, blinks and glances; the 03 wandering tick; the 04 live log.
 import { test, expect, type Page } from '@playwright/test';
+import facts from '../src/data/facts.json' with { type: 'json' };
 
 const introOver = (page: Page) => expect(page.locator('.hero')).toHaveClass(/is-alive/, { timeout: 5000 });
 
@@ -210,7 +211,7 @@ test('04: the laptop log advances while on screen and stops off screen', async (
   const lines = () => page.locator('.lap__log li').allTextContents();
   await page.locator('.lap').scrollIntoViewIfNeeded();
   const before = await lines();
-  expect(before.slice(0, 3)).toEqual(['doctor 66/66 ✓', 'voice round trip 0.5 s', 'RUNNING LOCALLY · 0 FAIL']);
+  expect(before.slice(0, 3)).toEqual([`doctor ${facts.doctorChecks}/${facts.doctorChecks} ✓`, `voice round trip ${facts.voiceSeconds} s`, 'RUNNING LOCALLY · 0 FAIL']);
   await expect.poll(lines, { timeout: 4000 }).not.toEqual(before);
 
   await page.evaluate(() => window.scrollTo(0, 0));

@@ -30,15 +30,15 @@ https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
 
 | What | Number |
 |---|---|
-| Tests | 3,270 |
+| Tests | 3,599 |
 | On-device speech round trip (self-test) | 0.7 s |
 | Telemetry | 0 |
-| Doctor checks | 66 |
+| Doctor checks | 67 |
 | Academy lessons | 109 |
 | Glossary terms | 2,549 |
-| Build days / commits / Claude Code runs | 18 / 587 / 43 |
+| Build days / commits / Claude Code runs | 22 / 639 / 47 |
 
-Built in 18 days · 587 commits · 43 Claude Code runs (2026-10-01 to 2026-10-18).
+Built in 22 days · 639 commits · 47 Claude Code runs (2026-10-01 to 2026-10-22).
 
 ## At a glance
 
@@ -47,7 +47,7 @@ Built in 18 days · 587 commits · 43 Claude Code runs (2026-10-01 to 2026-10-18
 - Every message takes the cheapest route that can handle it: plain code first, then a local model, then Claude.
 - Anything that sends, deletes, pays or runs a command waits for a yes.
 - Reaches me through a floating bubble on the laptop and a private Telegram chat on the phone.
-- A self-check (Doctor) runs 66 checks on its own health.
+- A self-check (Doctor) runs 67 checks on its own health.
 
 ## Why this exists
 
@@ -166,7 +166,7 @@ flowchart LR
 - Wake word: on-device
 - Data: SQLite + a notes vault
 - Secrets: Windows DPAPI
-- Doctor: 66 self-checks
+- Doctor: 67 self-checks
 
 Only text goes to Claude. Audio is never sent. Telegram talks to one chat: mine.
 

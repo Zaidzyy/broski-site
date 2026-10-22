@@ -230,3 +230,13 @@ Broski changed in Runs AU and AV, and three lines on the site and README were ou
 - **Tests:** 64 passed before the change, and 64 passed after it (Chromium build 1243 through `PW_CHROMIUM`). The only test edit is the one above.
 - **RAM:** 3.4 GB free at the first check. Zaid waived the 4 GB wait for this run, so the build and tests ran without waiting (5.4 GB free at the end). The one preview server this run started for screenshots is closed; nothing else was stopped.
 - **Screenshots** (desktop 1440×900, phone 390×844) of the footer proof line, section 03 on Learn and on Brain (plus a desktop peek of Brain from Learn) and the 04 log were taken for the report and kept out of the repo. `docs/screens/desktop-03-rest.webp` shows Learn with the old Arabic line; it is left for the screens refresh.
+
+## Facts refresh (after Run AV-3, 22 Oct 2026)
+
+- **`src/data/facts.json`**, set to Zaid's values with nothing recounted: tests 3,270 → 3,599, Doctor checks 66 → 67, build days 18 → 22, commits 587 → 639, Claude Code runs 43 → 47, last commit 2026-10-22. Every other value is unchanged (`voiceSeconds` stays 0.7).
+- **README** regenerated (`npm run readme`): the facts table, the "Built in…" line and the two Doctor lines. That's 6 lines changed, with no line-ending-only differences.
+- **README screenshots:** `docs/screens/desktop-03-rest.webp` is re-shot (Learn now reads "59 lessons, levels you earn, flashcards"). The other two in the README, `desktop-04-hood.webp` and `desktop-day-06.webp`, have none of the old numbers or lines, so they are left as they are.
+- **Not changed (out of scope):** the 11:15 day scene (`src/data/day.ts`) still says "Spaced repetition decides what comes back." It isn't in a README screenshot, but it does appear in `docs/media/day.gif`.
+- **Tests:** 64 passed before (the last recorded run) and 64 passed after (Chromium build 1243 through `PW_CHROMIUM`). No test was edited.
+- **RAM:** between 4.6 and 4.9 GB free at every check, so there was no wait. The one preview server this run started is closed.
+- **Screenshots** (desktop 1440×900, phone 390×844) of the README facts table, the footer proof line and the 04 live log were taken for the report and kept out of the repo.

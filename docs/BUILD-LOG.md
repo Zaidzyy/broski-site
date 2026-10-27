@@ -240,3 +240,10 @@ Broski changed in Runs AU and AV, and three lines on the site and README were ou
 - **Tests:** 64 passed before (the last recorded run) and 64 passed after (Chromium build 1243 through `PW_CHROMIUM`). No test was edited.
 - **RAM:** between 4.6 and 4.9 GB free at every check, so there was no wait. The one preview server this run started is closed.
 - **Screenshots** (desktop 1440×900, phone 390×844) of the README facts table, the footer proof line and the 04 live log were taken for the report and kept out of the repo.
+
+## Facts refresh (after Run AW-15 follow-up 4, 27 Oct 2026)
+
+- **`src/data/facts.json`**, Zaid's values: tests 3,599 → 4,365, Doctor checks 67 → 68, build days 22 → 27, commits 639 → 745, Claude Code runs 47 → 61 (AW-3 to AW-15, plus follow-up 4's own session), last commit 2026-10-27. Every other value is unchanged.
+- **README** regenerated (`npm run readme`): the facts table, the "Built in…" line and the Doctor lines. No line-ending-only differences.
+- **Build:** not run locally (the Windows `node_modules` can't run `tsc` in the Linux shell); the deploy workflow runs `npm ci` and `npm run build` on push. Only JSON values changed.
+- **Not changed:** the copy. Nothing built since 22 Oct is described yet; that's a separate change.

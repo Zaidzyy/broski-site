@@ -7,7 +7,7 @@ export const GROUPS: FeatureGroup[] = [
     { t: 'Habits with scars', d: 'A frozen day stays visible in the grid' },
     { t: '66-day counter', d: 'Each habit counts towards automatic' },
     { t: 'Tasks carry over', d: 'At 04:00, and missed days are counted' },
-    { t: 'One-sentence logging', d: 'Water, sleep, weight and food, any order' },
+    { t: 'One-sentence logging', d: 'Water, sleep, weight, any dish from any cuisine' },
     { t: 'Screen time', d: 'Banking and private windows never logged' },
     { t: 'Calendar', d: 'Reads both calendars, can add events' },
   ] },
@@ -45,7 +45,7 @@ export const GROUPS: FeatureGroup[] = [
   ] },
   { g: 'Reach', items: [
     { t: 'The bubble', d: 'Over any app, never over fullscreen' },
-    { t: 'Telegram', d: '/today, /jobs, /gym, quick buttons, voice notes' },
+    { t: 'Telegram', d: '/today, /jobs, /gym, buttons, voice notes, photos' },
     { t: 'Two voices', d: 'Wake word, live mode, full-screen Talk mode' },
     { t: 'Laptop control', d: 'Apps, links, music, volume' },
     { t: 'Email', d: 'Reads and drafts. Sends only after a yes' },

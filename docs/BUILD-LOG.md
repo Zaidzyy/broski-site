@@ -247,3 +247,15 @@ Broski changed in Runs AU and AV, and three lines on the site and README were ou
 - **README** regenerated (`npm run readme`): the facts table, the "Built in…" line and the Doctor lines. No line-ending-only differences.
 - **Build:** not run locally (the Windows `node_modules` can't run `tsc` in the Linux shell); the deploy workflow runs `npm ci` and `npm run build` on push. Only JSON values changed.
 - **Not changed:** the copy. Nothing built since 22 Oct is described yet; that's a separate change.
+
+## Facts refresh and two feature lines (1 Nov 2026)
+
+- **`src/data/facts.json`**, Zaid's values with nothing recounted: tests 4,365 → 5,092, build days 27 → 32, commits 745 → 870, Claude Code runs 61 → 69, last commit 2026-11-01. Every other value is unchanged.
+- **`src/data/features.ts`**, still 36 features. Track, One-sentence logging: "Water, sleep, weight and food, any order" → "Water, sleep, weight, any dish from any cuisine". Reach, Telegram: "/today, /jobs, /gym, quick buttons, voice notes" → "/today, /jobs, /gym, buttons, voice notes, photos".
+- **No deen features on the site**, on Zaid's instruction. None were there and none were added.
+- **Wrapping:** neither new line overflows. Each is one line at 390 px and two lines at 1440 and 320 px.
+- **README** regenerated (`npm run readme`): the facts table, the "Built in…" line and the two feature lines. That's 5 lines changed.
+- **Not changed (out of scope):** "quick buttons" stays in the Telegram day scene (`src/data/day.ts`) and the README 08:30 row (`docs/README.template.md`).
+- **Build:** `npm run build` passed, including `tsc`.
+- **Tests:** 64 passed after the change (Chromium build 1243 through `PW_CHROMIUM`). No baseline run this time; the last recorded run was also 64. No test was edited.
+- **RAM:** 0.36 GB free at the first check, so `scripts/ramcheck.mjs` logged three waits (see `docs/ram-waits.log`). It cleared on its own at 7.21 GB before Zaid waived the wait, so the build and tests ran behind a passing check. The two preview servers this run started are closed; nothing else was stopped.

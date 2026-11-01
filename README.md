@@ -30,15 +30,15 @@ https://github.com/user-attachments/assets/f3e01c27-58ad-44b0-9a5c-3fdda4691857
 
 | What | Number |
 |---|---|
-| Tests | 4,365 |
+| Tests | 5,092 |
 | On-device speech round trip (self-test) | 0.7 s |
 | Telemetry | 0 |
 | Doctor checks | 68 |
 | Academy lessons | 109 |
 | Glossary terms | 2,549 |
-| Build days / commits / Claude Code runs | 27 / 745 / 61 |
+| Build days / commits / Claude Code runs | 32 / 870 / 69 |
 
-Built in 27 days · 745 commits · 61 Claude Code runs (2026-10-01 to 2026-10-27).
+Built in 32 days · 870 commits · 69 Claude Code runs (2026-10-01 to 2026-11-01).
 
 ## At a glance
 
@@ -91,7 +91,7 @@ Sample data, the same day the site walks through.
 - Habits with scars: A frozen day stays visible in the grid
 - 66-day counter: Each habit counts towards automatic
 - Tasks carry over: At 04:00, and missed days are counted
-- One-sentence logging: Water, sleep, weight and food, any order
+- One-sentence logging: Water, sleep, weight, any dish from any cuisine
 - Screen time: Banking and private windows never logged
 - Calendar: Reads both calendars, can add events
 
@@ -129,7 +129,7 @@ Sample data, the same day the site walks through.
 
 **Reach**
 - The bubble: Over any app, never over fullscreen
-- Telegram: /today, /jobs, /gym, quick buttons, voice notes
+- Telegram: /today, /jobs, /gym, buttons, voice notes, photos
 - Two voices: Wake word, live mode, full-screen Talk mode
 - Laptop control: Apps, links, music, volume
 - Email: Reads and drafts. Sends only after a yes

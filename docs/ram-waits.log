@@ -7,3 +7,6 @@
 2026-10-16T21:48:42.115Z free 3.45 GB < 4 GB, waiting 2 min (first-look)
 2026-10-16T21:50:42.124Z free 3.40 GB < 4 GB, waiting 2 min (first-look)
 2026-10-16T21:51:59Z 4 GB rule lifted by Zaid; runs continue one browser at a time
+2026-11-01T13:00:19.944Z free 0.36 GB < 4 GB, waiting 2 min (facts-refresh)
+2026-11-01T13:02:19.963Z free 0.83 GB < 4 GB, waiting 2 min (facts-refresh)
+2026-11-01T13:04:19.969Z free 0.96 GB < 4 GB, waiting 2 min (facts-refresh)

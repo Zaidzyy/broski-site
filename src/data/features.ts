@@ -29,11 +29,11 @@ export const GROUPS: FeatureGroup[] = [
   ] },
   { g: 'Learn', items: [
     { t: 'Arabic', d: '59 lessons, levels you earn, flashcards' },
+    { t: 'GATE prep', d: 'Lectures paced to the exam, cards, past papers' },
     { t: 'Trading academy', d: `${facts.lessons} lessons, drills graded by rules` },
     { t: 'Paper first', d: 'Graduation gates in code. It never trades' },
-    { t: 'Book citations', d: 'Cites the page, or says it is not covered' },
+    { t: 'Setup scanner', d: 'Your own setups on closed candles. Never trades' },
     { t: 'Glossary', d: `${facts.glossaryTerms.toLocaleString('en-US')} terms, searchable` },
-    { t: 'Weekly homework', d: 'One focus rule from your weakest skill' },
   ] },
   { g: 'Brain', items: [
     { t: 'Remembers you', d: 'Imports your claude.ai and ChatGPT history' },

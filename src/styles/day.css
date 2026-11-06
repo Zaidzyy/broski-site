@@ -266,7 +266,7 @@ body[data-persona='bro'] .only-zara { display: none; }
 .day:not(.is-live) .flash__tr { font-size: 52px; }
 
 /* ---------- live mode: the pinned stage ---------- */
-.day.is-live .day__track { height: calc(var(--units, 12.6) * var(--unit-h, 95svh) + 100svh); }
+.day.is-live .day__track { height: calc(var(--units, 13.6) * var(--unit-h, 95svh) + 100svh); }
 .day.is-live .day__stage {
   --D: 620px; --win-in: 62px; --arc-in: 40px; --arc-th: 10px; --arc-thick: 46px;
   --hand-top: 46px; --hand-len: 92px; --digit: 96px; --ctr-in: 148px; --sun: 64px; --moon: 44px; --labR: calc(var(--D) / 2 + 30px); --dotR: calc(var(--D) / 2 - 52px);

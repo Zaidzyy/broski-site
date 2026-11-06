@@ -25,6 +25,9 @@ try {
   await page.clock.install();
   await page.goto(URL);
   await page.evaluate(() => document.fonts.ready);
+  // the day sets up after the intro or at the first scroll (src/main.ts): scroll a pixel, as the tests do
+  await page.evaluate(() => window.scrollTo(0, 1));
+  for (let k = 0; k < 50 && !(await page.evaluate(() => !!window.__day)); k++) await page.clock.runFor(100);
   const yFor = (t) => page.evaluate((k) => window.__day.yFor(k), t);
   const sceneT = (i) => page.evaluate((k) => window.__day.sceneT(k), i);
   const UNITS = await page.evaluate(() => window.__day.UNITS);

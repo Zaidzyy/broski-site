@@ -62,6 +62,7 @@ Sample data, the same day the site walks through.
 | Time | What happens |
 |---|---|
 | 04:00 | The day resets. Yesterday closes at 68, unfinished tasks carry over, today is planned around the calendar. |
+| 05:30 | Exam prep: the next lecture, a pace line, cards due; "watched LA 5A to 5C" ticks all three. |
 | 07:42 | "water 500, slept 6h40, weight 70.4": one sentence, three entries, no AI called. Food works the same way. |
 | 08:30 | Away from the laptop: /today on Telegram, a voice note gets logged, quick buttons. |
 | 10:00 | The morning brief: calendar first, then at most five sourced AI items. |
@@ -77,7 +78,7 @@ Sample data, the same day the site walks through.
 <table>
   <tr>
     <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-day-06.webp" width="400" alt="12:30 on the site: the dial shows a bright midday sky, and a trading replay drill card shows a candle chart, process checks and 64 of 100 paper trades."><br><sub>12:30 · a trading coach that never trades</sub></td>
-    <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-03-rest.webp" width="400" alt="Section 03, everything else: six word tabs with Learn open, a ring of 36 tick marks, and cards for Arabic, the trading academy, paper first, book citations, the glossary and weekly homework."><br><sub>Everything else · 36 features in six groups</sub></td>
+    <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-03-rest.webp" width="400" alt="Section 03, everything else: six word tabs with Learn open, a ring of 36 tick marks, and cards for Arabic, GATE prep, the trading academy, paper first, the setup scanner and the glossary."><br><sub>Everything else · 36 features in six groups</sub></td>
   </tr>
   <tr>
     <td width="50%" align="center" valign="top"><img src="docs/screens/desktop-04-hood.webp" width="400" alt="Section 04, under the hood: four tier cards (No AI, Local, Sonnet, Opus), the gate answering read requests on its own, and a drawing of what runs on the laptop."><br><sub>Under the hood · the tiers and the gate</sub></td>

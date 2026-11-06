@@ -44,7 +44,7 @@ test('without JavaScript every scene and all six feature groups are readable', a
   const page = await ctx.newPage();
   await page.goto('./');
   await expect(page.locator('.bento:visible')).toHaveCount(6);
-  await expect(page.locator('.scene')).toHaveCount(12);
+  await expect(page.locator('.scene')).toHaveCount(13);
   await page.locator('#s2300').scrollIntoViewIfNeeded();
   await expect(page.locator('#s2300 .scene__h')).toBeVisible();
   await ctx.close();
@@ -109,7 +109,7 @@ test('phone day: the scene dots sit on the outer track, clear of the sky window'
       return { inner: Math.hypot(b.left + b.width / 2 - cx, b.top + b.height / 2 - cy) - b.width / 2, win: win.width / 2 };
     });
   });
-  expect(r).toHaveLength(12);
+  expect(r).toHaveLength(13);
   for (const d of r) expect(d.inner).toBeGreaterThan(d.win);
   await ctx.close();
 });

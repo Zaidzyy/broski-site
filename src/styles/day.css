@@ -1,5 +1,5 @@
 /* 02 · The day (J1 "the lens").
-   Default = static: twelve plain sections (no JS, windows under 520 px tall).
+   Default = static: thirteen plain sections (no JS, windows under 520 px tall).
    .day.is-live = the pinned stage driven by src/day.ts. */
 
 .day__intro { padding-top: 120px; padding-bottom: 70px; align-items: end; }
@@ -76,6 +76,15 @@
 .r-cut { border-top: 1px dashed var(--bg); margin: 10px 0; }
 .r-say { font-size: 10px; letter-spacing: .16em; color: #5E594F; }
 .r-quote { margin-top: 6px; font-family: var(--serif); font-size: 19px; line-height: 1.2; }
+
+/* 05:30 study (built from the card, chip, voicebar and bar parts) */
+.study__next { display: flex; align-items: baseline; gap: 12px; padding-top: 12px; border-top: 1px solid rgba(230, 236, 245, .08); }
+.study__next b { font-weight: 600; font-size: 17px; letter-spacing: .02em; }
+.study__next .mono { margin-left: auto; font-size: 12px; }
+.study__said { padding: 12px 16px; border-radius: 14px; }
+.study__said .mono { font-size: 15px; }
+.study__ticked { display: flex; flex-direction: column; gap: 8px; }
+.study__ticked > .mono { font-size: 11px; letter-spacing: .14em; }
 
 /* 07:42 body */
 .voicebar { display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 18px; background: rgba(9, 10, 12, .75); border: 1px solid rgba(230, 236, 245, .12); color: #E8EBF0; }
@@ -237,7 +246,7 @@ body[data-persona='bro'] .only-zara { display: none; }
 
 .laptop-scene > .micro, .w-col > .micro { color: #B4AC9E; }
 
-/* ---------- static mode: the day as twelve sections ---------- */
+/* ---------- static mode: the day as thirteen sections ---------- */
 .day__track { position: relative; }
 .day:not(.is-live) .day__bg, .day:not(.is-live) .dial, .day:not(.is-live) .day__bar,
 .day:not(.is-live) .day__prog, .day:not(.is-live) .day__cue, .day:not(.is-live) .day__hint { display: none; }

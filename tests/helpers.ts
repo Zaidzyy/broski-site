@@ -2,7 +2,7 @@ import { expect, type Page } from '@playwright/test';
 
 export interface DayHook { yFor(t: number): number; sceneT(i: number): number; UNITS: number; t(): number; active(): number }
 
-export const TIMES = ['04:00', '07:42', '08:30', '10:00', '11:15', '12:30', '14:03', '15:20', '16:40', '19:10', '21:30', '23:00'];
+export const TIMES = ['04:00', '05:30', '07:42', '08:30', '10:00', '11:15', '12:30', '14:03', '15:20', '16:40', '19:10', '21:30', '23:00'];
 export const IDS = TIMES.map((t) => 's' + t.replace(':', ''));
 
 const hook = (page: Page) => page.evaluate(() => {

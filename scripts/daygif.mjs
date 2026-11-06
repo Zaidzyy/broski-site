@@ -1,4 +1,4 @@
-// Records the README's day GIF: the desktop day scrolling through all 12 scenes and the ending.
+// Records the README's day GIF: the desktop day scrolling through every scene and the ending.
 // Needs `npm run preview` running and ffmpeg on the PATH. Usage: node scripts/daygif.mjs
 // The page clock is driven by hand, so every frame is exactly 1/FPS apart however slow the screenshots are.
 import { chromium } from '@playwright/test';
@@ -31,7 +31,8 @@ try {
 
   // the path of the clock: hold on each scene, ease to the next, then the ending
   const stops = [];
-  for (let i = 0; i < 12; i++) stops.push(await sceneT(i));
+  const N = await page.locator('.scene').count();
+  for (let i = 0; i < N; i++) stops.push(await sceneT(i));
   stops.push(UNITS);
   const keys = []; // [seconds, t]
   let s = 0;

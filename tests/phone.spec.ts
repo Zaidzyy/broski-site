@@ -16,7 +16,7 @@ test('phone: no horizontal scroll anywhere on the page', async ({ page }) => {
 test('phone: the dial stays pinned and every scene is reachable', async ({ page }) => {
   await page.goto('./');
   let top: number | null = null;
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 13; i++) {
     await gotoScene(page, i);
     await expect(page.locator('.scene.is-active')).toHaveAttribute('id', IDS[i]);
     await waitForSceneOpaque(page, IDS[i]);

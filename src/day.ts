@@ -11,26 +11,28 @@ import { isPhone } from './lib/motion';
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const N = SCENES.length;
-/** 12 scenes plus room for the ending (the window closes, the arc becomes the 72). */
-export const UNITS = 12.6;
-/** Scroll per unit, as a share of the viewport height. 12.6 × 0.95 ≈ 12 screens of scroll. */
+/** One unit per scene plus room for the ending (the window closes, the arc becomes the 72). */
+export const UNITS = N + 0.6;
+/** Scroll per unit, as a share of the viewport height. 13.6 × 0.95 ≈ 13 screens of scroll. */
 export const UNIT_VH = 0.95;
 const W = 0.22; // half-width of the move between two scenes (the hand holds in between)
-const PLAY_SECONDS = 25;
+/** Play keeps the pace it had with twelve scenes: 25 s for 12.6 units. */
+const PLAY_SECONDS = Math.round((25 / 12.6) * UNITS);
 
 // per-scene dial values (sun and moon in fractions of the dial window; from the mockup's keyframes)
 const ANGLE = SCENES.map((s) => s.hours * 15);
 const INK = SCENES.map((s) => (s.darkInk ? 1 : 0));
-const STARS = [1, 0.25, 0, 0, 0, 0, 0, 0, 0, 0.1, 0.7, 1];
-const DAWN = [0, 1, 0.8, 0.5, 0.1, 0, 0, 0, 0, 0.3, 0, 0];
-const DUSK = [0, 0, 0, 0, 0, 0, 0, 0.2, 0.9, 1, 1, 0.1];
+const STARS = [1, 0.7, 0.25, 0, 0, 0, 0, 0, 0, 0, 0.1, 0.7, 1];
+const DAWN = [0, 0.4, 1, 0.8, 0.5, 0.1, 0, 0, 0, 0, 0.3, 0, 0];
+const DUSK = [0, 0, 0, 0, 0, 0, 0, 0, 0.2, 0.9, 1, 1, 0.1];
 /** Page-sky dimming per scene, from scripts/contrast.mjs, so scene text keeps AA on every sky. */
-const DIM = [0.58, 0.72, 0.69, 0.74, 0.73, 0.78, 0.79, 0.77, 0.7, 0.66, 0.61, 0.58];
-const SUN: [number, number][] = [[60, 560], [80, 400], [70, 300], [90, 170], [150, 110], [230, 80], [310, 90], [395, 140], [415, 340], [430, 380], [450, 560], [450, 560]].map(([x, y]) => [x / 496, y / 496]);
-const MOON: [number, number, number][] = [[380, 140, 0.8], [430, 110, 0.2], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [360, 150, 0.7], [250, 116, 1]].map(([x, y, o]) => [x / 496, y / 496, o]);
+const DIM = [0.58, 0.58, 0.72, 0.69, 0.74, 0.73, 0.78, 0.79, 0.77, 0.7, 0.66, 0.61, 0.58];
+const SUN: [number, number][] = [[60, 560], [70, 500], [80, 400], [70, 300], [90, 170], [150, 110], [230, 80], [310, 90], [395, 140], [415, 340], [430, 380], [450, 560], [450, 560]].map(([x, y]) => [x / 496, y / 496]);
+const MOON: [number, number, number][] = [[380, 140, 0.8], [405, 125, 0.6], [430, 110, 0.2], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [560, 0, 0], [360, 150, 0.7], [250, 116, 1]].map(([x, y, o]) => [x / 496, y / 496, o]);
 
-// the ending, in units
-const END = { win: [11.7, 12.1], ticks: [11.75, 12.1], hand: [11.75, 11.95], arc: [11.75, 12.15], thick: [11.85, 12.2], digits: [11.7, 11.85], score: [11.9, 12.25] };
+// the ending, in units after the last scene starts (N - 1)
+const END_AT = { win: [0.7, 1.1], ticks: [0.75, 1.1], hand: [0.75, 0.95], arc: [0.75, 1.15], thick: [0.85, 1.2], digits: [0.7, 0.85], score: [0.9, 1.25] };
+const END = Object.fromEntries(Object.entries(END_AT).map(([k, v]) => [k, v.map((x) => x + N - 1)])) as Record<keyof typeof END_AT, number[]>;
 const FINAL_ARC = 259.2; // 72% of the dial
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -55,7 +57,7 @@ function plateau(t: number, k: number) {
 }
 
 /** Where a chip or the tests send the clock: the middle of each scene's hold. */
-export const sceneT = (i: number) => (i === N - 1 ? 11.45 : i + 0.5);
+export const sceneT = (i: number) => (i === N - 1 ? N - 0.55 : i + 0.5);
 
 export function initDay() {
   const day = document.querySelector<HTMLElement>('.day');
@@ -74,7 +76,7 @@ export function initDay() {
   // Too short for the pinned stage (landscape phones, high browser zoom): use the still version.
   const tooShort = () => window.innerHeight < 520;
   if (tooShort()) {
-    // Twelve still sections, each in its final state. No pinning, no auto-scroll.
+    // Still sections, one per scene, each in its final state. No pinning, no auto-scroll.
     day.classList.add('is-static-js');
     const fitStatic = () => scenes.forEach((s, i) => fitWidget(s, fits[i], s.querySelector<HTMLElement>('.scene__w')!.clientWidth, Infinity));
     fitStatic();

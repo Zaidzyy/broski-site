@@ -1,7 +1,7 @@
-// Section 02 markup: the pinned stage (sky, dial, top bar) and the twelve scenes.
+// Section 02 markup: the pinned stage (sky, dial, top bar) and the thirteen scenes.
 // Rendered at build time; src/day.ts brings it to life.
 import {
-  SCENES, INTRO, SCORE, RECEIPT, BODY, PHONE, BRIEF, MIND, TRADING, WORK, INBOX,
+  SCENES, INTRO, SCORE, RECEIPT, STUDY, BODY, PHONE, BRIEF, MIND, TRADING, WORK, INBOX,
   CALLOUT, TRAIN, LAPTOP, HABITS, type Scene,
 } from '../data/day';
 import { BEFORE, AFTER, LEVELS, type Candle } from '../data/chart';
@@ -29,7 +29,7 @@ function candles(list: Candle[]) {
   }).join('');
 }
 
-// ---------- the twelve widgets ----------
+// ---------- the thirteen widgets ----------
 
 const W: Record<string, (s: Scene) => string> = {
   s0400: (s) => `
@@ -46,6 +46,26 @@ const W: Record<string, (s: Scene) => string> = {
         <div class="r-say">${who()} SAYS</div>
         <p class="r-quote">${say(s, true)}</p>
       </div>
+    </div>`,
+
+  s0530: (s) => `
+    <div class="card card--col w560 study">
+      <div class="card__head"><span class="acc">${esc(STUDY.head)}</span><span>${STUDY.right}</span></div>
+      <div class="study__next" ${a('pop', 0.2)}>
+        <span class="micro micro--muted">${STUDY.next.k}<span class="sr-only"> ·</span></span>
+        <b>${STUDY.next.v}</b><span class="mono tone-muted"><span class="sr-only">· </span>${STUDY.next.n}</span>
+      </div>
+      <div class="chips" ${a('pop', 0.4)}>${chip(STUDY.pace, 'good')}</div>
+      <div class="voicebar study__said" ${a('pop', 0.6)}>
+        ${wave(10, 'wave--sm')}
+        <span class="reveal" ${a('wipe', 0.75)}><span class="reveal__in mono">${STUDY.said}</span></span>
+      </div>
+      <div class="study__ticked" ${a('pop', 1.2)}>
+        <span class="mono"><span class="tone-good" aria-hidden="true">✓ </span>${STUDY.result}</span>
+        <span class="bar"><span class="is-acc" ${a('gx', 1.3)} style="width:${STUDY.pct}%"></span></span>
+      </div>
+      <div class="chips" ${a('pop', 1.45)}>${STUDY.chips.map((c) => chip(c.t, c.tone)).join('')}</div>
+      <p class="serif card__q19" ${a('pop', 1.6)}>${say(s, true)}</p>
     </div>`,
 
   s0742: (s) => `

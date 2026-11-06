@@ -14,7 +14,7 @@ const ROSE = hex('#D88A9C'), STEEL = hex('#8EA4BA'), CHIP = hex('#A39C90'), SKYG
 const DAWN = hex('#E7A06A');
 const DUSK = { zara: { glow: '#B9687D', sky: '#4A2430' }, bro: { glow: '#4F6377', sky: '#22303D' } };
 const scenes = [
-  ['04:00', '#05060A', 0, 0, false], ['07:42', '#2B2533', 1, 0, false], ['08:30', '#6E6A7A', .8, 0, false],
+  ['04:00', '#05060A', 0, 0, false], ['05:30', '#0E0D16', .4, 0, false], ['07:42', '#2B2533', 1, 0, false], ['08:30', '#6E6A7A', .8, 0, false],
   ['10:00', '#C7B9B0', .5, 0, true], ['11:15', '#A8BACB', .1, 0, true], ['12:30', '#CFDDE8', 0, 0, true],
   ['14:03', '#EDE4D3', 0, 0, true], ['15:20', '#E6D3B3', 0, .2, true], ['16:40', '#D79A62', 0, .9, true],
   ['19:10', '#B7735E', .3, 1, true], ['21:30', 'DUSK', 0, 1, false], ['23:00', '#040406', 0, .1, false],

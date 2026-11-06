@@ -38,6 +38,10 @@ export const SCENES: Scene[] = [
     'Four to four. Late nights count for the day you actually lived. At 04:00 yesterday closes, unfinished tasks carry over and today is planned around your calendar.',
     { bro: "Yesterday's closed at 68. Legs, two jobs, bed by 00:30. Move.", zara: "Yesterday's filed at 68. Today's ready: legs, two jobs, bed by 00:30." },
     '#05060A', false),
+  scene('05:30', 'Study', 'Exam prep, paced.',
+    'Every lecture in order, a pace line that says when you fall behind, flashcards that come back on schedule and past papers in exam mode. Say "watched LA 5A to 5C" and all three are ticked.',
+    { bro: 'LA 5B, then 18 cards. Start before the day does.', zara: 'Morning. LA 5B is next, and 18 cards are waiting.' },
+    '#0E0D16', false),
   scene('07:42', 'Body', 'You talk. It logs.',
     'One sentence, three entries. Food works the same way. If the sentence parses, no AI is even called.',
     { bro: "Logged. Six-forty isn't enough. Earlier tonight.", zara: "Got it. Sleep's a bit short, let's fix that tonight." },
@@ -86,7 +90,7 @@ export const SCENES: Scene[] = [
 
 export const INTRO = {
   eyebrow: '02 · The day',
-  lede: 'Twelve moments from an ordinary day. Every one of them is something Broski does on its own. Sample data only.',
+  lede: 'Thirteen moments from an ordinary day. Every one of them is something Broski does on its own. Sample data only.',
   pill: 'Scroll to live it · or press ▶ Play',
 };
 
@@ -133,6 +137,21 @@ export const BRIEF = {
     { t: 'Three AI-engineer roles in Dubai now ask for MCP', src: 'JOB BOARDS' },
     { t: 'A workflow tool you use shipped a new node', src: 'RELEASE NOTES' },
     { t: 'Gap check: evals keep showing up in job posts. Task added.', src: 'WEEKLY GAP CHECK' },
+  ],
+};
+
+export const STUDY = {
+  head: 'GATE · DATA SCIENCE & AI',
+  right: 'SAMPLE COURSE',
+  pace: 'ON PACE · 2 LECTURES AHEAD',
+  next: { k: 'NEXT UP', v: 'LA 5B · EIGENVALUES', n: '42 MIN' },
+  said: '“watched LA 5A to 5C”',
+  result: '3 LECTURES TICKED · LINEAR ALGEBRA 41%',
+  /** Linear algebra, done: the bar under the result. */
+  pct: 41,
+  chips: [
+    { t: '18 CARDS DUE', tone: 'acc' },
+    { t: 'PAPER MODE · Q17 MARKED', tone: 'sand' },
   ],
 };
 

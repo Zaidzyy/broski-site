@@ -10,14 +10,15 @@ const browser = await chromium.launch({ executablePath: process.env.PW_CHROMIUM 
 
 const settle = (page, ms = 900) => page.waitForTimeout(ms);
 async function day(page, prefix) {
-  for (let i = 0; i < 12; i++) {
+  const n = await page.locator('.scene').count();
+  for (let i = 0; i < n; i++) {
     await page.evaluate((k) => { const d = window.__day; window.scrollTo(0, d.yFor(d.sceneT(k))); }, i);
     await settle(page, 2600); // scrub + the scene's entry animation
     await page.screenshot({ path: `${OUT}/${prefix}-day-${String(i + 1).padStart(2, '0')}.png` });
   }
   await page.evaluate(() => { const d = window.__day; window.scrollTo(0, d.yFor(d.UNITS)); });
   await settle(page, 1500);
-  await page.screenshot({ path: `${OUT}/${prefix}-day-13-end.png` });
+  await page.screenshot({ path: `${OUT}/${prefix}-day-${String(n + 1).padStart(2, '0')}-end.png` });
 }
 async function sections(page, prefix) {
   for (const [name, sel] of [['03-rest', '#everything'], ['04-hood', '#hood'], ['05-yours', '#yours'], ['06-footer', '.foot']]) {

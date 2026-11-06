@@ -19,9 +19,9 @@ test('reduced motion emulated: the day is pinned and its scenes play', async ({ 
   // the 12:30 widgets wait to animate in, then play once on entry
   const pop = page.locator('#s1230 [data-a="pop"]').first();
   expect(Number(await pop.evaluate((n) => getComputedStyle(n).opacity))).toBe(0);
-  await gotoScene(page, 5);
-  await waitForSceneOpaque(page, IDS[5]);
-  expect(await visibleDigits(page)).toEqual([TIMES[5]]);
+  await gotoScene(page, 6);
+  await waitForSceneOpaque(page, IDS[6]);
+  expect(await visibleDigits(page)).toEqual([TIMES[6]]);
   await expect.poll(() => pop.evaluate((n) => Number(getComputedStyle(n).opacity)), { timeout: 4000 }).toBe(1);
   const box = (await page.locator('.dial').boundingBox())!;
   expect(box.y).toBeGreaterThan(0);

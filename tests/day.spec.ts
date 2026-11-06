@@ -5,7 +5,7 @@ test.describe('the day (desktop)', () => {
   test('each scene shows at its scroll position, and the dial digits match', async ({ page }) => {
     await page.goto('./');
     await dayReady(page);
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 13; i++) {
       await gotoScene(page, i);
       await expect(page.locator('.scene.is-active')).toHaveAttribute('id', IDS[i]);
       await waitForSceneOpaque(page, IDS[i]);

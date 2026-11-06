@@ -59,5 +59,6 @@ function startBelow() {
   });
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }
-introDone.then(startBelow);
+// A task later, not in the same microtask run: the hero comes alive first, then the day sets up.
+introDone.then(() => window.setTimeout(startBelow, 0));
 window.addEventListener('scroll', startBelow, { once: true, passive: true });
